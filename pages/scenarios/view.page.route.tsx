@@ -1,0 +1,1 @@
+export default "/scenarios/:sId";
