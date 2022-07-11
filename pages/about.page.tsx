@@ -1,8 +1,6 @@
 import React from "react";
 
-export { Page };
-
-function Page() {
+export function Page() {
   return (
     <>
       <h1>About</h1>

@@ -1,9 +1,7 @@
 import React from "react";
 import { Scenario } from "./types/Scenario";
 
-export { Page };
-
-function Page({ s }: { s: Scenario }) {
+export function Page({ s }: { s: Scenario }) {
   if (!s[0]) {
     return <p>no dialogs...</p>;
   }

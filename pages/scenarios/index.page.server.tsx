@@ -5,7 +5,6 @@ import type { TableEventChapter } from "./types/Table_EventChapter";
 import _ from "lodash";
 
 import { getScenarioFilenames } from "./util";
-import e from "express";
 
 export type EventStories = Awaited<
   ReturnType<typeof onBeforeRender>

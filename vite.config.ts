@@ -4,5 +4,6 @@ import ssr from "vite-plugin-ssr/plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), ssr()],
+    server: { port: 3080 },
+    plugins: [react(), ssr({ prerender: true })],
 });

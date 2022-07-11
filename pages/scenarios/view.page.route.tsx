@@ -1,1 +1,1 @@
-export default "/scenarios/:sId";
+export default "/scenarios/@sId";
