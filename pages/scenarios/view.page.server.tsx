@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import { PageContextBuiltIn } from "vite-plugin-ssr";
-import { Scenario } from "./type";
+import { Scenario } from "./types/Scenario";
 import { getScenarioFilenames } from "./util";
 
 // このページで表示する詳細を取得する
@@ -24,7 +24,9 @@ export async function onBeforeRender(pageContext: PageContextBuiltIn) {
 }
 
 export async function prerender() {
-  const files = await getScenarioFilenames();
+  const files = (await getScenarioFilenames()).filter((a) =>
+    a.includes("Ch01Stage")
+  );
 
   return files.map((file) => `/scenarios/${file.replace(".json", "")}`);
 }

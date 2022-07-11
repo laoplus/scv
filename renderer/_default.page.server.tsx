@@ -20,7 +20,7 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
 
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext;
-  const title = (documentProps && documentProps.title) || "Vite SSR app";
+  const title = (documentProps && documentProps.title) || "SCV";
   const desc =
     (documentProps && documentProps.description) ||
     "App using Vite + vite-plugin-ssr";

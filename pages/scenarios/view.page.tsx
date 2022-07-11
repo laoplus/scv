@@ -1,5 +1,5 @@
 import React from "react";
-import { Scenario } from "./type";
+import { Scenario } from "./types/Scenario";
 
 export { Page };
 
