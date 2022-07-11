@@ -1,5 +1,10 @@
 /* This CSS is common to all pages */
 
 @tailwind base;
+@layer base {
+    html {
+        @apply font-sans;
+    }
+}
 @tailwind components;
 @tailwind utilities;
