@@ -26,8 +26,11 @@ function PageShell({
             <Link className="navitem" href="/about">
               About
             </Link>
-            <Link className="navitem" href="/scenarios">
-              Scenarios
+            <Link className="navitem" href="/events">
+              Event scenes
+            </Link>
+            <Link className="navitem" href="/main">
+              Main scenes
             </Link>
           </Sidebar>
           <Content>{children}</Content>

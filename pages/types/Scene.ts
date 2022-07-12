@@ -1,4 +1,4 @@
-export type Scenario = Dialog[];
+export type Scene = Dialog[];
 
 export type Dialog = {
     Key: string;
