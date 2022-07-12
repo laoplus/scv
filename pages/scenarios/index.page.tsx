@@ -62,7 +62,82 @@ function MapRenderer({
   );
 }
 
+function GridTableRenderer({
+  eventIndexStr,
+  stages,
+}: {
+  eventIndexStr: string;
+  stages: PageProps["eventStories"][number][number]["ChapterStages"];
+}) {
+  return (
+    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)_4rem_4rem_4rem] items-center gap-2">
+      {stages.map((s) => (
+        <div
+          key={s.StageName}
+          className={cn("contents", {
+            "[&>div]:opacity-50": !s.hasCutscene,
+          })}
+        >
+          <div
+            className={cn(
+              "h-6 rounded bg-yellow-500",
+              {
+                "bg-rose-500": s.StageSubTypeStr === "EX",
+              },
+              {
+                "bg-lime-500": s.StageSubTypeStr === "SUB",
+              }
+            )}
+          />
+          <div>{s.StageIdxString}</div>
+          <div>{s.StageName}</div>
+          <div>
+            {s.StartCutsceneIndex === "0" ? (
+              "-"
+            ) : (
+              <a
+                href={`${eventIndexStr}/${s.StageIdxString}/op`.toLowerCase()}
+                className="inline-block p-1 text-sky-600"
+              >
+                OP
+              </a>
+            )}
+          </div>
+          <div>
+            {s.EndCutsceneIndex === "0" ? (
+              "-"
+            ) : (
+              <a
+                href={`${eventIndexStr}/${s.StageIdxString}/ed`.toLowerCase()}
+                className="inline-block p-1 text-sky-600"
+              >
+                ED
+              </a>
+            )}
+          </div>
+          <div>
+            {s.MidCutsceneIndex.length === 1 && s.MidCutsceneIndex[0] === "0"
+              ? "-"
+              : s.MidCutsceneIndex.map((sceneId, i) => (
+                  <a
+                    key={sceneId}
+                    href={`${eventIndexStr}/${s.StageIdxString}/mid${
+                      i + 1
+                    }`.toLowerCase()}
+                    className="inline-block p-1 text-sky-600"
+                  >
+                    Mid {i + 1}
+                  </a>
+                ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Page({ eventStories }: PageProps) {
+  // console.log(eventStories);
   return (
     <>
       <h1 className="mb-4 text-6xl uppercase">scenarios</h1>
@@ -76,15 +151,14 @@ export function Page({ eventStories }: PageProps) {
                 Ev{event[0].Event_CategoryIndex}: {event[0].Event_CategoryName}
               </h3>
               {event.map((chapter) => (
-                <div
-                  key={chapter.Chapter_Name}
-                  className="ml-8 flex flex-col gap-2"
-                >
-                  {event.length !== 1 && <h4>{chapter.Chapter_Name}</h4>}
+                <div key={chapter.Chapter_Name} className="flex flex-col gap-2">
+                  {event.length !== 1 && (
+                    <h4 className="font-semibold">{chapter.Chapter_Name}</h4>
+                  )}
 
-                  <MapRenderer
+                  <GridTableRenderer
+                    eventIndexStr={`ev${event[0].Event_CategoryIndex}`}
                     stages={chapter.ChapterStages}
-                    eventIndexStr={`Ev${chapter.Event_CategoryIndex}`}
                   />
                 </div>
               ))}
