@@ -36,13 +36,13 @@ export function Page({ scene }: { scene: Scene }) {
     parseDialog(scene[0]),
   ]);
   const addHistory = (dialog: Dialog) => {
-    setHistory([...history, parseDialog(dialog)]);
+    setHistory([parseDialog(dialog), ...history]);
   };
   const latestDialog = (): ExtendedDialog => {
     if (history.length === 0) {
       throw new Error("no dialogs");
     }
-    return history.at(-1)!;
+    return history[0];
   };
 
   const dialogClickHandler = (dialog: ExtendedDialog) => {
@@ -63,7 +63,7 @@ export function Page({ scene }: { scene: Scene }) {
       const historyIndex = history.findIndex(
         (historyDialog) => historyDialog.Key === dialog.Key
       );
-      setHistory(history.slice(0, historyIndex + 1));
+      setHistory(history.slice(historyIndex));
       scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -103,7 +103,7 @@ export function Page({ scene }: { scene: Scene }) {
         /> */}
       </div>
 
-      <div className="relative top-0 flex w-[40rem] flex-col-reverse gap-2 ">
+      <div className="relative top-0 flex w-[40rem] flex-col gap-2">
         {history.map((sd, i) => {
           const hasNextDialog = sd.NextDialogScript !== "";
           return (
@@ -123,7 +123,9 @@ export function Page({ scene }: { scene: Scene }) {
               }}
             >
               <div className="flex flex-col gap-1">
-                <span className="font-bold">{sd.speaker?.name || ""}</span>
+                {sd.speaker?.name && (
+                  <span className="font-bold">{sd.speaker.name}</span>
+                )}
                 <div
                   // [c][ffffff]のようなカラーコードの変換
                   dangerouslySetInnerHTML={{

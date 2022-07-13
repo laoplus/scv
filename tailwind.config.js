@@ -4,7 +4,7 @@ module.exports = {
     theme: {
         extend: {
             animation: {
-                "dialog-appear": "dialog-appear 0.2s ease-in-out",
+                "dialog-appear": "dialog-appear 0.2s ease-out",
             },
             keyframes: {
                 "dialog-appear": {
