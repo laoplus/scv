@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "../../components/utils";
 import { Scene, Dialog } from "../types/Scene";
 
-type Speaker = {
-  name: string;
-  speaking: boolean;
+type ExtendedDialog = Dialog & {
+  speaker?: {
+    name: string;
+    speaking: boolean;
+  };
+  hasNextDialog: boolean;
+  SelectionSelectedIndex: number | null;
 };
-type ExtendedDialog = Dialog & Partial<{ speaker: Speaker }>;
 
 const parseDialog = (dialog: Dialog) => {
   const speaker = [
@@ -24,7 +27,14 @@ const parseDialog = (dialog: Dialog) => {
     },
   ].find((c) => c.speaking);
 
-  return { ...dialog, speaker };
+  const hasNextDialog = dialog.NextDialogScript !== "";
+
+  return {
+    SelectionSelectedIndex: null,
+    speaker,
+    hasNextDialog,
+    ...dialog,
+  };
 };
 
 export function Page({ scene }: { scene: Scene }) {
@@ -45,12 +55,11 @@ export function Page({ scene }: { scene: Scene }) {
     return history[0];
   };
 
-  const dialogClickHandler = (dialog: ExtendedDialog) => {
+  const dialogNextHandler = (dialog: ExtendedDialog) => {
     const isCurrentDialog = dialog.Key === latestDialog().Key;
-    const hasNextDialog = dialog.NextDialogScript !== "";
 
     if (isCurrentDialog) {
-      if (!hasNextDialog) {
+      if (!dialog.hasNextDialog) {
         return;
       }
       const nextDialog = scene.find((d) => d.Key === dialog.NextDialogScript);
@@ -69,13 +78,59 @@ export function Page({ scene }: { scene: Scene }) {
   };
 
   const selectionHandler = (dialog: ExtendedDialog, index: number) => {
-    const nextDialogKey = dialog.SelectionIndex_Next[index];
-    const nextDialog = scene.find((d) => d.Key === nextDialogKey);
-    if (!nextDialog) {
-      throw new Error("next dialog not found");
+    const isCurrentDialog = dialog.Key === latestDialog().Key;
+    const selectionDialogKey = dialog.SelectionIndex_Next[index];
+    const selectionDialog = scene.find((d) => d.Key === selectionDialogKey);
+    if (!selectionDialog) {
+      // 選択肢があるが選択先がないことが稀にある
+      if (dialog.hasNextDialog) {
+        const nextDialog = scene.find((d) => d.Key === dialog.NextDialogScript);
+        if (!nextDialog) {
+          throw new Error("next dialog not found");
+        }
+        addHistory(nextDialog);
+        return;
+      }
+      throw new Error("selection next dialog not found");
     }
-    addHistory(nextDialog);
+
+    if (isCurrentDialog) {
+      setHistory([
+        parseDialog(selectionDialog),
+        { ...latestDialog(), SelectionSelectedIndex: index },
+        // history but not contain latest dialog
+        ...history.slice(1),
+      ]);
+    } else {
+      // is history
+      const historyIndex = history.findIndex(
+        (historyDialog) => historyDialog.Key === dialog.Key
+      );
+      setHistory(history.slice(historyIndex));
+      scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
+
+  const imgBaseUrl = `https://cdn.laoplus.net/bg/`;
+  const [imgExt, setImgExt] = useState(".webp");
+  const bgImages = new Set(
+    scene.map((d) => imgBaseUrl + d.BG_ImageName + imgExt)
+  );
+
+  // SSRで動かないのでuseEffectで隔離する
+  useEffect(() => {
+    const canUseWebp = () => {
+      const test = document.createElement("canvas");
+      return !!(
+        test.getContext &&
+        test.getContext("2d") &&
+        test.toDataURL("image/webp").indexOf("data:image/webp") === 0
+      );
+    };
+    if (!canUseWebp()) {
+      setImgExt(".png");
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -90,63 +145,100 @@ export function Page({ scene }: { scene: Scene }) {
         </header>
       </div>
 
-      <div
-        className="relative z-10 mb-2 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500 bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(/img/bg/${latestDialog().BG_ImageName}.png)`,
-          backgroundSize: "700px 105%",
-        }}
-      >
-        {/* <img
-          src="/img/unit/BR_Sirene_0_O_S.png"
-          className="absolute -bottom-8 left-0 right-0 m-auto h-full"
-        /> */}
+      <div className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500">
+        {[...bgImages].map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            className={cn(
+              "pointer-events-none absolute inset-0 opacity-0 transition-opacity delay-200 duration-300",
+              {
+                "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
+                  latestDialog().BG_ImageName
+                ),
+              }
+            )}
+          />
+        ))}
       </div>
 
-      <div className="relative top-0 flex w-[40rem] flex-col gap-2">
+      <div className="relative -top-10 z-10 flex w-[40rem] flex-col gap-2 px-2">
         {history.map((sd, i) => {
           const hasNextDialog = sd.NextDialogScript !== "";
           return (
             <div
               key={sd.Key}
               className={cn(
-                "animate-dialog-appear flex-col rounded border p-4 opacity-50 transition-opacity",
+                "relative flex min-h-[4rem] animate-dialog-appear flex-col justify-center rounded border bg-white bg-opacity-90 p-4 opacity-75 transition-opacity hover:opacity-100",
                 {
                   "opacity-100": latestDialog().Key === sd.Key,
-                },
-                {
-                  "cursor-pointer": hasNextDialog,
                 }
               )}
-              onClick={() => {
-                dialogClickHandler(sd);
-              }}
             >
               <div className="flex flex-col gap-1">
                 {sd.speaker?.name && (
                   <span className="font-bold">{sd.speaker.name}</span>
                 )}
                 <div
-                  // [c][ffffff]のようなカラーコードの変換
+                  className="leading-normal"
+                  style={{
+                    minHeight: "calc(1em * 2 * 1.5)",
+                  }}
                   dangerouslySetInnerHTML={{
-                    __html: sd.Script.replace(
-                      /\[c\]\[(......)\]/g,
-                      `<span style="color:#$1;font-weight:bold;">`
-                    ).replace(/\[\-\]\[\/c\]/g, `</span>`),
+                    __html: sd.Script
+                      // [c][ffffff]のようなカラーコードの変換
+                      .replace(
+                        /\[c\]\[(......)\]/g,
+                        `<span style="color:#$1;font-weight:bold;">`
+                      )
+                      .replace(/\[\-\]\[\/c\]/g, `</span>`)
+                      // {0}の置換
+                      .replace(
+                        "{0}",
+                        `<span style="opacity:0.6;">司令官</span>`
+                      ),
                   }}
                 />
 
+                {/* NEXT / LOAD */}
+                {sd.SelectionIndex.length === 0 && hasNextDialog && (
+                  <button
+                    className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
+                    onClick={() => {
+                      dialogNextHandler(sd);
+                    }}
+                  >
+                    {
+                      // if latest dialog is current dialog, and has next dialog, then show next dialog
+                      latestDialog().Key === sd.Key ? "NEXT" : "LOAD"
+                    }
+                  </button>
+                )}
+
+                {
+                  // no next dialog and no selection
+                  sd.SelectionIndex.length === 0 && !hasNextDialog && (
+                    <div className="select-none text-right text-sm">END</div>
+                  )
+                }
+
                 {sd.SelectionIndex.map((si, i) => {
                   return (
-                    <div
+                    <button
                       key={i}
-                      className="cursor-pointer rounded-md border p-2 font-bold text-orange-400"
+                      className={cn(
+                        "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
+                        {
+                          "bg-orange-600 text-white":
+                            sd.SelectionSelectedIndex === i,
+                        }
+                      )}
                       onClick={() => {
                         selectionHandler(sd, i);
                       }}
                     >
                       {si}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
