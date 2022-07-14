@@ -13,7 +13,6 @@ export async function onBeforeRender() {
       .map((stage) => ({
         StageName: stage.StageName,
         StageIdxString: stage.StageIdxString,
-        StageSubType: stage.StageSubType,
         StageSubTypeStr: (() => {
           switch (stage.StageSubType) {
             case 0:

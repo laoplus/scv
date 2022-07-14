@@ -67,12 +67,9 @@ export async function onBeforeRender() {
     .toArray()
     .value();
 
-  const files = await getScenarioFilenames();
-
   return {
     pageContext: {
       pageProps: {
-        ss: files,
         eventStories: groupedEvents,
       },
     },
