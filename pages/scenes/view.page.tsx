@@ -111,10 +111,15 @@ export function Page({ scene }: { scene: Scene }) {
     }
   };
 
-  const imgBaseUrl = `https://cdn.laoplus.net/bg/`;
+  const imgBaseUrl = `https://cdn.laoplus.net/`;
   const [imgExt, setImgExt] = useState(".webp");
   const bgImages = new Set(
-    scene.map((d) => imgBaseUrl + d.BG_ImageName + imgExt)
+    scene.map((d) => imgBaseUrl + "bg/" + d.BG_ImageName + imgExt)
+  );
+  const addImages = new Set(
+    scene
+      .filter((d) => d.Add_ImageName !== "")
+      .map((d) => imgBaseUrl + "cut/" + d.Add_ImageName + imgExt)
   );
 
   // SSRで動かないのでuseEffectで隔離する
@@ -156,6 +161,20 @@ export function Page({ scene }: { scene: Scene }) {
                 "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
                   latestDialog().BG_ImageName
                 ),
+              }
+            )}
+          />
+        ))}
+        {[...addImages].map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            className={cn(
+              "pointer-events-none absolute inset-6 opacity-0 transition-opacity delay-200 duration-300",
+              {
+                "pointer-events-auto opacity-100 delay-[0ms]":
+                  latestDialog().Add_ImageName !== "" &&
+                  image.includes(latestDialog().Add_ImageName),
               }
             )}
           />
