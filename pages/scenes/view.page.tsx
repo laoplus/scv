@@ -9,6 +9,7 @@ type ExtendedDialog = Dialog & {
   };
   hasNextDialog: boolean;
   SelectionSelectedIndex: number | null;
+  ScriptHTML: string;
 };
 
 const parseDialog = (dialog: Dialog) => {
@@ -26,13 +27,19 @@ const parseDialog = (dialog: Dialog) => {
       speaking: dialog.Dialog_Speaker === 2 ? true : false,
     },
   ].find((c) => c.speaking);
-
   const hasNextDialog = dialog.NextDialogScript !== "";
+  const ScriptHTML = dialog.Script
+    // [c][ffffff]のようなカラーコードの変換
+    .replace(/\[c\]\[(......)\]/g, `<mark style="color:#$1;font-weight:bold;">`)
+    .replace(/\[\-\]\[\/c\]/g, `</mark>`)
+    // {0}の置換
+    .replace("{0}", `<span style="opacity:0.7;">司令官</span>`);
 
   return {
     SelectionSelectedIndex: null,
     speaker,
     hasNextDialog,
+    ScriptHTML,
     ...dialog,
   };
 };
@@ -204,18 +211,7 @@ export function Page({ scene }: { scene: Scene }) {
                     minHeight: "calc(1em * 2 * 1.5)",
                   }}
                   dangerouslySetInnerHTML={{
-                    __html: sd.Script
-                      // [c][ffffff]のようなカラーコードの変換
-                      .replace(
-                        /\[c\]\[(......)\]/g,
-                        `<mark style="color:#$1;font-weight:bold;">`
-                      )
-                      .replace(/\[\-\]\[\/c\]/g, `</mark>`)
-                      // {0}の置換
-                      .replace(
-                        "{0}",
-                        `<span style="opacity:0.6;">司令官</span>`
-                      ),
+                    __html: sd.ScriptHTML,
                   }}
                 />
 
@@ -264,6 +260,41 @@ export function Page({ scene }: { scene: Scene }) {
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-48">
+        <h2>Transcription</h2>
+        <ol className="list-outside list-decimal rounded border p-4 pl-10 text-sm text-gray-600">
+          {scene.map((d, i) => {
+            const dialog = parseDialog(d);
+            const speaker = dialog.speaker?.name && (
+              <>
+                <span className="">{dialog.speaker?.name}</span>
+                <span className="opacity-70">: </span>
+              </>
+            );
+            const selection = dialog.SelectionIndex.length > 0 && (
+              <ol className="ml-4 list-inside list-decimal">
+                {dialog.SelectionIndex.map((si, i) => (
+                  <li key={i}>
+                    <span className="">{si}</span>
+                  </li>
+                ))}
+              </ol>
+            );
+
+            return (
+              <li key={i} className="">
+                {speaker}
+                <p
+                  className="inline"
+                  dangerouslySetInnerHTML={{ __html: dialog.ScriptHTML }}
+                ></p>
+                {selection}
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </div>
   );

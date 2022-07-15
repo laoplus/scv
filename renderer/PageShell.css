@@ -8,3 +8,9 @@
 }
 @tailwind components;
 @tailwind utilities;
+
+mark {
+    background-color: transparent;
+    color: inherit;
+    font-style: inherit;
+}
