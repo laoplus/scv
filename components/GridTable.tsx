@@ -10,7 +10,7 @@ export function GridTableRenderer({
   stages: EventStories[number][number]["ChapterStages"];
 }) {
   return (
-    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)_4rem_4rem_4rem] items-center gap-2">
+    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)_8rem_8rem_8rem] items-center gap-2">
       {stages.map((s) => (
         <div
           key={s.StageName}
@@ -40,6 +40,31 @@ export function GridTableRenderer({
                 OP
               </a>
             )}
+            <div className="grid grid-cols-3 gap-1">
+              {s.StartCutsceneCharcters.map((c, i) => {
+                return (
+                  <img
+                    key={i}
+                    title={c.name}
+                    alt={c.name}
+                    src={
+                      `https://cdn.laoplus.net/formationicon/` +
+                      c.image
+                        .replace("2DModel_", "FormationIcon_")
+                        .replace("_DL_N", "")
+                        .replace("_Commu", "_N") +
+                      ".webp"
+                    }
+                    className="aspect-square rounded-sm"
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src =
+                        "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
           <div>
             {s.EndCutsceneIndex === "0" ? (

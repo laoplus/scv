@@ -1,7 +1,9 @@
 import _ from "lodash";
-import { tables } from "../serverUtil";
-
-import { getScenarioFilenames } from "../serverUtil";
+import {
+  getCutNameFromParam,
+  getDialogFromCutName,
+} from "../scenes/view.page.server";
+import { createSceneCharacters, tables } from "../serverUtil";
 
 export type EventStories = Awaited<
   ReturnType<typeof onBeforeRender>
@@ -23,6 +25,7 @@ export const publicEvents = tables.events.filter(
 
 export async function onBeforeRender() {
   const { chapters, stages } = tables;
+  const sceneCharacters = await createSceneCharacters();
 
   // TODO: omit unused keys
 
@@ -48,6 +51,22 @@ export async function onBeforeRender() {
         StartCutsceneIndex: stage.StartCutsceneIndex,
         EndCutsceneIndex: stage.EndCutsceneIndex,
         MidCutsceneIndex: stage.MidCutsceneIndex,
+        StartCutsceneCharcters: (() => {
+          if (stage.StartCutsceneIndex === "0") {
+            return [];
+          }
+
+          const cutName = getCutNameFromParam({
+            chapter: "ev" + e.Event_CategoryPos,
+            stageIdxStr: stage.StageIdxString.toLowerCase(),
+            sceneType: "op",
+          });
+          const dialog = getDialogFromCutName(cutName);
+          const charcters = sceneCharacters.find(
+            (s) => s.Cutscene_Key === dialog.Key
+          )?.characters;
+          return charcters || [];
+        })(),
         hasCutscene:
           stage.StartCutsceneIndex !== "0" ||
           stage.EndCutsceneIndex !== "0" ||

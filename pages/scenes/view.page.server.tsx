@@ -1,7 +1,6 @@
-import fs from "fs/promises";
+import fs from "fs";
 import { PageContextBuiltIn } from "vite-plugin-ssr";
-import { Scene } from "../types/Scene";
-import { tables } from "../serverUtil";
+import { tables, loadScene } from "../serverUtil";
 import { Stage } from "../types/Table_MapStage";
 import { publicEvents } from "../events/index.page.server";
 
@@ -11,7 +10,7 @@ function isSceneType(type: string): type is SceneType {
   return type === "op" || type === "ed" || type.startsWith("mid");
 }
 
-function getCutNameFromParam({
+export function getCutNameFromParam({
   chapter,
   stageIdxStr,
   sceneType,
@@ -65,7 +64,7 @@ function getCutNameFromParam({
   }
 }
 
-function getDialogFromCutName(cutName: string) {
+export function getDialogFromCutName(cutName: string) {
   const dialog = tables.cutScenes.find((c) => c.Key === cutName);
   if (!dialog) {
     throw new Error(`no dialog found for ${cutName}`);
@@ -87,14 +86,8 @@ export async function onBeforeRender(pageContext: PageContextBuiltIn) {
     stageIdxStr,
     sceneType,
   });
-
   const dialog = getDialogFromCutName(cutName);
-
-  const file = await fs.readFile(
-    `data/dialogs/${dialog.FileName}.json`,
-    "utf-8"
-  );
-  const scene = JSON.parse(file) as Scene;
+  const scene = await loadScene(dialog.FileName + ".json");
 
   return {
     pageContext: {

@@ -3,10 +3,16 @@ import type { TableMapChapter } from "./types/Table_MapChapter";
 import type { TableMapStage } from "./types/Table_MapStage";
 import type { TableEventChapter } from "./types/Table_EventChapter";
 import type { TableCutscene } from "./types/Table_Cutscene";
+import { Scene } from "./types/Scene";
 
-export async function getScenarioFilenames() {
+export async function getAllScenesFilenames() {
     const files = await fs.promises.readdir("data/dialogs");
     return files.filter((file) => file.endsWith(".json"));
+}
+
+export async function loadScene(filename: string) {
+    const data = await fs.promises.readFile(`data/dialogs/${filename}`, "utf8");
+    return JSON.parse(data) as Scene;
 }
 
 const chaptersObj = JSON.parse(
@@ -35,3 +41,51 @@ export const tables = {
     events,
     stages,
 };
+
+export type SceneCharacters = {
+    Cutscene_Key: string;
+    Dialog_Group: string;
+    characters: {
+        name: string;
+        image: string;
+    }[];
+}[];
+
+export async function createSceneCharacters() {
+    const sceneFiles = await getAllScenesFilenames();
+
+    const sceneCharcters = [] as unknown as SceneCharacters;
+
+    for (const sceneFilename of sceneFiles) {
+        const scene = await loadScene(sceneFilename);
+        if (!scene[0]) {
+            continue;
+        }
+
+        const characters = scene
+            .flatMap((d) => {
+                return [
+                    { name: d.Char_Name_L, image: d.Char_ImageName_L },
+                    { name: d.Char_Name_R, image: d.Char_ImageName_R },
+                    { name: d.Char_Name_C, image: d.Char_ImageName_C },
+                ];
+            })
+            .filter((c) => c.image !== "")
+            // remove duplicates
+            .reduce((acc, cur) => {
+                if (!acc.some((c) => c.image === cur.image)) {
+                    acc.push(cur);
+                }
+                return acc;
+            }, [] as { name: string; image: string }[]);
+        sceneCharcters.push({
+            Cutscene_Key:
+                tables.cutScenes.find(
+                    (t) => t.FileName === scene[0].Dialog_Group
+                )?.Key || "",
+            Dialog_Group: scene[0].Dialog_Group,
+            characters,
+        });
+    }
+    return sceneCharcters;
+}

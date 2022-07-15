@@ -29,6 +29,8 @@ const parseDialog = (dialog: Dialog) => {
   ].find((c) => c.speaking);
   const hasNextDialog = dialog.NextDialogScript !== "";
   const ScriptHTML = dialog.Script
+    // 改行
+    .replace(/\n/g, "<br>")
     // [c][ffffff]のようなカラーコードの変換
     .replace(/\[c\]\[(......)\]/g, `<mark style="color:#$1;font-weight:bold;">`)
     .replace(/\[\-\]\[\/c\]/g, `</mark>`)
