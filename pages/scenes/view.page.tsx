@@ -208,9 +208,9 @@ export function Page({ scene }: { scene: Scene }) {
                       // [c][ffffff]のようなカラーコードの変換
                       .replace(
                         /\[c\]\[(......)\]/g,
-                        `<span style="color:#$1;font-weight:bold;">`
+                        `<mark style="color:#$1;font-weight:bold;">`
                       )
-                      .replace(/\[\-\]\[\/c\]/g, `</span>`)
+                      .replace(/\[\-\]\[\/c\]/g, `</mark>`)
                       // {0}の置換
                       .replace(
                         "{0}",
