@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { cn } from "../../components/utils";
 import { Scene, Dialog } from "../types/Scene";
 
@@ -146,6 +146,23 @@ export function Page({ scene }: { scene: Scene }) {
     }
   }, []);
 
+  useEffect(() => {
+    document.addEventListener("keydown", keyboardHandler, false);
+
+    return () => {
+      document.removeEventListener("keydown", keyboardHandler, false);
+    };
+  }, []);
+
+  const keyboardHandler = useCallback((event: { key: string }) => {
+    if (event.key === "Enter") {
+      document.querySelector<HTMLButtonElement>("button#dialog-next")?.click();
+    }
+    if (event.key === "Backspace") {
+      document.querySelector<HTMLButtonElement>("button.dialog-back")?.click();
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <div className="sticky">
@@ -217,18 +234,21 @@ export function Page({ scene }: { scene: Scene }) {
                   }}
                 />
 
-                {/* NEXT / LOAD */}
+                {/* NEXT / BACK */}
                 {sd.SelectionIndex.length === 0 && hasNextDialog && (
                   <button
-                    className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
+                    className={cn(
+                      "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100",
+                      { "dialog-back": latestDialog().Key !== sd.Key }
+                    )}
                     onClick={() => {
                       dialogNextHandler(sd);
                     }}
-                  >
-                    {
-                      // if latest dialog is current dialog, and has next dialog, then show next dialog
-                      latestDialog().Key === sd.Key ? "NEXT" : "LOAD"
+                    id={
+                      latestDialog().Key === sd.Key ? "dialog-next" : undefined
                     }
+                  >
+                    {latestDialog().Key === sd.Key ? "NEXT" : "BACK"}
                   </button>
                 )}
 
