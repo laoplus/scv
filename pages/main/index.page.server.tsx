@@ -27,6 +27,7 @@ export async function onBeforeRender() {
         StartCutsceneIndex: stage.StartCutsceneIndex,
         StartCutsceneCharcters: [],
         EndCutsceneIndex: stage.EndCutsceneIndex,
+        EndCutsceneCharcters: [],
         MidCutsceneIndex: stage.MidCutsceneIndex,
         hasCutscene:
           stage.StartCutsceneIndex !== "0" ||

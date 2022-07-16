@@ -55,6 +55,7 @@ export async function onBeforeRender() {
       .filter((stage) => stage.ChapterIndex === e.Chapter_Key)
       .map((stage) => ({
         StageName: stage.StageName,
+        StageDesc: stage.StageDesc,
         StageIdxString: stage.StageIdxString,
         StageSubType: stage.StageSubType,
         StageSubTypeStr: (() => {

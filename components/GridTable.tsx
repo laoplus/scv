@@ -62,7 +62,7 @@ export function GridTableRenderer({
   stages: EventStories[number][number]["ChapterStages"];
 }) {
   return (
-    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)_8rem_8rem_8rem] items-center gap-2">
+    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
       {stages.map((s) => (
         <div
           key={s.StageName}
@@ -70,7 +70,7 @@ export function GridTableRenderer({
         >
           <div
             className={cn(
-              "h-6 rounded bg-yellow-500",
+              "row-span-2 h-full min-h-[24px] rounded bg-yellow-500",
               {
                 "bg-rose-500": s.StageSubTypeStr === "EX",
               },
@@ -81,18 +81,24 @@ export function GridTableRenderer({
           />
           <div className="pr-1">{s.StageIdxString}</div>
           <div>{s.StageName}</div>
-          <div>
+          {/* 2列目 */}
+          <div className="col-start-3 -mt-2 -mb-0.5 text-sm text-gray-600">
+            {s.StageDesc}
+          </div>
+          {/* 3列目 */}
+          <div className="contents">
+            <div />
             {s.StartCutsceneIndex === "0" ? (
               "-"
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op`.toLowerCase()}
-                className="inline-block p-1 text-sky-600"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-600"
               >
                 OP
               </a>
             )}
-            <div className="grid grid-cols-3 gap-1">
+            <div className="flex flex-wrap gap-1">
               {s.StartCutsceneCharcters.map((c, i) => {
                 return (
                   <UnitImage
@@ -115,18 +121,19 @@ export function GridTableRenderer({
               })}
             </div>
           </div>
-          <div>
+          <div className="contents">
+            <div />
             {s.EndCutsceneIndex === "0" ? (
               "-"
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed`.toLowerCase()}
-                className="inline-block p-1 text-sky-600"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-600"
               >
                 ED
               </a>
             )}
-            <div className="grid grid-cols-3 gap-1">
+            <div className="flex flex-wrap gap-1">
               {s.EndCutsceneCharcters.map((c, i) => {
                 return (
                   <UnitImage
@@ -149,21 +156,21 @@ export function GridTableRenderer({
               })}
             </div>
           </div>
-          <div>
-            {s.MidCutsceneIndex.length === 1 && s.MidCutsceneIndex[0] === "0"
-              ? "-"
-              : s.MidCutsceneIndex.map((sceneId, i) => (
-                  <a
-                    key={sceneId}
-                    href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
-                      i + 1
-                    }`.toLowerCase()}
-                    className="inline-block p-1 text-sky-600"
-                  >
-                    Mid {i + 1}
-                  </a>
-                ))}
-          </div>
+          {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
+            <div className="col-span-full">
+              {s.MidCutsceneIndex.map((sceneId, i) => (
+                <a
+                  key={sceneId}
+                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
+                    i + 1
+                  }`.toLowerCase()}
+                  className="inline-block p-1 text-sky-600"
+                >
+                  Mid {i + 1}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>
