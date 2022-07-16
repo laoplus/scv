@@ -6,7 +6,7 @@ import { publicEvents } from "../events/index.page.server";
 
 type SceneType = "op" | "ed" | `mid${number}`;
 
-function isSceneType(type: string): type is SceneType {
+export function isSceneType(type: string): type is SceneType {
   return type === "op" || type === "ed" || type.startsWith("mid");
 }
 

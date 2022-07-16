@@ -99,6 +99,8 @@ export function GridTableRenderer({
                     key={i}
                     title={c.name}
                     alt={c.name}
+                    data-counts={c.counts}
+                    data-filename={c.image}
                     src={
                       `https://cdn.laoplus.net/formationicon/` +
                       c.image
@@ -124,6 +126,28 @@ export function GridTableRenderer({
                 ED
               </a>
             )}
+            <div className="grid grid-cols-3 gap-1">
+              {s.EndCutsceneCharcters.map((c, i) => {
+                return (
+                  <UnitImage
+                    key={i}
+                    title={c.name}
+                    alt={c.name}
+                    data-counts={c.counts}
+                    data-filename={c.image}
+                    src={
+                      `https://cdn.laoplus.net/formationicon/` +
+                      c.image
+                        .replace("2DModel_", "FormationIcon_")
+                        .replace("_DL_N", "")
+                        .replace("_Commu", "_N") +
+                      ".webp"
+                    }
+                    className="aspect-square w-10 rounded-sm"
+                  />
+                );
+              })}
+            </div>
           </div>
           <div>
             {s.MidCutsceneIndex.length === 1 && s.MidCutsceneIndex[0] === "0"

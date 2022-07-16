@@ -48,6 +48,7 @@ export type SceneCharacters = {
     characters: {
         name: string;
         image: string;
+        counts: number;
     }[];
 }[];
 
@@ -71,13 +72,18 @@ export async function createSceneCharacters() {
                 ];
             })
             .filter((c) => c.image !== "")
-            // remove duplicates
+            .filter((c) => c.name !== "主人公")
             .reduce((acc, cur) => {
-                if (!acc.some((c) => c.image === cur.image)) {
-                    acc.push(cur);
+                const found = acc.find((item) => item.image === cur.image);
+                if (found) {
+                    found.counts++;
+                } else {
+                    acc.push({ ...cur, counts: 1 });
                 }
                 return acc;
-            }, [] as { name: string; image: string }[]);
+            }, [] as { image: string; name: string; counts: number }[])
+            .sort((a, b) => b.counts - a.counts);
+
         sceneCharcters.push({
             Cutscene_Key:
                 tables.cutScenes.find(
