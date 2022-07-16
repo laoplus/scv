@@ -12,7 +12,9 @@ export async function onBeforeRender() {
       .filter((stage) => stage.ChapterIndex === c.Key)
       .map((stage) => ({
         StageName: stage.StageName,
+        StageDesc: stage.StageDesc,
         StageIdxString: stage.StageIdxString,
+        StageSubType: stage.StageSubType,
         StageSubTypeStr: (() => {
           switch (stage.StageSubType) {
             case 0:

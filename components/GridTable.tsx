@@ -1,7 +1,6 @@
 import React, {
   DetailedHTMLProps,
   ImgHTMLAttributes,
-  ReactEventHandler,
   SyntheticEvent,
   useEffect,
   useRef,

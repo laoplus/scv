@@ -1,8 +1,7 @@
-import fs from "fs";
 import { PageContextBuiltIn } from "vite-plugin-ssr";
-import { tables, loadScene } from "../serverUtil";
-import { Stage } from "../types/Table_MapStage";
 import { publicEvents } from "../events/index.page.server";
+import { loadScene, tables } from "../serverUtil";
+import { Stage } from "../types/Table_MapStage";
 
 type SceneType = "op" | "ed" | `mid${number}`;
 
@@ -144,7 +143,7 @@ export async function prerender() {
       );
     }
     if (stage.MidCutsceneIndex[0] !== "0") {
-      stage.MidCutsceneIndex.forEach((mid, i) => {
+      stage.MidCutsceneIndex.forEach((_mid, i) => {
         pathList.push(
           `/scenes/${stage.chapter}/${stage.StageIdxString}/mid${
             i + 1

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { cn } from "../../components/utils";
-import { Scene, Dialog } from "../types/Scene";
+import { Dialog, Scene } from "../types/Scene";
 
 type ExtendedDialog = Dialog & {
   speaker?: {
@@ -208,7 +208,7 @@ export function Page({ scene }: { scene: Scene }) {
       </div>
 
       <div className="relative -top-10 z-10 flex w-[40rem] flex-col gap-2 px-2">
-        {history.map((sd, i) => {
+        {history.map((sd) => {
           const hasNextDialog = sd.NextDialogScript !== "";
           return (
             <div
