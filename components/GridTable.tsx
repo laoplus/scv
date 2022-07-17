@@ -130,7 +130,13 @@ export function StageGridTable({
               }
             )}
           />
-          <div className="pr-1">{s.StageIdxString}</div>
+          <a
+            className="pr-1"
+            id={`${eventIndexStr}-${s.StageIdxString}`}
+            href={`#${eventIndexStr}-${s.StageIdxString}`}
+          >
+            {s.StageIdxString}
+          </a>
           <div>{s.StageName}</div>
           {/* 2列目 */}
           <div className="col-start-3 -mt-2 -mb-0.5 text-sm text-gray-600">
