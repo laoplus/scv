@@ -25,10 +25,9 @@ const UnitIconGroup = ({
         ".webp";
 
       return (
-        <div className="relative z-10 overflow-hidden ">
+        <div key={`${i}-${c.name}`} className="relative z-10 overflow-hidden">
           <div className="pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30">
             <UnitIcon
-              key={i}
               title={c.name}
               alt={c.name}
               data-counts={c.counts}
@@ -73,7 +72,7 @@ const UnitIcon = ({
     if (typeof event === "string") {
       return;
     }
-    console.log("onError1", event);
+    // console.log("onError1", event);
     const target = event.currentTarget as HTMLImageElement;
     target.onerror = onError2;
 
@@ -94,7 +93,7 @@ const UnitIcon = ({
     if (typeof event === "string") {
       return;
     }
-    console.log("onError2", event);
+    // console.log("onError2", event);
     const target = event.currentTarget as HTMLImageElement;
     target.onerror = null;
 
