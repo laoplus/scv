@@ -1,6 +1,6 @@
 import { PageContextBuiltIn } from "vite-plugin-ssr";
 import { publicEvents } from "../events/index.page.server";
-import { loadScene, tables } from "../serverUtil";
+import { getDialogFromCutName, loadScene, tables } from "../serverUtil";
 import { Stage } from "../types/Table_MapStage";
 
 type SceneType = "op" | "ed" | `mid${number}`;
@@ -61,14 +61,6 @@ export function getCutNameFromParam({
       const index = Number(sceneType.slice(3));
       return stage.MidCutsceneIndex[index - 1];
   }
-}
-
-export function getDialogFromCutName(cutName: string) {
-  const dialog = tables.cutScenes.find((c) => c.Key === cutName);
-  if (!dialog) {
-    throw new Error(`no dialog found for ${cutName}`);
-  }
-  return dialog;
 }
 
 // このページで表示する詳細を取得する

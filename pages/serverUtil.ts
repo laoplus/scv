@@ -5,15 +5,15 @@ import type { TableEventChapter } from "./types/Table_EventChapter";
 import type { TableCutscene } from "./types/Table_Cutscene";
 import { Scene } from "./types/Scene";
 
-export async function getAllScenesFilenames() {
+export const getAllScenesFilenames = async () => {
     const files = await fs.promises.readdir("data/dialogs");
     return files.filter((file) => file.endsWith(".json"));
-}
+};
 
-export async function loadScene(filename: string) {
+export const loadScene = async (filename: string) => {
     const data = await fs.promises.readFile(`data/dialogs/${filename}`, "utf8");
     return JSON.parse(data) as Scene;
-}
+};
 
 const chaptersObj = JSON.parse(
     fs.readFileSync("data/tables/_Table_MapChapter.json", "utf8")
@@ -52,7 +52,7 @@ export type SceneCharacters = {
     }[];
 }[];
 
-export async function createSceneCharacters() {
+export const createSceneCharacters = async () => {
     const sceneFiles = await getAllScenesFilenames();
 
     const sceneCharcters = [] as unknown as SceneCharacters;
@@ -94,4 +94,33 @@ export async function createSceneCharacters() {
         });
     }
     return sceneCharcters;
-}
+};
+
+export const getSceneCharacters = ({
+    sceneCharacters,
+    cutsceneIndex,
+}: {
+    sceneCharacters: SceneCharacters;
+    cutsceneIndex: string;
+}) => {
+    if (
+        cutsceneIndex === "0" ||
+        (cutsceneIndex.length === 1 && cutsceneIndex[0] === "0")
+    ) {
+        return [];
+    }
+
+    const dialog = getDialogFromCutName(cutsceneIndex);
+    const charcters = sceneCharacters.find(
+        (s) => s.Cutscene_Key === dialog.Key
+    );
+    return charcters?.characters || [];
+};
+
+export const getDialogFromCutName = (cutName: string) => {
+    const dialog = tables.cutScenes.find((c) => c.Key === cutName);
+    if (!dialog) {
+        throw new Error(`no dialog found for ${cutName}`);
+    }
+    return dialog;
+};
