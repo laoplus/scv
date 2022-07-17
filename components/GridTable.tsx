@@ -1,5 +1,6 @@
 import React, {
   DetailedHTMLProps,
+  Fragment,
   ImgHTMLAttributes,
   useEffect,
   useRef,
@@ -24,16 +25,22 @@ const UnitIconGroup = ({
         ".webp";
 
       return (
-        <UnitIcon
-          key={i}
-          title={c.name}
-          alt={c.name}
-          data-counts={c.counts}
-          data-filename={c.image}
-          src={url + "?class=icon"}
-          srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(",")}
-          className="aspect-square h-10 w-10 rounded-sm"
-        />
+        <div className="relative z-10 overflow-hidden ">
+          <div className="pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30">
+            <UnitIcon
+              key={i}
+              title={c.name}
+              alt={c.name}
+              data-counts={c.counts}
+              data-filename={c.image}
+              src={url + "?class=icon"}
+              srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(
+                ","
+              )}
+              className="pointer-events-auto relative -z-10 aspect-square h-10 w-10"
+            />
+          </div>
+        </div>
       );
     })}
   </>
@@ -114,43 +121,40 @@ export function StageGridTable({
 }) {
   return (
     <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
-      {stages.map((s) => (
-        <div
-          key={s.StageName}
-          className={s.hasCutscene ? "contents" : "hidden"}
-        >
-          <div
-            className={cn(
-              "row-span-2 h-full min-h-[24px] rounded bg-yellow-500",
-              {
-                "bg-rose-500": s.StageSubTypeStr === "EX",
-              },
-              {
-                "bg-lime-500": s.StageSubTypeStr === "SUB",
-              }
-            )}
-          />
-          <a
-            className="pr-1"
-            id={`${eventIndexStr}-${s.StageIdxString}`}
-            href={`#${eventIndexStr}-${s.StageIdxString}`}
-          >
-            {s.StageIdxString}
-          </a>
-          <div>{s.StageName}</div>
-          {/* 2列目 */}
-          <div className="col-start-3 -mt-2 -mb-0.5 text-sm text-gray-600">
-            {s.StageDesc}
-          </div>
-          {/* 3列目 */}
-          <div className="contents">
+      {stages.map((s) =>
+        !s.hasCutscene ? null : (
+          <Fragment key={s.StageName}>
+            <div
+              className={cn(
+                "row-span-2 h-full min-h-[24px] rounded bg-yellow-500",
+                {
+                  "bg-rose-500": s.StageSubTypeStr === "EX",
+                },
+                {
+                  "bg-lime-500": s.StageSubTypeStr === "SUB",
+                }
+              )}
+            />
+            <a
+              className="pr-1"
+              id={`${eventIndexStr}-${s.StageIdxString}`}
+              href={`#${eventIndexStr}-${s.StageIdxString}`}
+            >
+              {s.StageIdxString}
+            </a>
+            <div>{s.StageName}</div>
+            {/* 2列目 */}
+            <div className="col-start-3 -mt-2 -mb-0.5 text-sm text-gray-600">
+              {s.StageDesc}
+            </div>
+            {/* 3列目 */}
             <div />
             {s.StartCutsceneIndex === "0" ? (
               "-"
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-600"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 OP
               </a>
@@ -158,15 +162,13 @@ export function StageGridTable({
             <div className="flex flex-wrap gap-1">
               <UnitIconGroup characters={s.StartCutsceneCharcters} />
             </div>
-          </div>
-          <div className="contents">
             <div />
             {s.EndCutsceneIndex === "0" ? (
               "-"
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-600"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 ED
               </a>
@@ -174,24 +176,24 @@ export function StageGridTable({
             <div className="flex flex-wrap gap-1">
               <UnitIconGroup characters={s.EndCutsceneCharcters} />
             </div>
-          </div>
-          {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
-            <div className="col-span-full">
-              {s.MidCutsceneIndex.map((sceneId, i) => (
-                <a
-                  key={sceneId}
-                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
-                    i + 1
-                  }`.toLowerCase()}
-                  className="inline-block p-1 text-sky-600"
-                >
-                  Mid {i + 1}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+            {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
+              <div className="col-span-full">
+                {s.MidCutsceneIndex.map((sceneId, i) => (
+                  <a
+                    key={sceneId}
+                    href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
+                      i + 1
+                    }`.toLowerCase()}
+                    className="inline-block p-1 text-sky-700"
+                  >
+                    Mid {i + 1}
+                  </a>
+                ))}
+              </div>
+            )}
+          </Fragment>
+        )
+      )}
     </div>
   );
 }
