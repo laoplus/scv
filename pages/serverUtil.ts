@@ -71,7 +71,7 @@ export async function createSceneCharacters() {
                     { name: d.Char_Name_C, image: d.Char_ImageName_C },
                 ];
             })
-            .filter((c) => c.image !== "")
+            .filter((c) => c.name !== "" && c.image !== "")
             .filter((c) => c.name !== "主人公")
             .reduce((acc, cur) => {
                 const found = acc.find((item) => item.image === cur.image);

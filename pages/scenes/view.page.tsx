@@ -153,6 +153,12 @@ export function Page({ scene }: { scene: Scene }) {
     }
   }, []);
 
+  const screenClickHandler = useCallback(() => {
+    document
+      .querySelector<HTMLButtonElement>(".js-current-dialog button")
+      ?.click();
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <div className="sticky">
@@ -166,7 +172,10 @@ export function Page({ scene }: { scene: Scene }) {
         </header>
       </div>
 
-      <div className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500">
+      <div
+        className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500"
+        onClick={screenClickHandler}
+      >
         {[...bgImages].map((image, index) => (
           <img
             key={index}
