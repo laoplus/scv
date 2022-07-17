@@ -1,13 +1,43 @@
 import React, {
   DetailedHTMLProps,
   ImgHTMLAttributes,
-  SyntheticEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { EventStories } from "../pages/events/index.page.server";
 import { cn } from "./utils";
+
+const IconGroup = ({
+  characters,
+}: {
+  characters: EventStories[number][number]["ChapterStages"][number]["StartCutsceneCharcters"];
+}) => (
+  <>
+    {characters.map((c, i) => {
+      const url =
+        `https://cdn.laoplus.net/formationicon/` +
+        c.image
+          .replace("2DModel_", "FormationIcon_")
+          .replace("_DL_N", "")
+          .replace("_Commu", "_N") +
+        ".webp";
+
+      return (
+        <UnitImage
+          key={i}
+          title={c.name}
+          alt={c.name}
+          data-counts={c.counts}
+          data-filename={c.image}
+          src={url + "?class=icon"}
+          srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(",")}
+          className="aspect-square h-10 w-10 rounded-sm"
+        />
+      );
+    })}
+  </>
+);
 
 const UnitImage = ({
   src,
@@ -27,30 +57,52 @@ const UnitImage = ({
 
   useEffect(() => {
     setHasRendered(true);
+    if (ref.current) {
+      ref.current.onerror = onError1;
+    }
   }, []);
 
-  /**
-   * 本家素材がなかったらoriginal素材のパスをsrcに設定する
-   */
-  const onError1 = (e: SyntheticEvent<HTMLImageElement>) => {
-    console.log("onerror1", e);
-    //@ts-ignore
-    e.currentTarget.onerror = onError2;
-    const arr = e.currentTarget.src.split("/");
-    arr.splice(3, 0, "original");
-    e.currentTarget.src = arr.join("/");
+  const onError1 = (event: Event | string) => {
+    if (typeof event === "string") {
+      return;
+    }
+    console.log("onError1", event);
+    const target = event.currentTarget as HTMLImageElement;
+    target.onerror = onError2;
+
+    const currentUrlObj = new URL(target.src);
+    // withour params
+    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
+
+    const newUrlObj = new URL(currentUrl);
+    const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
+    target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
+    target.src = target.src.replace(currentUrl, newUrl);
   };
+
   /**
    * originalも見つからなかった時のフォールバック
    */
-  const onError2 = (e: SyntheticEvent<HTMLImageElement>) => {
-    console.log("onerror2", e);
-    e.currentTarget.onerror = null;
-    e.currentTarget.src =
+  const onError2 = (event: Event | string) => {
+    if (typeof event === "string") {
+      return;
+    }
+    console.log("onError2", event);
+    const target = event.currentTarget as HTMLImageElement;
+    target.onerror = null;
+
+    const currentUrlObj = new URL(target.src);
+    // withour params
+    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
+
+    const placeholder =
       "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
+
+    target.srcset = target.srcset.replaceAll(currentUrl, placeholder);
+    target.src = target.src.replace(currentUrl, placeholder);
   };
 
-  return <img {...props} src={src} ref={ref} onError={onError1} />;
+  return <img {...props} src={src} ref={ref} />;
 };
 
 export function GridTableRenderer({
@@ -98,26 +150,7 @@ export function GridTableRenderer({
               </a>
             )}
             <div className="flex flex-wrap gap-1">
-              {s.StartCutsceneCharcters.map((c, i) => {
-                return (
-                  <UnitImage
-                    key={i}
-                    title={c.name}
-                    alt={c.name}
-                    data-counts={c.counts}
-                    data-filename={c.image}
-                    src={
-                      `https://cdn.laoplus.net/formationicon/` +
-                      c.image
-                        .replace("2DModel_", "FormationIcon_")
-                        .replace("_DL_N", "")
-                        .replace("_Commu", "_N") +
-                      ".webp"
-                    }
-                    className="aspect-square w-10 rounded-sm"
-                  />
-                );
-              })}
+              <IconGroup characters={s.StartCutsceneCharcters} />
             </div>
           </div>
           <div className="contents">
@@ -133,26 +166,7 @@ export function GridTableRenderer({
               </a>
             )}
             <div className="flex flex-wrap gap-1">
-              {s.EndCutsceneCharcters.map((c, i) => {
-                return (
-                  <UnitImage
-                    key={i}
-                    title={c.name}
-                    alt={c.name}
-                    data-counts={c.counts}
-                    data-filename={c.image}
-                    src={
-                      `https://cdn.laoplus.net/formationicon/` +
-                      c.image
-                        .replace("2DModel_", "FormationIcon_")
-                        .replace("_DL_N", "")
-                        .replace("_Commu", "_N") +
-                      ".webp"
-                    }
-                    className="aspect-square w-10 rounded-sm"
-                  />
-                );
-              })}
+              <IconGroup characters={s.EndCutsceneCharcters} />
             </div>
           </div>
           {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
