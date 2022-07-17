@@ -121,30 +121,14 @@ export function Page({ scene }: { scene: Scene }) {
   };
 
   const imgBaseUrl = `https://cdn.laoplus.net/`;
-  const [imgExt, setImgExt] = useState(".webp");
   const bgImages = new Set(
-    scene.map((d) => imgBaseUrl + "bg/" + d.BG_ImageName + imgExt)
+    scene.map((d) => imgBaseUrl + "bg/" + d.BG_ImageName + `.webp`)
   );
   const addImages = new Set(
     scene
       .filter((d) => d.Add_ImageName !== "")
-      .map((d) => imgBaseUrl + "cut/" + d.Add_ImageName + imgExt)
+      .map((d) => imgBaseUrl + "cut/" + d.Add_ImageName + `.webp`)
   );
-
-  // SSRで動かないのでuseEffectで隔離する
-  useEffect(() => {
-    const canUseWebp = () => {
-      const test = document.createElement("canvas");
-      return !!(
-        test.getContext &&
-        test.getContext("2d") &&
-        test.toDataURL("image/webp").indexOf("data:image/webp") === 0
-      );
-    };
-    if (!canUseWebp()) {
-      setImgExt(".png");
-    }
-  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", keyboardHandler, false);
