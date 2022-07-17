@@ -1,5 +1,5 @@
 import React from "react";
-import { GridTableRenderer } from "../../components/GridTable";
+import { StageGridTable } from "../../components/GridTable";
 import { onBeforeRender } from "./index.page.server";
 
 type PageProps = Awaited<
@@ -30,7 +30,7 @@ export function Page({ eventStories }: PageProps) {
                     <h4 className="font-semibold">{chapter.Chapter_Name}</h4>
                   )}
 
-                  <GridTableRenderer
+                  <StageGridTable
                     eventIndexStr={`ev${event[0].Event_CategoryIndex}`}
                     stages={chapter.ChapterStages}
                   />

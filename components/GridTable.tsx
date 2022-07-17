@@ -8,7 +8,7 @@ import React, {
 import { EventStories } from "../pages/events/index.page.server";
 import { cn } from "./utils";
 
-const IconGroup = ({
+const UnitIconGroup = ({
   characters,
 }: {
   characters: EventStories[number][number]["ChapterStages"][number]["StartCutsceneCharcters"];
@@ -24,7 +24,7 @@ const IconGroup = ({
         ".webp";
 
       return (
-        <UnitImage
+        <UnitIcon
           key={i}
           title={c.name}
           alt={c.name}
@@ -39,7 +39,7 @@ const IconGroup = ({
   </>
 );
 
-const UnitImage = ({
+const UnitIcon = ({
   src,
   ...props
 }: DetailedHTMLProps<
@@ -105,7 +105,7 @@ const UnitImage = ({
   return <img {...props} src={src} ref={ref} />;
 };
 
-export function GridTableRenderer({
+export function StageGridTable({
   eventIndexStr,
   stages,
 }: {
@@ -150,7 +150,7 @@ export function GridTableRenderer({
               </a>
             )}
             <div className="flex flex-wrap gap-1">
-              <IconGroup characters={s.StartCutsceneCharcters} />
+              <UnitIconGroup characters={s.StartCutsceneCharcters} />
             </div>
           </div>
           <div className="contents">
@@ -166,7 +166,7 @@ export function GridTableRenderer({
               </a>
             )}
             <div className="flex flex-wrap gap-1">
-              <IconGroup characters={s.EndCutsceneCharcters} />
+              <UnitIconGroup characters={s.EndCutsceneCharcters} />
             </div>
           </div>
           {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (

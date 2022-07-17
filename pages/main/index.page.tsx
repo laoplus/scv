@@ -1,5 +1,5 @@
 import React from "react";
-import { GridTableRenderer } from "../../components/GridTable";
+import { StageGridTable } from "../../components/GridTable";
 import { onBeforeRender } from "./index.page.server";
 
 type PageProps = Awaited<
@@ -19,7 +19,7 @@ export function Page({ chapteres }: PageProps) {
             className="flex flex-col gap-4"
           >
             <h2 className="text-2xl">{c.ChapterName}</h2>
-            <GridTableRenderer eventIndexStr="main" stages={c.ChapterStages} />
+            <StageGridTable eventIndexStr="main" stages={c.ChapterStages} />
           </div>
         ))}
       </div>
