@@ -140,10 +140,16 @@ export function Page({ scene }: { scene: Scene }) {
 
   const keyboardHandler = useCallback((event: { key: string }) => {
     if (event.key === "Enter") {
-      document.querySelector<HTMLButtonElement>("button#dialog-next")?.click();
+      document
+        .querySelector<HTMLButtonElement>(".js-current-dialog button")
+        ?.click();
     }
     if (event.key === "Backspace") {
-      document.querySelector<HTMLButtonElement>("button.dialog-back")?.click();
+      document
+        .querySelector<HTMLButtonElement>(
+          ".js-dialog:not(.js-current-dialog) button"
+        )
+        ?.click();
     }
   }, []);
 
@@ -198,9 +204,10 @@ export function Page({ scene }: { scene: Scene }) {
             <div
               key={sd.Key}
               className={cn(
-                "relative flex min-h-[4rem] animate-dialog-appear flex-col justify-center rounded border bg-white bg-opacity-90 p-4 opacity-75 transition-opacity hover:opacity-100",
+                "js-dialog relative flex min-h-[4rem] animate-dialog-appear flex-col justify-center rounded border bg-white bg-opacity-90 p-4 opacity-75 transition-opacity hover:opacity-100",
                 {
-                  "opacity-100": latestDialog().Key === sd.Key,
+                  "js-current-dialog opacity-100":
+                    latestDialog().Key === sd.Key,
                 }
               )}
             >
@@ -222,15 +229,11 @@ export function Page({ scene }: { scene: Scene }) {
                 {sd.SelectionIndex.length === 0 && hasNextDialog && (
                   <button
                     className={cn(
-                      "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100",
-                      { "dialog-back": latestDialog().Key !== sd.Key }
+                      "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
                     )}
                     onClick={() => {
                       dialogNextHandler(sd);
                     }}
-                    id={
-                      latestDialog().Key === sd.Key ? "dialog-next" : undefined
-                    }
                   >
                     {latestDialog().Key === sd.Key ? "NEXT" : "BACK"}
                   </button>
