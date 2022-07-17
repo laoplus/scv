@@ -1,8 +1,13 @@
-import { tables } from "../serverUtil";
+import {
+  createSceneCharacters,
+  getSceneCharacters,
+  tables,
+} from "../serverUtil";
 import _ from "lodash";
 
 export async function onBeforeRender() {
   const { chapters, stages } = tables;
+  const sceneCharacters = await createSceneCharacters();
 
   const mapChapters = chapters.filter((c) => c.GameModeType === 0);
 
@@ -27,9 +32,15 @@ export async function onBeforeRender() {
         })(),
         StagePos: stage.Stage_Pos,
         StartCutsceneIndex: stage.StartCutsceneIndex,
-        StartCutsceneCharcters: [],
+        StartCutsceneCharcters: getSceneCharacters({
+          sceneCharacters,
+          cutsceneIndex: stage.StartCutsceneIndex,
+        }),
         EndCutsceneIndex: stage.EndCutsceneIndex,
-        EndCutsceneCharcters: [],
+        EndCutsceneCharcters: getSceneCharacters({
+          sceneCharacters,
+          cutsceneIndex: stage.EndCutsceneIndex,
+        }),
         MidCutsceneIndex: stage.MidCutsceneIndex,
         hasCutscene:
           stage.StartCutsceneIndex !== "0" ||

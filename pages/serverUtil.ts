@@ -63,6 +63,11 @@ export const createSceneCharacters = async () => {
             continue;
         }
 
+        const ignoreImages = [
+            "2DModel_BR_PA00EL_Dialog010101",
+            "2DModel_3P_ConstantiaS2_Dialog010101",
+        ];
+
         const characters = scene
             .flatMap((d) => {
                 return [
@@ -72,6 +77,8 @@ export const createSceneCharacters = async () => {
                 ];
             })
             .filter((c) => c.name !== "" && c.image !== "")
+            // .filter((c) => !c.image.includes("_Commu"))
+            .filter((c) => !ignoreImages.includes(c.image))
             .filter((c) => c.name !== "主人公")
             .reduce((acc, cur) => {
                 const found = acc.find((item) => item.image === cur.image);
