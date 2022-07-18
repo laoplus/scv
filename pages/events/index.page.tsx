@@ -1,43 +1,35 @@
 import React from "react";
-import { StageGridTable } from "../../components/GridTable";
+import { UnitIcon } from "../../components/UnitIcon";
 import { onBeforeRender } from "./index.page.server";
 
 type PageProps = Awaited<
   ReturnType<typeof onBeforeRender>
 >["pageContext"]["pageProps"];
 
-export function Page({ eventStories }: PageProps) {
-  // console.log(eventStories);
+export function Page({ events }: PageProps) {
   return (
     <>
-      <h1 className="text-6xl uppercase">Event Scenes</h1>
+      <h1 className="mb-4 text-6xl uppercase">EVENT STORIES</h1>
 
-      <div className="flex flex-col gap-8 p-2">
-        {eventStories.map((event) => (
-          <div
-            key={event[0].Event_Category}
-            id={`ev${event[0].Event_CategoryIndex}`}
-            className="flex flex-col gap-4"
+      <div className="m-20 grid gap-px overflow-hidden rounded-lg bg-slate-200 shadow-md md:grid-cols-2 lg:grid-cols-3">
+        {events.map((event) => (
+          <a
+            key={event.Key}
+            id={`ev${event.Key}`}
+            className="z-10 bg-white p-6"
+            href={`/events/${event.Event_CategoryIndex}`}
           >
-            <h2 className="sticky top-0 rounded border bg-white py-6 text-2xl">
-              Ev{event[0].Event_CategoryIndex}: {event[0].Event_CategoryName}
-            </h2>
-
-            {event.map((chapter) =>
-              chapter.ChapterStages.every((s) => !s.hasCutscene) ? undefined : ( // 全てのステージがシーンなしの場合
-                <div key={chapter.Chapter_Name} className="flex flex-col gap-3">
-                  {event.length !== 1 && (
-                    <h3 className="font-semibold">{chapter.Chapter_Name}</h3>
-                  )}
-
-                  <StageGridTable
-                    eventIndexStr={`ev${event[0].Event_CategoryIndex}`}
-                    stages={chapter.ChapterStages}
-                  />
-                </div>
-              )
-            )}
-          </div>
+            <UnitIcon
+              src="https://cdn.laoplus.net/formationicon/FormationIcon_BR_Khan_N.webp"
+              alt={event.Event_CategoryName}
+              className="mb-8 h-12 w-12 rounded-md"
+              withInsetBorder={true}
+            />
+            <p className="mb-2 font-medium">
+              Ev{event.Event_CategoryIndex} {event.Event_CategoryName}
+            </p>
+            <p className="text-sm text-slate-500">{event.Event_CategoryDesc}</p>
+          </a>
         ))}
       </div>
     </>

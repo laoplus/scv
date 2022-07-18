@@ -1,5 +1,5 @@
 import { PageContextBuiltIn } from "vite-plugin-ssr";
-import { publicEvents } from "../events/index.page.server";
+import { publicEvents } from "../events/eventDetails.page.server";
 import { getDialogFromCutName, loadScene, tables } from "../serverUtil";
 import { Stage } from "../types/Table_MapStage";
 

@@ -64,8 +64,8 @@ function Footer() {
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.
         </span>
         <span>
-          LAOPLUS is a fan-made service and is not licensed by PiG Corporation
-          or SmartJoy Co., Ltd.
+          SCV and LAOPLUS isn't endorsed by PiG Corporation or SmartJoy Co.,
+          Ltd.
         </span>
         <span>&copy; PiG Corporation &amp; SmartJoy Co.,Ltd.</span>
       </div>
