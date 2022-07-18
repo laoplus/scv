@@ -30,49 +30,54 @@ export async function onBeforeRender() {
   // TODO: omit unused keys
 
   // eventsにchapterつめる
-  const eventsWithStages = publicEvents.map((e) => {
-    const ChapterStages = stages
-      .filter((stage) => stage.ChapterIndex === e.Chapter_Key)
-      .map((stage) => ({
-        StageName: stage.StageName,
-        StageDesc: stage.StageDesc,
-        StageIdxString: stage.StageIdxString,
-        StageSubType: stage.StageSubType,
-        StageSubTypeStr: (() => {
-          switch (stage.StageSubType) {
-            case 0:
-              return "NORMAL" as const;
-            case 1:
-              return "SUB" as const;
-            case 2:
-              return "EX" as const;
-          }
-        })(),
-        StagePos: stage.Stage_Pos,
-        StartCutsceneIndex: stage.StartCutsceneIndex,
-        EndCutsceneIndex: stage.EndCutsceneIndex,
-        MidCutsceneIndex: stage.MidCutsceneIndex,
-        StartCutsceneCharcters: getSceneCharacters({
-          sceneCharacters,
-          cutsceneIndex: stage.StartCutsceneIndex,
-        }),
-        EndCutsceneCharcters: getSceneCharacters({
-          sceneCharacters,
-          cutsceneIndex: stage.EndCutsceneIndex,
-        }),
-        hasCutscene:
-          stage.StartCutsceneIndex !== "0" ||
-          stage.EndCutsceneIndex !== "0" ||
-          stage.MidCutsceneIndex[0] !== "0",
-      }));
+  const eventsWithStages = publicEvents
+    .map((e) => {
+      const ChapterStages = stages
+        .filter((stage) => stage.ChapterIndex === e.Chapter_Key)
+        .map((stage) => ({
+          StageName: stage.StageName,
+          StageDesc: stage.StageDesc,
+          StageIdxString: stage.StageIdxString,
+          StageSubType: stage.StageSubType,
+          StageSubTypeStr: (() => {
+            switch (stage.StageSubType) {
+              case 0:
+                return "NORMAL" as const;
+              case 1:
+                return "SUB" as const;
+              case 2:
+                return "EX" as const;
+            }
+          })(),
+          StagePos: stage.Stage_Pos,
+          StartCutsceneIndex: stage.StartCutsceneIndex,
+          EndCutsceneIndex: stage.EndCutsceneIndex,
+          MidCutsceneIndex: stage.MidCutsceneIndex,
+          StartCutsceneCharcters: getSceneCharacters({
+            sceneCharacters,
+            cutsceneIndex: stage.StartCutsceneIndex,
+          }),
+          EndCutsceneCharcters: getSceneCharacters({
+            sceneCharacters,
+            cutsceneIndex: stage.EndCutsceneIndex,
+          }),
+          hasCutscene:
+            stage.StartCutsceneIndex !== "0" ||
+            stage.EndCutsceneIndex !== "0" ||
+            stage.MidCutsceneIndex[0] !== "0",
+        }))
+        // not include no cutscene stages
+        .filter((stage) => stage.hasCutscene);
 
-    return {
-      ...e,
-      Chapter_Name: chapters.find((c) => c.Key === e.Chapter_Key)?.ChapterName,
-      ChapterStages: ChapterStages,
-    };
-  });
-  // console.log(eventsWithStages);
+      return {
+        ...e,
+        Chapter_Name: chapters.find((c) => c.Key === e.Chapter_Key)
+          ?.ChapterName,
+        ChapterStages: ChapterStages,
+      };
+    })
+    // not include no cutscene events;
+    .filter((e) => e.ChapterStages.length > 0);
 
   const groupedEvents = _.chain(eventsWithStages)
     .groupBy((c) => c.Event_Category)
