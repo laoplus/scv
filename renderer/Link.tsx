@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { usePageContext } from "./usePageContext";
 
@@ -9,11 +10,14 @@ function Link(props: {
   children: React.ReactNode;
 }) {
   const pageContext = usePageContext();
-  const className = [
-    props.className,
-    pageContext.urlPathname === props.href && "is-active",
-  ]
-    .filter(Boolean)
-    .join(" ");
-  return <a {...props} className={className} />;
+  const isActive = pageContext.urlPathname === props.href;
+
+  return (
+    <a
+      {...props}
+      className={clsx("rounded border p-2 uppercase", props.className, {
+        underline: isActive,
+      })}
+    />
+  );
 }

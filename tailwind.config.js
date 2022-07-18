@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+    content: [
+        "./components/**/*.{ts,tsx}",
+        "./pages/**/*.{ts,tsx}",
+        "./renderer/**/*.{ts,tsx}",
+    ],
     theme: {
         extend: {
             animation: {

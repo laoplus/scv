@@ -25,7 +25,7 @@ const UnitIconGroup = ({
         ".webp";
 
       return (
-        <div key={`${i}-${c.name}`} className="relative z-10 overflow-hidden">
+        <div key={`${i}-${c.name}`} className="relative -z-10 overflow-hidden">
           <div className="pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30">
             <UnitIcon
               title={c.name}
@@ -36,7 +36,7 @@ const UnitIconGroup = ({
               srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(
                 ","
               )}
-              className="pointer-events-auto relative -z-10 aspect-square h-10 w-10"
+              className="pointer-events-auto relative -z-20 aspect-square h-10 w-10"
             />
           </div>
         </div>
@@ -153,7 +153,7 @@ export function StageGridTable({
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-700"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 OP
               </a>
@@ -167,7 +167,7 @@ export function StageGridTable({
             ) : (
               <a
                 href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded border p-1 px-2 leading-[100%] text-sky-700"
+                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 ED
               </a>

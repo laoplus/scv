@@ -161,17 +161,6 @@ export function Page({ scene }: { scene: Scene }) {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <div className="sticky">
-        <header className="flex justify-between bg-slate-800 p-2 text-slate-100">
-          <div>
-            <span className="font-bold text-amber-500">SCV</span>
-            <span className="opacity-50"> - </span>
-            <span className="opacity-50">Last Origin Scenario Viewer</span>
-          </div>
-          <div className="opacity-50">{scene[0].Dialog_Group}</div>
-        </header>
-      </div>
-
       <div
         className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500"
         onClick={screenClickHandler}
@@ -206,7 +195,7 @@ export function Page({ scene }: { scene: Scene }) {
         ))}
       </div>
 
-      <div className="relative -top-10 z-10 flex w-[40rem] flex-col gap-2 px-2">
+      <div className="relative -top-2 z-10 flex flex-col gap-2 px-2">
         {history.map((sd) => {
           const hasNextDialog = sd.NextDialogScript !== "";
           return (
@@ -279,9 +268,9 @@ export function Page({ scene }: { scene: Scene }) {
           );
         })}
       </div>
-
-      <div className="mt-48">
-        <h2>Transcription</h2>
+      <div className="h-screen" />
+      <div className="p-2">
+        <h2 className="text-2xl">Transcription</h2>
         <ol className="list-outside list-decimal rounded border p-4 pl-10 text-sm text-gray-600">
           {scene.map((d, i) => {
             const dialog = parseDialog(d);

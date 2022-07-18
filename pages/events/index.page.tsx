@@ -10,16 +10,16 @@ export function Page({ eventStories }: PageProps) {
   // console.log(eventStories);
   return (
     <>
-      <h1 className="mb-4 text-6xl uppercase">Event Scenes</h1>
+      <h1 className="text-6xl uppercase">Event Scenes</h1>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 p-2">
         {eventStories.map((event) => (
           <div
             key={event[0].Event_Category}
             id={`ev${event[0].Event_CategoryIndex}`}
             className="flex flex-col gap-4"
           >
-            <h2 className="text-2xl">
+            <h2 className="sticky top-0 rounded border bg-white py-6 text-2xl">
               Ev{event[0].Event_CategoryIndex}: {event[0].Event_CategoryName}
             </h2>
 
