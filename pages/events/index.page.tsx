@@ -8,10 +8,12 @@ type PageProps = Awaited<
 
 export function Page({ events }: PageProps) {
   return (
-    <>
-      <h1 className="mb-4 text-6xl uppercase">EVENT STORIES</h1>
+    <div className="md:mx-4 lg:mx-8">
+      <h1 className="py-12 px-4 text-4xl font-extrabold tracking-tight text-gray-900 md:px-0">
+        Event Stories
+      </h1>
 
-      <div className="m-20 grid gap-px overflow-hidden rounded-lg bg-slate-200 shadow-md md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-px overflow-hidden bg-slate-200 shadow sm:rounded-lg md:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
           <a
             key={event.Key}
@@ -20,18 +22,17 @@ export function Page({ events }: PageProps) {
             href={`/events/${event.Event_CategoryIndex}`}
           >
             <UnitIcon
-              src="https://cdn.laoplus.net/formationicon/FormationIcon_BR_Khan_N.webp"
+              src={event.CharacterIcon}
               alt={event.Event_CategoryName}
-              className="mb-8 h-12 w-12 rounded-md"
+              className="mb-7 h-12 w-12 rounded-md"
+              borderClassName="rounded-md"
               withInsetBorder={true}
             />
-            <p className="mb-2 font-medium">
-              Ev{event.Event_CategoryIndex} {event.Event_CategoryName}
-            </p>
+            <p className="mb-2 font-bold">{event.Event_CategoryName}</p>
             <p className="text-sm text-slate-500">{event.Event_CategoryDesc}</p>
           </a>
         ))}
       </div>
-    </>
+    </div>
   );
 }

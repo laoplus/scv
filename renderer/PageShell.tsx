@@ -18,7 +18,7 @@ function PageShell({
       <PageContextProvider pageContext={pageContext}>
         <Header />
         <Content>
-          <div className="min-h-full">{children}</div>
+          <div className="mx-auto min-h-full max-w-7xl pb-12">{children}</div>
         </Content>
         <Footer />
       </PageContextProvider>
@@ -27,23 +27,27 @@ function PageShell({
 }
 function Header() {
   return (
-    <header className="sticky top-0 z-50 flex items-center gap-2 bg-slate-800 p-2 text-gray-100">
-      <div className="flex justify-between ">
-        <div>
-          <a href="/">
-            <span className="font-bold text-amber-500">SCV</span>
-          </a>
-          <span className="hidden opacity-50"> - </span>
-          <span className="hidden opacity-50">Last Origin Scenario Viewer</span>
+    <header className="sticky top-0 z-50 bg-slate-800 text-gray-100">
+      <div className="mx-auto flex max-w-7xl items-center gap-2 p-2 md:px-8">
+        <div className="flex justify-between">
+          <div>
+            <a href="/">
+              <span className="font-bold text-amber-500">SCV</span>
+            </a>
+            <span className="hidden opacity-50"> - </span>
+            <span className="hidden opacity-50">
+              Last Origin Scenario Viewer
+            </span>
+          </div>
         </div>
-      </div>
 
-      <Link href="/main">
-        Main<span className="hidden"> scenes</span>
-      </Link>
-      <Link href="/events">
-        Event<span className="hidden"> scenes</span>
-      </Link>
+        <Link href="/main">
+          Main<span className="hidden"> scenes</span>
+        </Link>
+        <Link href="/events">
+          Event<span className="hidden"> scenes</span>
+        </Link>
+      </div>
     </header>
   );
 }
@@ -58,8 +62,8 @@ function Content({ children }: { children: React.ReactNode }) {
 
 function Footer() {
   return (
-    <footer className="sticky top-[100vh]">
-      <div className="flex flex-col justify-center gap-4 bg-slate-800 p-2 py-10 text-sm text-gray-300">
+    <footer className="sticky top-[100vh] bg-slate-800 text-gray-300">
+      <div className="mx-auto flex max-w-7xl flex-col justify-center gap-4 px-2 py-10 text-sm md:px-8">
         <span>
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.
         </span>

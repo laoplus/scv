@@ -19,6 +19,10 @@ body,
     @apply min-h-screen bg-slate-800;
 }
 
+#page-view {
+    @apply bg-white;
+}
+
 mark {
     background-color: transparent;
     color: inherit;

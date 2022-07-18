@@ -10,9 +10,11 @@ import { cn } from "./utils";
 export const UnitIcon = ({
   src,
   withInsetBorder = false,
+  borderClassName = "",
   ...props
 }: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
   withInsetBorder?: boolean;
+  borderClassName?: string;
 }) => {
   const [hasRendered, setHasRendered] = useState(false);
   const ref = useRef<HTMLImageElement | null>(null);
@@ -73,7 +75,12 @@ export const UnitIcon = ({
   if (withInsetBorder) {
     return (
       <div className={cn("relative -z-10 overflow-hidden", props.className)}>
-        <div className="pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30">
+        <div
+          className={cn(
+            "pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30",
+            borderClassName
+          )}
+        >
           <img
             {...props}
             src={src}
