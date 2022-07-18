@@ -119,7 +119,7 @@ export function StageGridTable({
   stages: EventStories[number][number]["ChapterStages"];
 }) {
   return (
-    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
+    <div className="z-10 grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
       {stages.map((s) =>
         !s.hasCutscene ? null : (
           <Fragment key={s.StageName}>
@@ -158,7 +158,7 @@ export function StageGridTable({
                 OP
               </a>
             )}
-            <div className="flex flex-wrap gap-1">
+            <div className="pointer-events-none flex flex-wrap gap-1">
               <UnitIconGroup characters={s.StartCutsceneCharcters} />
             </div>
             <div />
@@ -172,7 +172,7 @@ export function StageGridTable({
                 ED
               </a>
             )}
-            <div className="flex flex-wrap gap-1">
+            <div className="pointer-events-none flex flex-wrap gap-1">
               <UnitIconGroup characters={s.EndCutsceneCharcters} />
             </div>
             {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (

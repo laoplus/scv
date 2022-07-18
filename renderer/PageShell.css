@@ -3,11 +3,21 @@
 @tailwind base;
 @layer base {
     html {
-        @apply font-sans;
+        @apply font-sans antialiased;
     }
 }
 @tailwind components;
 @tailwind utilities;
+
+html {
+    @apply scroll-pt-16;
+}
+
+html,
+body,
+#page-view {
+    @apply min-h-screen bg-slate-800;
+}
 
 mark {
     background-color: transparent;
