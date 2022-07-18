@@ -1,12 +1,6 @@
-import React, {
-  DetailedHTMLProps,
-  Fragment,
-  ImgHTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { EventStories } from "../pages/events/index.page.server";
+import React, { Fragment } from "react";
+import { EventStories } from "../pages/events/eventDetails.page.server";
+import { UnitIcon } from "./UnitIcon";
 import { cn } from "./utils";
 
 const UnitIconGroup = ({
@@ -25,91 +19,21 @@ const UnitIconGroup = ({
         ".webp";
 
       return (
-        <div key={`${i}-${c.name}`} className="relative -z-10 overflow-hidden">
-          <div className="pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30">
-            <UnitIcon
-              title={c.name}
-              alt={c.name}
-              data-counts={c.counts}
-              data-filename={c.image}
-              src={url + "?class=icon"}
-              srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(
-                ","
-              )}
-              className="pointer-events-auto relative -z-20 aspect-square h-10 w-10"
-            />
-          </div>
-        </div>
+        <UnitIcon
+          key={`${i}-${c.name}`}
+          title={c.name}
+          alt={c.name}
+          data-counts={c.counts}
+          data-filename={c.image}
+          src={url + "?class=icon"}
+          srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(",")}
+          className="pointer-events-auto relative -z-20 aspect-square h-10 w-10"
+          withInsetBorder={true}
+        />
       );
     })}
   </>
 );
-
-const UnitIcon = ({
-  src,
-  ...props
-}: DetailedHTMLProps<
-  ImgHTMLAttributes<HTMLImageElement>,
-  HTMLImageElement
->) => {
-  const [hasRendered, setHasRendered] = useState(false);
-  const ref = useRef<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    if (ref.current && hasRendered) {
-      ref.current!.src = src || "";
-    }
-  }, [src, hasRendered]);
-
-  useEffect(() => {
-    setHasRendered(true);
-    if (ref.current) {
-      ref.current.onerror = onError1;
-    }
-  }, []);
-
-  const onError1 = (event: Event | string) => {
-    if (typeof event === "string") {
-      return;
-    }
-    // console.log("onError1", event);
-    const target = event.currentTarget as HTMLImageElement;
-    target.onerror = onError2;
-
-    const currentUrlObj = new URL(target.src);
-    // withour params
-    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
-
-    const newUrlObj = new URL(currentUrl);
-    const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
-    target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
-    target.src = target.src.replace(currentUrl, newUrl);
-  };
-
-  /**
-   * originalも見つからなかった時のフォールバック
-   */
-  const onError2 = (event: Event | string) => {
-    if (typeof event === "string") {
-      return;
-    }
-    // console.log("onError2", event);
-    const target = event.currentTarget as HTMLImageElement;
-    target.onerror = null;
-
-    const currentUrlObj = new URL(target.src);
-    // withour params
-    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
-
-    const placeholder =
-      "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
-
-    target.srcset = target.srcset.replaceAll(currentUrl, placeholder);
-    target.src = target.src.replace(currentUrl, placeholder);
-  };
-
-  return <img {...props} src={src} ref={ref} />;
-};
 
 export function StageGridTable({
   eventIndexStr,
