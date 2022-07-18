@@ -1,65 +1,69 @@
-import {
-  createSceneCharacters,
-  getSceneCharacters,
-  tables,
-} from "../serverUtil";
 import _ from "lodash";
+import { tables } from "../serverUtil";
 
 export async function onBeforeRender() {
-  const { chapters, stages } = tables;
-  const sceneCharacters = await createSceneCharacters();
+  const mainChapters = tables.chapters.filter((c) => c.GameModeType === 0);
 
-  const mapChapters = chapters.filter((c) => c.GameModeType === 0);
+  const CharacterIcon = [
+    {
+      Key: "Chapter_01N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_3P_ConstantiaS2_N.webp",
+    },
+    {
+      Key: "Chapter_02N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_BR_Amy_N.webp",
+    },
+    {
+      Key: "Chapter_03N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_BR_Marie_N.webp",
+    },
+    {
+      Key: "Chapter_04N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_AGS_Aeda_N.webp",
+    },
+    {
+      Key: "Chapter_05N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_BR_Scathy_N.webp",
+    },
+    {
+      Key: "Chapter_06N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_3P_Labiata_N.webp",
+    },
+    {
+      Key: "Chapter_07N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_BR_InvDragon_N.webp",
+    },
+    {
+      Key: "Chapter_08N",
+      CharacterIcon:
+        "https://cdn.laoplus.net/formationicon/FormationIcon_PECS_LemonadeAlpha_N.webp",
+    },
+    {
+      Key: "Chapter_09N",
+      CharacterIcon: "",
+    },
+  ];
 
-  // eventsにchapterつめる
-  const chaptersWithStages = mapChapters.map((c) => {
-    const ChapterStages = stages
-      .filter((stage) => stage.ChapterIndex === c.Key)
-      .map((stage) => ({
-        StageName: stage.StageName,
-        StageDesc: stage.StageDesc,
-        StageIdxString: stage.StageIdxString,
-        StageSubType: stage.StageSubType,
-        StageSubTypeStr: (() => {
-          switch (stage.StageSubType) {
-            case 0:
-              return "NORMAL" as const;
-            case 1:
-              return "SUB" as const;
-            case 2:
-              return "EX" as const;
-          }
-        })(),
-        StagePos: stage.Stage_Pos,
-        StartCutsceneIndex: stage.StartCutsceneIndex,
-        StartCutsceneCharcters: getSceneCharacters({
-          sceneCharacters,
-          cutsceneIndex: stage.StartCutsceneIndex,
-        }),
-        EndCutsceneIndex: stage.EndCutsceneIndex,
-        EndCutsceneCharcters: getSceneCharacters({
-          sceneCharacters,
-          cutsceneIndex: stage.EndCutsceneIndex,
-        }),
-        MidCutsceneIndex: stage.MidCutsceneIndex,
-        hasCutscene:
-          stage.StartCutsceneIndex !== "0" ||
-          stage.EndCutsceneIndex !== "0" ||
-          stage.MidCutsceneIndex[0] !== "0",
-      }));
-
+  const chapters = mainChapters.map((c) => {
+    const icon = CharacterIcon.find((i) => i.Key === c.Key)?.CharacterIcon;
     return {
       ...c,
-      ChapterStages: ChapterStages,
+      CharacterIcon: icon,
     };
   });
 
-  // console.log(chaptersWithStages);
-
+  console.log(chapters);
   return {
     pageContext: {
       pageProps: {
-        chapteres: chaptersWithStages,
+        chapters,
       },
     },
   };
