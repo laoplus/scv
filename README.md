@@ -16,3 +16,17 @@ SCV をビルドするには `/data` にデータが必要です。
 ; Windows での例
 mklink /d C:\Users\Eai\ghq\github.com\laoplus\scv\data C:\Users\Eai\ghq\github.com\laoplus\lo-data
 ```
+
+### dev
+
+#### アイコンライブラリ
+
+`[unplugin-icons](https://github.com/antfu/unplugin-icons)`を使っています。
+
+オンデマンドに作成される影響で IntelliSense などの補完が出ないので、アイコンを追加する際は https://icones.js.org/ からアイコンを選んで、キャメルケースの名前をコピーして貼るといいと思います。
+
+![image](https://user-images.githubusercontent.com/3516343/179745714-764b45c6-d934-439c-bafc-173f5e4cb697.png)
+
+[`unplugin-auto-import`](https://github.com/antfu/unplugin-auto-import)を使っているため明示的な import は不要です。`auto-import.ts` は git から ignore しています。`yarn dev`でページを開いた時に作成されるはずです。
+
+新しいアイコンコレクションを使う際は `vite.config.ts` の `enabledCollections` をいじってください。
