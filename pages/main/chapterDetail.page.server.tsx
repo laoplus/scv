@@ -20,8 +20,6 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     throw new Error("Chapter not found");
   }
 
-  console.log(chapter);
-
   const ChapterStages = stages
     .filter((stage) => stage.ChapterIndex === chapter.Key)
     .map((stage) => ({
@@ -56,10 +54,6 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         stage.EndCutsceneIndex !== "0" ||
         stage.MidCutsceneIndex[0] !== "0",
     }));
-
-  // return
-
-  console.log(ChapterStages);
 
   return {
     pageContext: {

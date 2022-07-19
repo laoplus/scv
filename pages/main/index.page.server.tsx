@@ -59,7 +59,6 @@ export async function onBeforeRender() {
     };
   });
 
-  console.log(chapters);
   return {
     pageContext: {
       pageProps: {

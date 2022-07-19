@@ -7,7 +7,6 @@ type PageProps = Awaited<
 >["pageContext"]["pageProps"];
 
 export function Page({ eventStories }: PageProps) {
-  // console.log(eventStories);
   return (
     <>
       <h1 className="text-6xl uppercase">Event Scenes</h1>

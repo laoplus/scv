@@ -64,9 +64,9 @@ export function getCutNameFromParam({
 }
 
 // このページで表示する詳細を取得する
-export async function onBeforeRender(pageContext: PageContextBuiltIn) {
-  console.log(pageContext.routeParams);
-  const { chapter, stageIdxStr, sceneType } = pageContext.routeParams;
+export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
+  console.log(routeParams);
+  const { chapter, stageIdxStr, sceneType } = routeParams;
 
   if (!isSceneType(sceneType)) {
     throw new Error("invalid sceneType");
