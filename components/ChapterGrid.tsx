@@ -1,7 +1,6 @@
 import React from "react";
 import { onBeforeRender as onBeforeRenderMain } from "../pages/main/index.page.server";
 import { onBeforeRender as onBeforeRenderEvents } from "../pages/events/index.page.server";
-import { VscChevronRight } from "react-icons/vsc";
 import { cn } from "./utils";
 import { UnitIcon } from "./UnitIcon";
 
@@ -50,7 +49,7 @@ export const ChapterGrid = ({
               borderClassName="rounded-md"
               withInsetBorder={true}
             />
-            <VscChevronRight
+            <OcticonChevronRight24
               className={cn(
                 "h-8 w-8 -translate-x-12 opacity-0 transition-all",
                 "group-hover:translate-x-0 group-hover:opacity-50",

@@ -30,7 +30,7 @@ const parseDialog = (dialog: Dialog) => {
   const hasNextDialog = dialog.NextDialogScript !== "";
   const ScriptHTML = dialog.Script
     // 改行
-    .replace(/\n/g, "<br>")
+    .replace(/\n/g, "<wbr>")
     // [c][ffffff]のようなカラーコードの変換
     .replace(/\[c\]\[(......)\]/g, `<mark style="color:#$1;font-weight:bold;">`)
     .replace(/\[\-\]\[\/c\]/g, `</mark>`)
@@ -160,7 +160,7 @@ export function Page({ scene }: { scene: Scene }) {
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col">
       <div
         className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500"
         onClick={screenClickHandler}
@@ -170,7 +170,7 @@ export function Page({ scene }: { scene: Scene }) {
             key={index}
             src={image}
             className={cn(
-              "pointer-events-none absolute inset-0 opacity-0 transition-opacity delay-200 duration-300",
+              "pointer-events-none absolute inset-0 mx-auto h-full object-contain opacity-0 transition-opacity delay-200 duration-300",
               {
                 "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
                   latestDialog().BG_ImageName
@@ -214,7 +214,7 @@ export function Page({ scene }: { scene: Scene }) {
                   <span className="font-bold">{sd.speaker.name}</span>
                 )}
                 <div
-                  className="leading-normal"
+                  className="break-all leading-normal"
                   style={{
                     minHeight: "calc(1em * 2 * 1.5)",
                   }}
