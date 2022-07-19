@@ -29,24 +29,17 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 bg-slate-800 text-gray-100">
       <div className="mx-auto flex max-w-7xl items-center gap-2 p-2 md:px-8">
-        <div className="flex justify-between">
-          <div>
-            <a href="/">
-              <span className="font-bold text-amber-500">SCV</span>
-            </a>
-            <span className="hidden opacity-50"> - </span>
-            <span className="hidden opacity-50">
-              Last Origin Scenario Viewer
-            </span>
-          </div>
-        </div>
+        <a href="/" className="flex h-8 items-center justify-between gap-1">
+          <span className="font-bold tracking-wide text-amber-500">SCV</span>
+          <span className="hidden text-sm opacity-50 lg:inline"> - </span>
+          <span className="hidden text-sm opacity-50 lg:inline">
+            Last Origin Scenario Viewer
+          </span>
+        </a>
 
-        <Link href="/main">
-          Main<span className="hidden"> scenes</span>
-        </Link>
-        <Link href="/events">
-          Event<span className="hidden"> scenes</span>
-        </Link>
+        <Link href="/main">Main</Link>
+        <Link href="/events">Event</Link>
+        <Link href="/search">Search</Link>
       </div>
     </header>
   );
