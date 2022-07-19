@@ -74,22 +74,21 @@ export const UnitIcon = ({
 
   if (withInsetBorder) {
     return (
-      <div className={cn("relative -z-10 overflow-hidden", props.className)}>
+      <div className={cn("relative overflow-hidden", props.className)}>
+        <img
+          {...props}
+          src={src}
+          ref={ref}
+          className={cn(
+            "pointer-events-auto relative aspect-square h-full w-full"
+          )}
+        />
         <div
           className={cn(
-            "pointer-events-none overflow-hidden rounded-sm ring-[1px] ring-inset ring-gray-600 ring-opacity-30",
+            "pointer-events-none absolute inset-0 rounded-sm ring-1 ring-inset ring-gray-600 ring-opacity-30",
             borderClassName
           )}
-        >
-          <img
-            {...props}
-            src={src}
-            ref={ref}
-            className={cn(
-              "pointer-events-auto relative -z-20 aspect-square h-full w-full"
-            )}
-          />
-        </div>
+        ></div>
       </div>
     );
   }

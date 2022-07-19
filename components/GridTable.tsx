@@ -27,7 +27,7 @@ const UnitIconGroup = ({
           data-filename={c.image}
           src={url + "?class=icon"}
           srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(",")}
-          className="pointer-events-auto relative -z-20 aspect-square h-10 w-10"
+          className="pointer-events-auto relative aspect-square h-10 w-10"
           withInsetBorder={true}
         />
       );
@@ -43,7 +43,7 @@ export function StageGridTable({
   stages: EventStories[number][number]["ChapterStages"];
 }) {
   return (
-    <div className="z-10 grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
+    <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
       {stages.map((s) =>
         !s.hasCutscene ? null : (
           <Fragment key={s.StageName}>

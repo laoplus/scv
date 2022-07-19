@@ -31,7 +31,7 @@ export const ChapterGrid = ({
           key={chapter.Key}
           id={`main${chapter.Key}`}
           className={cn(
-            "group z-10 bg-white p-6 outline-none transition-colors ",
+            "group bg-white p-6 outline-none transition-colors ",
             "hover:bg-slate-50",
             "focus:bg-slate-50 focus:ring focus:ring-inset"
           )}
