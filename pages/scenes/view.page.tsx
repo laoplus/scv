@@ -162,7 +162,7 @@ export function Page({ scene }: { scene: Scene }) {
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col">
       <div
-        className="relative z-10 aspect-video max-h-80 w-full overflow-hidden rounded-b bg-slate-500"
+        className="relative z-10 aspect-video max-h-80 w-full select-none overflow-hidden rounded-b bg-slate-500"
         onClick={screenClickHandler}
       >
         {[...bgImages].map((image, index) => (
