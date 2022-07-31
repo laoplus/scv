@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { cn } from "../../components/utils";
+import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { Dialog, Scene } from "../types/Scene";
 
 type ExtendedDialog = Dialog & {
@@ -9,7 +9,6 @@ type ExtendedDialog = Dialog & {
   };
   hasNextDialog: boolean;
   SelectionSelectedIndex: number | null;
-  ScriptHTML: string;
 };
 
 const parseDialog = (dialog: Dialog) => {
@@ -28,20 +27,11 @@ const parseDialog = (dialog: Dialog) => {
     },
   ].find((c) => c.speaking);
   const hasNextDialog = dialog.NextDialogScript !== "";
-  const ScriptHTML = dialog.Script
-    // 改行
-    .replace(/\n/g, "<wbr>")
-    // [c][ffffff]のようなカラーコードの変換
-    .replace(/\[c\]\[(......)\]/g, `<mark style="color:#$1;font-weight:bold;">`)
-    .replace(/\[\-\]\[\/c\]/g, `</mark>`)
-    // {0}の置換
-    .replace("{0}", `<span style="opacity:0.7;">司令官</span>`);
 
   return {
     SelectionSelectedIndex: null,
     speaker,
     hasNextDialog,
-    ScriptHTML,
     ...dialog,
   };
 };
@@ -219,7 +209,7 @@ export function Page({ scene }: { scene: Scene }) {
                     minHeight: "calc(1em * 2 * 1.5)",
                   }}
                   dangerouslySetInnerHTML={{
-                    __html: sd.ScriptHTML,
+                    __html: convertScriptTextToHtml(sd.Script),
                   }}
                 />
 
@@ -295,7 +285,9 @@ export function Page({ scene }: { scene: Scene }) {
                 {speaker}
                 <p
                   className="inline"
-                  dangerouslySetInnerHTML={{ __html: dialog.ScriptHTML }}
+                  dangerouslySetInnerHTML={{
+                    __html: convertScriptTextToHtml(dialog.Script),
+                  }}
                 ></p>
                 {selection}
               </li>
