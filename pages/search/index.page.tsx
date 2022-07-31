@@ -97,7 +97,13 @@ export function Page() {
   }, []);
 
   const searchResult = useCallback(() => {
-    return searchIndex.filter((script) => script.script.includes(searchString));
+    return searchIndex.filter((script) =>
+      script.script.includes(
+        searchString
+          // SKK対応（！？）
+          .replace(/▽|▼/gm, "")
+      )
+    );
   }, [searchIndex, searchString])();
 
   return (
@@ -135,25 +141,21 @@ export function Page() {
         <OcticonSearch24 className="absolute top-4 right-4 h-6 w-6 text-slate-400" />
       </div>
 
-      {searchString.length > 0 && (
-        <>
-          <hr className="my-6 opacity-70" />
-          {searchResult.length === 0 ? (
-            <NotFound />
-          ) : (
-            <Virtuoso
-              style={{ height: "100vh", width: "100%" }}
-              data={searchResult}
-              components={{
-                List: React.forwardRef((props, ref) => (
-                  <div {...props} ref={ref} className="flex flex-col gap-2" />
-                )),
-              }}
-              itemContent={(i, index) => <Dialog d={index} key={i} />}
-              overscan={5}
-            />
-          )}
-        </>
+      <hr className="my-6 opacity-70" />
+      {searchResult.length === 0 ? (
+        <NotFound />
+      ) : (
+        <Virtuoso
+          style={{ height: "100vh", width: "100%" }}
+          data={searchResult}
+          components={{
+            List: React.forwardRef((props, ref) => (
+              <div {...props} ref={ref} className="flex flex-col gap-2" />
+            )),
+          }}
+          itemContent={(i, index) => <Dialog d={index} key={i} />}
+          overscan={5}
+        />
       )}
     </div>
   );
