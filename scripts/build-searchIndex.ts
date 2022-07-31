@@ -20,6 +20,7 @@ type Index = {
         "Ev14",
         "Ev15",
         "Ev16",
+        "Ch09Stage",
         "ChCS",
         "TEST",
         "Roguelike",
