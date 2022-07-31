@@ -16,7 +16,6 @@ export const publicEvents = tables.events.filter(
   (c) =>
     ![
       "Open_Event11",
-      "Open_Event12",
       "Open_Event13",
       "Open_Event14",
       "Open_Event15",
