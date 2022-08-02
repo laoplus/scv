@@ -5,10 +5,11 @@
     "license": "MIT",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "run-p build:*",
+        "build:vite": "vite build",
+        "build:searchIndex": "ts-node ./scripts/build-searchIndex.ts",
         "serve": "serve -p 3081 dist/client",
-        "preview": "run-s build serve",
-        "build-searchIndex": "ts-node ./scripts/build-searchIndex.ts"
+        "preview": "run-s build serve"
     },
     "dependencies": {
         "@iconify/json": "^2.1.79",
