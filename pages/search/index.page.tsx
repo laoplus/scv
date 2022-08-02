@@ -7,7 +7,7 @@ type SearchIndex = {
   filename: string;
   speaker: {
     name: string;
-    icon?: string;
+    icon: string;
   };
   script: string;
 };
@@ -45,11 +45,12 @@ const NotFound = () => {
 };
 
 const Dialog = ({ d }: { d: SearchIndex }) => {
-  const url = d.speaker.icon
-    ? `https://cdn.laoplus.net/formationicon/FormationIcon_` +
-      d.speaker.icon.replace("_DL_N", "").replace(/_[^_]*$/, "") +
-      ".webp"
-    : "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
+  const url =
+    d.speaker.icon !== ""
+      ? `https://cdn.laoplus.net/formationicon/FormationIcon_` +
+        d.speaker.icon.replace("_DL_N", "").replace(/_[^_]*$/, "") +
+        ".webp"
+      : "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
 
   return (
     <div className="relative flex min-h-[4rem] gap-1 rounded border bg-white bg-opacity-90 p-4 transition-opacity hover:opacity-100">

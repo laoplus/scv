@@ -5,7 +5,7 @@ type Index = {
     filename: string;
     speaker: {
         name: string;
-        icon?: string;
+        icon: string;
     };
     script: string;
 };
@@ -62,12 +62,13 @@ type Index = {
                     speaking: dialog.Dialog_Speaker === 2 ? true : false,
                 },
             ].find((c) => c.speaking);
+            if (speaker?.name === "主人公") {
+                speaker.icon = "";
+            }
 
             index.push({
                 filename: dialog["Key"],
-                speaker: speaker
-                    ? { name: speaker.name, icon: speaker.icon }
-                    : { name: "unknown" },
+                speaker: speaker || { name: "unknown", icon: "" },
                 script: dialog["Script"],
             });
         }
@@ -75,7 +76,7 @@ type Index = {
 
     await fs.writeFile(
         "./public/searchIndex.json",
-        JSON.stringify(index),
+        JSON.stringify(index, null, 2),
         "utf-8"
     );
     console.log(`done with ${index.length} dialogs`);
