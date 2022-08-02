@@ -10,6 +10,7 @@ type SearchIndex = {
     icon: string;
   };
   script: string;
+  sceneName: string;
 };
 
 const NotFound = () => {
@@ -68,7 +69,7 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
               d.speaker.name || "\u00A0" // nbsp
             }
           </span>
-          <span className="text-sm opacity-50">{d.filename}</span>
+          <span className="text-sm opacity-50">{d.sceneName}</span>
         </div>
         <span
           className="leading-normal"
