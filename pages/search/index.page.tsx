@@ -100,8 +100,9 @@ export function Page() {
 
   const searchResult = useCallback(() => {
     return searchIndex.filter((script) =>
-      script.script.includes(
+      script.script.toLowerCase().includes(
         searchString
+          .toLowerCase()
           // SKK対応（！？）
           .replace(/▽|▼/gm, "")
       )
