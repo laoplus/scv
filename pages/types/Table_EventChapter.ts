@@ -1,6 +1,10 @@
-type EventChapter = {
+export type EventChapter = {
     Key: string;
     Event_Category: string;
+    /**
+     * イベント名
+     * @example "至高の晩餐"
+     */
     Event_CategoryName: string;
     Event_CategoryDesc: string;
     Event_CategoryPos: number;

@@ -4,6 +4,10 @@ export type TableMapChapter = {
 
 export type Chapter = {
     Key: string;
+    /**
+     * チャプター名
+     * @example "地球上最後の人間"
+     */
     ChapterName: string;
     /**
      * @value 0 = "main scenario"
