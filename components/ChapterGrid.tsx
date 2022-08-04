@@ -22,16 +22,16 @@ export const ChapterGrid = ({
 }: {
   chapters: MainPageProps["chapters"] | EventsPageProps["events"];
 }) => (
-  <div className="grid gap-px overflow-hidden bg-slate-200 text-slate-700 shadow sm:rounded-lg md:grid-cols-2 lg:grid-cols-3">
+  <div className="grid gap-px overflow-hidden bg-slate-200 text-slate-700 shadow sm:grid-cols-2 md:rounded-lg lg:grid-cols-3">
     {chapters.map((chapter) => {
       const isEvent = checkIsEvent(chapter);
 
       return (
         <a
           key={chapter.Key}
-          id={`main${chapter.Key}`}
+          id={chapter.Key}
           className={cn(
-            "group bg-white p-6 outline-none transition-colors ",
+            "group flex gap-6 bg-white p-6 outline-none transition-colors sm:flex-col",
             "hover:bg-slate-50",
             "focus:bg-slate-50 focus:ring focus:ring-inset"
           )}
@@ -41,7 +41,7 @@ export const ChapterGrid = ({
               : `/main/${chapter.Chapter_IDX}`
           }
         >
-          <div className="mb-7 flex items-center justify-between">
+          <div className="flex items-center justify-between sm:mb-7">
             <UnitIcon
               src={chapter.CharacterIcon}
               alt={isEvent ? chapter.Event_CategoryName : chapter.ChapterName}
@@ -51,7 +51,7 @@ export const ChapterGrid = ({
             />
             <OcticonChevronRight24
               className={cn(
-                "h-8 w-8 -translate-x-12 opacity-0 transition-all",
+                "hidden h-8 w-8 -translate-x-12 opacity-0 transition-all md:inline-block",
                 "group-hover:translate-x-0 group-hover:opacity-50",
                 "group-focus:translate-x-0 group-focus:opacity-50"
               )}
