@@ -28,3 +28,7 @@ mark {
     color: inherit;
     font-style: inherit;
 }
+
+*:not([data-virtuoso-scroller] *) {
+    @apply transition-all;
+}

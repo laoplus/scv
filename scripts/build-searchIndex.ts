@@ -1,5 +1,8 @@
 import fs from "fs/promises";
 import type { Scene } from "../pages/types/Scene";
+import type { EventChapter } from "../pages/types/Table_EventChapter";
+import type { Chapter } from "../pages/types/Table_MapChapter";
+import { tables } from "../pages/serverUtil";
 
 type Index = {
     filename: string;
@@ -7,9 +10,15 @@ type Index = {
         name: string;
         icon: string;
     };
+    sceneName: string;
     script: string;
 };
 
+const isEventChapter = (
+    chapter: EventChapter | Chapter
+): chapter is EventChapter => {
+    return true;
+};
 (async () => {
     // ワーキングディレクトリからの相対パス
     // 通常、プロジェクトルート
@@ -44,6 +53,38 @@ type Index = {
             if (dialog.Script === "") {
                 continue;
             }
+            const info = (() => {
+                const cutscene = tables.cutScenes.find(
+                    (c) => c.FileName === dialog.Dialog_Group
+                );
+                if (cutscene === undefined) {
+                    throw new Error("cutscene not found");
+                }
+
+                const stage = tables.stages.find(
+                    (s) =>
+                        cutscene?.Key === s.StartCutsceneIndex ||
+                        cutscene?.Key === s.EndCutsceneIndex ||
+                        s.MidCutsceneIndex.includes(cutscene?.Key)
+                );
+
+                const chapter =
+                    tables.events.find(
+                        (c) => c.Chapter_Key === stage?.ChapterIndex
+                    ) ||
+                    tables.chapters.find((c) => c.Key === stage?.ChapterIndex);
+
+                return {
+                    chapter,
+                    stage,
+                    includedIn:
+                        stage?.StartCutsceneIndex === cutscene.Key
+                            ? "OP"
+                            : stage?.EndCutsceneIndex === cutscene.Key
+                            ? "ED"
+                            : "MID",
+                };
+            })();
 
             const speaker = [
                 {
@@ -66,9 +107,22 @@ type Index = {
                 speaker.icon = "";
             }
 
+            const chapterName = (() => {
+                if (!info.chapter) {
+                    return "Unknown";
+                }
+                if ("ChapterName" in info.chapter) {
+                    return "メインストーリー";
+                }
+                return info.chapter.Event_CategoryName;
+            })();
+
             index.push({
                 filename: dialog["Key"],
                 speaker: speaker || { name: "unknown", icon: "" },
+                sceneName: info
+                    ? `${chapterName} ${info.stage?.StageIdxString} ${info.includedIn}`
+                    : "unknown",
                 script: dialog["Script"],
             });
         }

@@ -22,21 +22,18 @@ const NotFound = () => {
   return useMemo(
     () => (
       <div>
-        <div className="flex flex-col items-center gap-2 rounded-lg bg-slate-200 p-6 py-12 text-center md:p-12">
+        <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
           <img
             src={
               notFoundIcons[Math.floor(Math.random() * notFoundIcons.length)]
             }
             className="h-32 w-32 flex-shrink-0"
           />
-          <h2 className="whitespace-nowrap text-xl font-bold">
-            指定した
-            <wbr />
-            キーワードを
-            <wbr />
-            含む文章は
-            <wbr />
-            見つかりませんでした
+          <h2 className="text-xl font-bold [&>span]:inline-block [&>span]:whitespace-nowrap">
+            <span>指定した</span>
+            <span>キーワードを</span>
+            <span>含む文章は</span>
+            <span>見つかりませんでした</span>
           </h2>
         </div>
       </div>
@@ -54,22 +51,25 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
       : "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
 
   return (
-    <div className="relative flex min-h-[4rem] gap-1 rounded border bg-white bg-opacity-90 p-4 transition-opacity hover:opacity-100">
+    <div className="relative flex gap-3 bg-white p-4 transition-opacity hover:opacity-100 md:rounded md:border">
       <UnitIcon
         src={url}
         className="pointer-events-auto relative aspect-square h-10 w-10 flex-shrink-0"
         withInsetBorder={true}
-        data-speakerIcon={d.speaker.icon}
-        data-speakerUrl={url}
+        data-speakericon={d.speaker.icon}
+        data-speakerurl={url}
       />
-      <div className="flex w-full flex-col justify-center">
+      <div className="flex w-full min-w-0 flex-col justify-center gap-1.5">
         <div className="flex justify-between">
-          <span className="font-bold">
+          <span className="truncate font-bold leading-none">
             {
               d.speaker.name || "\u00A0" // nbsp
             }
           </span>
-          <span className="text-sm opacity-50">{d.sceneName}</span>
+          {/* スマホ以外(sm以上) 用 */}
+          <span className="hidden text-sm leading-none opacity-50 sm:inline">
+            {d.sceneName}
+          </span>
         </div>
         <span
           className="leading-normal"
@@ -77,6 +77,10 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
             __html: convertScriptTextToHtml(d.script),
           }}
         />
+        {/* スマホ用 */}
+        <span className="text-sm leading-none opacity-50 sm:hidden">
+          {d.sceneName}
+        </span>
       </div>
     </div>
   );
@@ -110,22 +114,24 @@ export function Page() {
   }, [searchIndex, searchString])();
 
   return (
-    <div className="mx-4 md:mx-4 lg:mx-8">
-      <h1 className="py-12 px-0 text-4xl font-extrabold tracking-tight text-gray-900">
+    <div className="md:mx-4 lg:mx-8">
+      <h1 className="py-12 px-4 text-4xl font-extrabold tracking-tight text-gray-900">
         Search
       </h1>
 
-      <p className="pb-6">全シナリオの文章から全文検索ができます。</p>
-      <p>
-        Showings {searchResult.length} items of {searchIndex.length} items.
-      </p>
+      <div className="flex flex-col gap-2 px-4">
+        <p className="">全シナリオの文章から全文検索ができます。</p>
+        <p className="">
+          Showings {searchResult.length} items of {searchIndex.length} items.
+        </p>
+      </div>
 
-      <div className="relative rounded-lg shadow">
+      <div className="sticky top-14 z-20 mt-2 shadow md:rounded-lg">
         <input
           type="search"
           disabled={searchIndexLoading}
           className={cn(
-            "texm-sm block w-full appearance-none rounded-lg  border p-4 pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none",
+            "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white p-4  pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
             searchIndexLoading && "cursor-not-allowed pl-11"
           )}
           placeholder={
@@ -149,15 +155,22 @@ export function Page() {
         <NotFound />
       ) : (
         <Virtuoso
-          style={{ height: "100vh", width: "100%" }}
+          useWindowScroll
           data={searchResult}
           components={{
             List: React.forwardRef((props, ref) => (
-              <div {...props} ref={ref} className="flex flex-col gap-2" />
+              <div
+                {...props}
+                ref={ref}
+                className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
+              />
             )),
           }}
-          itemContent={(i, index) => <Dialog d={index} key={i} />}
-          overscan={5}
+          itemContent={(index, searchIndex) => (
+            <Dialog d={searchIndex} key={index} />
+          )}
+          // overscan in pixels
+          overscan={500}
         />
       )}
     </div>
