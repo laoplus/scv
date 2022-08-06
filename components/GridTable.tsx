@@ -25,8 +25,7 @@ const UnitIconGroup = ({
           alt={c.name}
           data-counts={c.counts}
           data-filename={c.image}
-          src={url + "?class=icon"}
-          srcSet={[`${url}?class=icon 1x`, `${url}?class=icon2x 2x`].join(",")}
+          src={url}
           className="pointer-events-auto relative aspect-square h-10 w-10"
           withInsetBorder={true}
         />
