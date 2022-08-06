@@ -1,7 +1,5 @@
 import fs from "fs/promises";
 import type { Scene } from "../pages/types/Scene";
-import type { EventChapter } from "../pages/types/Table_EventChapter";
-import type { Chapter } from "../pages/types/Table_MapChapter";
 import { tables } from "../pages/serverUtil";
 
 type Index = {
@@ -14,27 +12,28 @@ type Index = {
     script: string;
 };
 
-const isEventChapter = (
-    chapter: EventChapter | Chapter
-): chapter is EventChapter => {
-    return true;
-};
 (async () => {
     // ワーキングディレクトリからの相対パス
     // 通常、プロジェクトルート
     const dialogsPath = `./data/dialogs`;
+    /**
+     * 公開してはいけないファイル名（部分一致）
+     */
     const bannedKeywordFilename = [
+        //メイン 9区
+        "Ch09Stage",
         "Ev11",
+        "Ch02Ev12",
+        "Ch03Ev12",
         "Ev13",
         "Ev14",
         "Ev15",
         "Ev16",
-        "Ch09Stage",
+        // 外伝
         "ChCS",
+        "SysOP",
         "TEST",
-        "Roguelike",
         "Marriage",
-        "Tuto",
     ];
     const filenames = (await fs.readdir(dialogsPath)).filter((file) => {
         return !bannedKeywordFilename.some((keyword) => file.includes(keyword));
