@@ -110,14 +110,14 @@ export function Page({ scene }: { scene: Scene }) {
     }
   };
 
-  const imgBaseUrl = `https://cdn.laoplus.net/`;
+  const CDN_BASE_URL = import.meta.env.VITE_CDN_BASE_URL;
   const bgImages = new Set(
-    scene.map((d) => imgBaseUrl + "bg/" + d.BG_ImageName + `.webp`)
+    scene.map((d) => CDN_BASE_URL + "bg/" + d.BG_ImageName + `.webp`)
   );
   const addImages = new Set(
     scene
       .filter((d) => d.Add_ImageName !== "")
-      .map((d) => imgBaseUrl + "cut/" + d.Add_ImageName + `.webp`)
+      .map((d) => CDN_BASE_URL + "cut/" + d.Add_ImageName + `.webp`)
   );
 
   useEffect(() => {

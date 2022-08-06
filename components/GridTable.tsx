@@ -11,7 +11,7 @@ const UnitIconGroup = ({
   <>
     {characters.map((c, i) => {
       const url =
-        `https://cdn.laoplus.net/formationicon/` +
+        `${import.meta.env.VITE_CDN_BASE_URL}/formationicon/` +
         c.image
           .replace("2DModel_", "FormationIcon_")
           .replace("_DL_N", "")

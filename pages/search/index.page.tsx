@@ -45,10 +45,12 @@ const NotFound = () => {
 const Dialog = ({ d }: { d: SearchIndex }) => {
   const url =
     d.speaker.icon !== ""
-      ? `https://cdn.laoplus.net/formationicon/FormationIcon_` +
+      ? import.meta.env.VITE_CDN_BASE_URL +
+        `/formationicon/FormationIcon_` +
         d.speaker.icon.replace("_DL_N", "").replace(/_[^_]*$/, "") +
         ".webp"
-      : "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
+      : import.meta.env.VITE_CDN_BASE_URL +
+        "/formationicon/FormationIcon_empty.webp";
 
   return (
     <div className="relative flex gap-3 bg-white p-4 transition-opacity hover:opacity-100 md:rounded md:border">

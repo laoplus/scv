@@ -66,7 +66,8 @@ export const UnitIcon = ({
     const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
 
     const placeholder =
-      "https://cdn.laoplus.net/formationicon/FormationIcon_empty.webp";
+      import.meta.env.VITE_CDN_BASE_URL +
+      `/formationicon/FormationIcon_empty.webp`;
 
     target.srcset = target.srcset.replaceAll(currentUrl, placeholder);
     target.src = target.src.replace(currentUrl, placeholder);
