@@ -13,6 +13,7 @@ export type SearchIndex = {
   };
   script: string;
   sceneName: string;
+  path: string;
 };
 
 const NotFound = () => {
@@ -71,9 +72,12 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
             }
           </span>
           {/* スマホ以外(sm以上) 用 */}
-          <span className="hidden text-sm leading-none opacity-50 sm:inline">
+          <a
+            className="hidden text-sm leading-none underline-offset-4 opacity-50 hover:underline sm:inline"
+            href={d.path}
+          >
             {d.sceneName}
-          </span>
+          </a>
         </div>
         <span
           className="leading-normal"
@@ -82,9 +86,12 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
           }}
         />
         {/* スマホ用 */}
-        <span className="text-sm leading-none opacity-50 sm:hidden">
+        <a
+          className="text-sm leading-none underline-offset-4 opacity-50 hover:underline sm:hidden"
+          href={d.path}
+        >
           {d.sceneName}
-        </span>
+        </a>
       </div>
     </div>
   );

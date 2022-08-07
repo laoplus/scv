@@ -57,12 +57,18 @@ import type { SearchIndex } from "../pages/search/index.page";
                         cutscene?.Key === s.EndCutsceneIndex ||
                         s.MidCutsceneIndex.includes(cutscene?.Key)
                 );
+                if (stage === undefined) {
+                    throw new Error("stage not found");
+                }
 
                 const chapter =
                     tables.events.find(
                         (c) => c.Chapter_Key === stage?.ChapterIndex
                     ) ||
                     tables.chapters.find((c) => c.Key === stage?.ChapterIndex);
+                if (chapter === undefined) {
+                    throw new Error("chapter not found");
+                }
 
                 const includedIn =
                     stage?.StartCutsceneIndex === cutscene.Key
@@ -74,10 +80,25 @@ import type { SearchIndex } from "../pages/search/index.page";
                               stage?.MidCutsceneIndex.indexOf(cutscene.Key)! + 1
                           }`;
 
+                const chapterName = (() => {
+                    if ("ChapterName" in chapter) {
+                        return "main";
+                    } else {
+                        const index = tables.events.find(
+                            (e) => e.Chapter_Key === chapter.Chapter_Key
+                        )?.Event_CategoryIndex;
+                        if (index === undefined) {
+                            throw new Error("chapter not found");
+                        }
+                        return `ev${index}`;
+                    }
+                })();
+
                 return {
                     chapter,
                     stage,
                     includedIn,
+                    chapterName,
                 };
             })();
 
@@ -103,9 +124,6 @@ import type { SearchIndex } from "../pages/search/index.page";
             }
 
             const chapterName = (() => {
-                if (!info.chapter) {
-                    return "Unknown";
-                }
                 if ("ChapterName" in info.chapter) {
                     return "メインストーリー";
                 }
@@ -127,6 +145,9 @@ import type { SearchIndex } from "../pages/search/index.page";
                 sceneName: info
                     ? `${chapterName} ${info.stage?.StageIdxString} ${info.includedIn}`
                     : "unknown",
+                path:
+                    "/scenes" +
+                    `/${info.chapterName}/${info.stage.StageIdxString}/${info.includedIn}`.toLowerCase(),
                 script: dialog["Script"],
             });
         }
