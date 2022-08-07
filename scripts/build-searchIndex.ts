@@ -108,7 +108,7 @@ import type { SearchIndex } from "../pages/search/index.page";
             })();
 
             index.push({
-                filename: dialog["Key"],
+                key: dialog["Key"],
                 speaker: speaker
                     ? {
                           name: speaker.name,

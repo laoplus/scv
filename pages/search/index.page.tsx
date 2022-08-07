@@ -6,7 +6,7 @@ import { Heading } from "../../components/Heading";
 import { toHiragana } from "./util";
 
 export type SearchIndex = {
-  filename: string;
+  key: string;
   speaker: {
     name: string;
     icon?: string;

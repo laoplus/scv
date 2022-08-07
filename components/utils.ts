@@ -12,7 +12,7 @@ export const convertScriptTextToHtml = (text: string) => {
             .replace(/\n/g, "<wbr>")
             // [c][ffffff]のようなカラーコードの変換
             .replace(
-                /\[c\]\[(......)\]/g,
+                /\[c\]\s?\[(......)\]/g,
                 `<mark style="color:#$1;font-weight:bold;">`
             )
             .replace(/\[\-\]\[\/c\]/g, `</mark>`)
