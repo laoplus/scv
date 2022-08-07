@@ -8,7 +8,7 @@ function Page({ is404 }: { is404: boolean }) {
     return (
       <div className="my-12 flex flex-col gap-4 px-2 text-center">
         <img
-          src="https://lo.swaytwig.com/assets/webp/sticker/Manme03_3.webp"
+          src="https://cdn.laoplus.net/sticker/Manme03_3.webp"
           className="m-auto h-36 w-36"
         />
         <Heading level={1} classname="px-0 py-0">
@@ -21,7 +21,7 @@ function Page({ is404 }: { is404: boolean }) {
     return (
       <div className="my-12 flex flex-col gap-4 px-2 text-center">
         <img
-          src="https://lo.swaytwig.com/assets/webp/sticker/Diyap07_1.webp"
+          src="https://cdn.laoplus.net/sticker/Diyap07_1.webp"
           className="m-auto h-36 w-36"
         />
         <Heading level={1} classname="px-0 py-0">

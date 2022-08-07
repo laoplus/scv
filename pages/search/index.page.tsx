@@ -17,8 +17,8 @@ export type SearchIndex = {
 
 const NotFound = () => {
   const notFoundIcons = [
-    "https://lo.swaytwig.com/assets/webp/sticker/Diyap04_4.webp",
-    "https://lo.swaytwig.com/assets/webp/sticker/Diyap08_2.webp",
+    "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
+    "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
   ];
 
   return useMemo(
