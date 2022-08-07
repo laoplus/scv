@@ -64,15 +64,20 @@ import type { SearchIndex } from "../pages/search/index.page";
                     ) ||
                     tables.chapters.find((c) => c.Key === stage?.ChapterIndex);
 
+                const includedIn =
+                    stage?.StartCutsceneIndex === cutscene.Key
+                        ? "OP"
+                        : stage?.EndCutsceneIndex === cutscene.Key
+                        ? "ED"
+                        : `MID${
+                              // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
+                              stage?.MidCutsceneIndex.indexOf(cutscene.Key)! + 1
+                          }`;
+
                 return {
                     chapter,
                     stage,
-                    includedIn:
-                        stage?.StartCutsceneIndex === cutscene.Key
-                            ? "OP"
-                            : stage?.EndCutsceneIndex === cutscene.Key
-                            ? "ED"
-                            : "MID",
+                    includedIn,
                 };
             })();
 
