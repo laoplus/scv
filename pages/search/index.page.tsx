@@ -127,7 +127,7 @@ export function Page() {
     <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>Search</Heading>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-4 md:px-0">
         <p className="">全シナリオの文章から全文検索ができます。</p>
         <p className="">
           {searchIndex.length.toLocaleString()}件のうち
