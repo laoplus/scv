@@ -112,12 +112,12 @@ export function Page({ scene }: { scene: Scene }) {
 
   const CDN_BASE_URL = import.meta.env.VITE_CDN_BASE_URL;
   const bgImages = new Set(
-    scene.map((d) => CDN_BASE_URL + "bg/" + d.BG_ImageName + `.webp`)
+    scene.map((d) => CDN_BASE_URL + "/bg/" + d.BG_ImageName + `.webp`)
   );
   const addImages = new Set(
     scene
       .filter((d) => d.Add_ImageName !== "")
-      .map((d) => CDN_BASE_URL + "cut/" + d.Add_ImageName + `.webp`)
+      .map((d) => CDN_BASE_URL + "/cut/" + d.Add_ImageName + `.webp`)
   );
 
   useEffect(() => {
