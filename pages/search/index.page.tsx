@@ -128,14 +128,15 @@ export function Page() {
     <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>Search</Heading>
 
-      <div className="flex flex-col gap-2 px-4">
+      <div className="flex flex-col gap-2">
         <p className="">全シナリオの文章から全文検索ができます。</p>
         <p className="">
-          Showings {searchResult.length} items of {searchIndex.length} items.
+          {searchIndex.length.toLocaleString()}件のうち
+          {searchResult.length.toLocaleString()}件を表示しています。
         </p>
       </div>
 
-      <div className="sticky top-14 z-20 mt-2 shadow md:rounded-lg">
+      <div className="sticky top-14 z-20 mt-6 shadow md:rounded-lg">
         <input
           type="search"
           disabled={searchIndexLoading}
@@ -160,28 +161,30 @@ export function Page() {
       </div>
 
       <hr className="my-6 opacity-70" />
-      {searchResult.length === 0 ? (
-        <NotFound />
-      ) : (
-        <Virtuoso
-          useWindowScroll
-          data={searchResult}
-          components={{
-            List: React.forwardRef((props, ref) => (
-              <div
-                {...props}
-                ref={ref}
-                className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
-              />
-            )),
-          }}
-          itemContent={(index, searchIndex) => (
-            <Dialog d={searchIndex} key={index} />
-          )}
-          // overscan in pixels
-          overscan={500}
-        />
-      )}
+
+      {!searchIndexLoading &&
+        (searchResult.length === 0 ? (
+          <NotFound />
+        ) : (
+          <Virtuoso
+            useWindowScroll
+            data={searchResult}
+            components={{
+              List: React.forwardRef((props, ref) => (
+                <div
+                  {...props}
+                  ref={ref}
+                  className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
+                />
+              )),
+            }}
+            itemContent={(index, searchIndex) => (
+              <Dialog d={searchIndex} key={index} />
+            )}
+            // overscan in pixels
+            overscan={500}
+          />
+        ))}
     </div>
   );
 }
