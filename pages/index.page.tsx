@@ -1,9 +1,10 @@
 import React from "react";
+import { Heading } from "../components/Heading";
 
 export function Page() {
   return (
     <>
-      <h1 className="text-4xl">SCV</h1>
+      <Heading level={1}>SCV</Heading>
     </>
   );
 }

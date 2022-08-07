@@ -1,5 +1,6 @@
 import React from "react";
 import { StageGridTable } from "../../components/GridTable";
+import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./eventDetails.page.server";
 
 type PageProps = Awaited<
@@ -9,7 +10,9 @@ type PageProps = Awaited<
 export function Page({ eventStories }: PageProps) {
   return (
     <>
-      <h1 className="text-6xl uppercase">Event Scenes</h1>
+      <Heading level={1}>
+        Event Stories :: <span>{eventStories[0][0].Event_CategoryName}</span>
+      </Heading>
 
       <div className="flex flex-col gap-8 p-2">
         {eventStories.map((event) => (
@@ -18,10 +21,6 @@ export function Page({ eventStories }: PageProps) {
             id={`ev${event[0].Event_CategoryIndex}`}
             className="flex flex-col gap-4"
           >
-            <h2 className="sticky top-0 rounded border bg-white py-6 text-2xl">
-              Ev{event[0].Event_CategoryIndex}: {event[0].Event_CategoryName}
-            </h2>
-
             {event.map((chapter) =>
               chapter.ChapterStages.every((s) => !s.hasCutscene) ? undefined : ( // 全てのステージがシーンなしの場合
                 <div key={chapter.Chapter_Name} className="flex flex-col gap-3">

@@ -1,6 +1,7 @@
 import React from "react";
 import { onBeforeRender } from "./index.page.server";
 import { ChapterGrid } from "../../components/ChapterGrid";
+import { Heading } from "../../components/Heading";
 
 type PageProps = Awaited<
   ReturnType<typeof onBeforeRender>
@@ -9,9 +10,7 @@ type PageProps = Awaited<
 export function Page({ chapters }: PageProps) {
   return (
     <div className="md:mx-4 lg:mx-8">
-      <h1 className="py-12 px-4 text-4xl font-extrabold tracking-tight text-gray-900 md:px-0">
-        Main Stories
-      </h1>
+      <Heading level={1}>Main Stories</Heading>
 
       <ChapterGrid chapters={chapters} />
     </div>

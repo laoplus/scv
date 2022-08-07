@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { UnitIcon } from "../../components/UnitIcon";
+import { Heading } from "../../components/Heading";
 
 type SearchIndex = {
   filename: string;
@@ -118,9 +119,7 @@ export function Page() {
 
   return (
     <div className="md:mx-4 lg:mx-8">
-      <h1 className="py-12 px-4 text-4xl font-extrabold tracking-tight text-gray-900">
-        Search
-      </h1>
+      <Heading level={1}>Search</Heading>
 
       <div className="flex flex-col gap-2 px-4">
         <p className="">全シナリオの文章から全文検索ができます。</p>

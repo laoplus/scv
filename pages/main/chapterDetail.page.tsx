@@ -1,5 +1,6 @@
 import React from "react";
 import { StageGridTable } from "../../components/GridTable";
+import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./chapterDetail.page.server";
 
 type PageProps = Awaited<
@@ -9,7 +10,7 @@ type PageProps = Awaited<
 export function Page({ chapter }: PageProps) {
   return (
     <>
-      <h1 className="mb-4 text-6xl uppercase">Main Scenes</h1>
+      <Heading level={1}>Main Stories</Heading>
 
       <div className="flex flex-col gap-8 p-2">
         <div
