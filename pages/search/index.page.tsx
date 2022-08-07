@@ -3,6 +3,7 @@ import { Virtuoso } from "react-virtuoso";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { UnitIcon } from "../../components/UnitIcon";
 import { Heading } from "../../components/Heading";
+import { toHiragana } from "./util";
 
 type SearchIndex = {
   filename: string;
@@ -107,14 +108,20 @@ export function Page() {
   }, []);
 
   const searchResult = useCallback(() => {
-    return searchIndex.filter((script) =>
-      script.script.toLowerCase().includes(
+    console.time("searchResult");
+    const result = searchIndex.filter((d) => {
+      const haystack = toHiragana(d.script.toLowerCase().normalize("NFKC"));
+      const needle = toHiragana(
         searchString
           .toLowerCase()
           // SKK対応（！？）
           .replace(/▽|▼/gm, "")
-      )
-    );
+          .normalize("NFKC")
+      );
+      return haystack.includes(needle);
+    });
+    console.timeEnd("searchResult");
+    return result;
   }, [searchIndex, searchString])();
 
   return (
