@@ -8,8 +8,8 @@ import { toHiragana } from "./util";
 export type SearchIndex = {
   key: string;
   speaker: {
-    name: string;
-    icon?: string;
+    name: null | string;
+    icon: null | string;
   };
   script: string;
   sceneName: string;
@@ -60,7 +60,7 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
         className="pointer-events-auto relative aspect-square h-10 w-10 flex-shrink-0 rounded"
         borderClassName="rounded"
         withInsetBorder={true}
-        data-speakericon={d.speaker.icon}
+        data-speakericon={d.speaker?.icon}
         data-speakerurl={url}
       />
       <div className="flex w-full min-w-0 flex-col justify-center gap-1.5">

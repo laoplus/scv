@@ -109,14 +109,16 @@ import type { SearchIndex } from "../pages/search/index.page";
 
             index.push({
                 key: dialog["Key"],
-                speaker: speaker
-                    ? {
-                          name: speaker.name,
-                          icon: speaker.icon,
-                      }
-                    : {
-                          name: "",
-                      },
+                speaker: {
+                    name:
+                        speaker === undefined || speaker.name === ""
+                            ? null
+                            : speaker.name,
+                    icon:
+                        speaker === undefined || speaker.icon === ""
+                            ? null
+                            : speaker.icon,
+                },
                 sceneName: info
                     ? `${chapterName} ${info.stage?.StageIdxString} ${info.includedIn}`
                     : "unknown",
