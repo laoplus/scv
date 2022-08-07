@@ -56,7 +56,8 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
     <div className="relative flex gap-3 bg-white p-4 transition-opacity hover:opacity-100 md:rounded md:border">
       <UnitIcon
         src={url}
-        className="pointer-events-auto relative aspect-square h-10 w-10 flex-shrink-0"
+        className="pointer-events-auto relative aspect-square h-10 w-10 flex-shrink-0 rounded"
+        borderClassName="rounded"
         withInsetBorder={true}
         data-speakericon={d.speaker.icon}
         data-speakerurl={url}

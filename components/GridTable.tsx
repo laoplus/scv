@@ -26,7 +26,8 @@ const UnitIconGroup = ({
           data-counts={c.counts}
           data-filename={c.image}
           src={url}
-          className="pointer-events-auto relative aspect-square h-10 w-10"
+          className="pointer-events-auto relative aspect-square h-10 w-10 rounded"
+          borderClassName="rounded"
           withInsetBorder={true}
         />
       );
