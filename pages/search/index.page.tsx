@@ -5,11 +5,11 @@ import { UnitIcon } from "../../components/UnitIcon";
 import { Heading } from "../../components/Heading";
 import { toHiragana } from "./util";
 
-type SearchIndex = {
+export type SearchIndex = {
   filename: string;
   speaker: {
     name: string;
-    icon: string;
+    icon?: string;
   };
   script: string;
   sceneName: string;
@@ -45,14 +45,13 @@ const NotFound = () => {
 };
 
 const Dialog = ({ d }: { d: SearchIndex }) => {
-  const url =
-    d.speaker.icon !== ""
-      ? import.meta.env.VITE_CDN_BASE_URL +
-        `/formationicon/FormationIcon_` +
-        d.speaker.icon.replace("_DL_N", "").replace(/_[^_]*$/, "") +
-        ".webp"
-      : import.meta.env.VITE_CDN_BASE_URL +
-        "/formationicon/FormationIcon_empty.webp";
+  const url = d.speaker.icon
+    ? import.meta.env.VITE_CDN_BASE_URL +
+      `/formationicon/FormationIcon_` +
+      d.speaker.icon.replace("_DL_N", "").replace(/_[^_]*$/, "") +
+      ".webp"
+    : import.meta.env.VITE_CDN_BASE_URL +
+      "/formationicon/FormationIcon_empty.webp";
 
   return (
     <div className="relative flex gap-3 bg-white p-4 transition-opacity hover:opacity-100 md:rounded md:border">

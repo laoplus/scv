@@ -1,16 +1,7 @@
 import fs from "fs/promises";
 import type { Scene } from "../pages/types/Scene";
 import { tables } from "../pages/serverUtil";
-
-type Index = {
-    filename: string;
-    speaker: {
-        name: string;
-        icon: string;
-    };
-    sceneName: string;
-    script: string;
-};
+import type { SearchIndex } from "../pages/search/index.page";
 
 (async () => {
     // ワーキングディレクトリからの相対パス
@@ -46,7 +37,7 @@ type Index = {
     );
 
     // create index
-    const index: Index[] = [];
+    const index: SearchIndex[] = [];
     for (const scene of scenes) {
         for (const dialog of scene) {
             if (dialog.Script === "") {
@@ -118,7 +109,14 @@ type Index = {
 
             index.push({
                 filename: dialog["Key"],
-                speaker: speaker || { name: "unknown", icon: "" },
+                speaker: speaker
+                    ? {
+                          name: speaker.name,
+                          icon: speaker.icon,
+                      }
+                    : {
+                          name: "",
+                      },
                 sceneName: info
                     ? `${chapterName} ${info.stage?.StageIdxString} ${info.includedIn}`
                     : "unknown",
