@@ -14,7 +14,6 @@ import type { SearchIndex } from "../pages/search/index.page";
         //メイン 9区
         "Ch09Stage",
         "Ev11",
-        "Ch02Ev12",
         "Ch03Ev12",
         "Ev13",
         "Ev14",
