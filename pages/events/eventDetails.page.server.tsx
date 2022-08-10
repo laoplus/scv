@@ -12,15 +12,21 @@ export type EventStories = Awaited<
 
 // filter unreleased events
 
+const bannedEventChapter = [
+  "Chapter_01Ev11",
+  "Chapter_02Ev11",
+  "Chapter_03Ev11",
+  "Chapter_03Ev12",
+  "Chapter_01Ev13",
+  "Chapter_02Ev13",
+  "Chapter_01Ev14",
+  "Chapter_02Ev14",
+  "Chapter_01Ev15",
+  "Chapter_01Ev16",
+];
+
 export const publicEvents = tables.events.filter(
-  (c) =>
-    ![
-      "Open_Event11",
-      "Open_Event13",
-      "Open_Event14",
-      "Open_Event15",
-      "Open_Event16",
-    ].includes(c.Event_Category)
+  (c) => !bannedEventChapter.includes(c.Chapter_Key)
 );
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
