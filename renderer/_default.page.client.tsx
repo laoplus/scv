@@ -8,6 +8,9 @@ export const clientRouting = true;
 export { render };
 export { onHydrationEnd };
 
+export { onPageTransitionStart };
+export { onPageTransitionEnd };
+
 let root: ReactDOM.Root;
 async function render(pageContext: PageContextBuiltInClient & PageContext) {
   const { Page, pageProps } = pageContext;
@@ -34,4 +37,16 @@ function onHydrationEnd() {
     "Elements included in the current page:",
     document.body.querySelectorAll(`*:not(script, link)`).length
   );
+}
+
+function onPageTransitionStart() {
+  console.time("transition");
+  console.log("Page transition start");
+  document.querySelector("main")!.classList.add("page-transition");
+}
+
+function onPageTransitionEnd() {
+  console.timeEnd("transition");
+  console.log("Page transition end");
+  document.querySelector("main")!.classList.remove("page-transition");
 }

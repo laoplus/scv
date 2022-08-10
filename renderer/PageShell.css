@@ -32,3 +32,10 @@ mark {
 *:not([data-virtuoso-scroller] *) {
     @apply transition-all;
 }
+
+#page-view main {
+    transition: opacity 0.1s ease-in;
+}
+#page-view main.page-transition {
+    opacity: 0;
+}

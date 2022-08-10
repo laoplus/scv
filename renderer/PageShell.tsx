@@ -27,7 +27,7 @@ function PageShell({
 }
 function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-slate-800 text-gray-100">
+    <header className="sticky top-0 z-50 bg-slate-800 text-gray-100 shadow">
       <div className="mx-auto flex max-w-7xl items-center gap-2 p-2 md:px-8">
         <a href="/" className="flex h-8 items-center justify-between gap-1">
           <span className="font-bold tracking-wide text-amber-500">SCV</span>
