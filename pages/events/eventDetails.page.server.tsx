@@ -72,16 +72,22 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
           })(),
           StagePos: stage.Stage_Pos,
           StartCutsceneIndex: stage.StartCutsceneIndex,
-          EndCutsceneIndex: stage.EndCutsceneIndex,
-          MidCutsceneIndex: stage.MidCutsceneIndex,
           StartCutsceneCharcters: getSceneCharacters({
             sceneCharacters,
             cutsceneIndex: stage.StartCutsceneIndex,
           }),
+          EndCutsceneIndex: stage.EndCutsceneIndex,
           EndCutsceneCharcters: getSceneCharacters({
             sceneCharacters,
             cutsceneIndex: stage.EndCutsceneIndex,
           }),
+          MidCutsceneIndex: stage.MidCutsceneIndex,
+          MidCutsceneCharcters: stage.MidCutsceneIndex.map((cutsceneIndex) =>
+            getSceneCharacters({
+              sceneCharacters,
+              cutsceneIndex,
+            })
+          ),
           hasCutscene:
             stage.StartCutsceneIndex !== "0" ||
             stage.EndCutsceneIndex !== "0" ||

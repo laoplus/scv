@@ -66,53 +66,65 @@ export function StageGridTable({
               {s.StageIdxString}
             </a>
             <div>{s.StageName}</div>
+
             {/* 2列目 */}
             <div className="col-start-3 -mt-2 -mb-0.5 text-sm text-gray-600">
               {s.StageDesc}
             </div>
+
             {/* 3列目 */}
-            <div />
-            {s.StartCutsceneIndex === "0" ? (
-              "-"
-            ) : (
-              <a
-                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op/`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
-              >
-                OP
-              </a>
+            {s.StartCutsceneIndex !== "0" && (
+              <>
+                <div />
+                <a
+                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op/`.toLowerCase()}
+                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+                >
+                  OP
+                </a>
+                <div className="pointer-events-none flex flex-wrap gap-1">
+                  <UnitIconGroup characters={s.StartCutsceneCharcters} />
+                </div>
+              </>
             )}
-            <div className="pointer-events-none flex flex-wrap gap-1">
-              <UnitIconGroup characters={s.StartCutsceneCharcters} />
-            </div>
-            <div />
-            {s.EndCutsceneIndex === "0" ? (
-              "-"
-            ) : (
-              <a
-                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed/`.toLowerCase()}
-                className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
-              >
-                ED
-              </a>
+
+            {/* 4列目 */}
+            {s.EndCutsceneIndex !== "0" && (
+              <>
+                <div />
+                <a
+                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed/`.toLowerCase()}
+                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+                >
+                  ED
+                </a>
+                <div className="pointer-events-none flex flex-wrap gap-1">
+                  <UnitIconGroup characters={s.EndCutsceneCharcters} />
+                </div>
+              </>
             )}
-            <div className="pointer-events-none flex flex-wrap gap-1">
-              <UnitIconGroup characters={s.EndCutsceneCharcters} />
-            </div>
+
+            {/* 5列目 */}
             {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
-              <div className="col-span-full">
+              <>
                 {s.MidCutsceneIndex.map((sceneId, i) => (
-                  <a
-                    key={sceneId}
-                    href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
-                      i + 1
-                    }/`.toLowerCase()}
-                    className="inline-block p-1 text-sky-700"
-                  >
-                    Mid {i + 1}
-                  </a>
+                  <>
+                    <div />
+                    <a
+                      key={sceneId}
+                      href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
+                        i + 1
+                      }/`.toLowerCase()}
+                      className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+                    >
+                      Mid {i + 1}
+                    </a>
+                    <div className="pointer-events-none flex flex-wrap gap-1">
+                      <UnitIconGroup characters={s.MidCutsceneCharcters[i]} />
+                    </div>
+                  </>
                 ))}
-              </div>
+              </>
             )}
           </Fragment>
         )

@@ -49,6 +49,12 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         cutsceneIndex: stage.EndCutsceneIndex,
       }),
       MidCutsceneIndex: stage.MidCutsceneIndex,
+      MidCutsceneCharcters: stage.MidCutsceneIndex.map((cutsceneIndex) =>
+        getSceneCharacters({
+          sceneCharacters,
+          cutsceneIndex,
+        })
+      ),
       hasCutscene:
         stage.StartCutsceneIndex !== "0" ||
         stage.EndCutsceneIndex !== "0" ||
