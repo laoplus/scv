@@ -98,7 +98,15 @@ export function Page() {
 
       <Alerts title="ご意見をお寄せください" type="info">
         <p>
-          体験を向上させるために問題点や改善案をDiscordにてお寄せください。
+          体験を向上させるために問題点や改善案を
+          <a
+            href="https://discord.gg/Z6XSqZn6Zj"
+            target="_blank"
+            rel="noopener"
+          >
+            Discord
+          </a>
+          にてお寄せください。
           <br />
           あるいは単に感想だけでも開発者のモチベーションに寄与します！
           <br />
