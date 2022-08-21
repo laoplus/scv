@@ -11,7 +11,7 @@ function Page({ is404 }: { is404: boolean }) {
           src="https://cdn.laoplus.net/sticker/Manme03_3.webp"
           className="m-auto h-36 w-36"
         />
-        <Heading level={1} classname="px-0 py-0">
+        <Heading level={1} className="px-0 py-0">
           404 Page Not Found
         </Heading>
         <p>This page no longer exists, may have been deleted or moved.</p>
@@ -24,7 +24,7 @@ function Page({ is404 }: { is404: boolean }) {
           src="https://cdn.laoplus.net/sticker/Diyap07_1.webp"
           className="m-auto h-36 w-36"
         />
-        <Heading level={1} classname="px-0 py-0">
+        <Heading level={1} className="px-0 py-0">
           500 Internal Server Error
         </Heading>
         <p>Something went wrong.</p>

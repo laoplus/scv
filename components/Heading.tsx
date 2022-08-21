@@ -3,11 +3,11 @@ import { cn } from "./utils";
 
 export const Heading = ({
   level,
-  classname,
+  className,
   children,
 }: {
   level: 1 | 2;
-  classname?: string;
+  className?: string;
   children: React.ReactNode;
 }) => {
   switch (level) {
@@ -18,13 +18,17 @@ export const Heading = ({
           className={cn(
             "py-12 text-4xl font-extrabold tracking-tight text-gray-900",
             "px-4 md:px-0",
-            classname
+            className
           )}
         >
           {children}
         </h1>
       );
     case 2:
-      return <h2 className={cn("text-xl font-bold", classname)}>{children}</h2>;
+      return (
+        <h2 className={cn("text-xl font-bold text-gray-900", className)}>
+          {children}
+        </h2>
+      );
   }
 };
