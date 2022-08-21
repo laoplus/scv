@@ -172,7 +172,7 @@ export function Page() {
               </li>
             </ol>
           </FAQItem>
-          <FAQItem title="ゲームに実装されていないテキストがSCVで公開されてるけどいいの？">
+          <FAQItem title="ゲームで公開されていないテキストがSCVで公開されてるけどいいの？">
             <p>よくないです。最優先で修正するので報告してください。</p>
           </FAQItem>
           <FAQItem title="ゲームが更新されたけどSCVで見れないんだけど？">
