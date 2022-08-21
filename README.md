@@ -8,7 +8,9 @@ SCV をビルドするには `/data` にデータが必要です。
 
 実際のデータを GitHub 上で公開するのは気がひけるので、別のプライベートリポジトリで管理しています。
 
-実データと同じ構造のダミーデータを https://github.com/laoplus/lo-data-dummy で公開しています。
+~~実データと同じ構造のダミーデータを https://github.com/laoplus/lo-data-dummy で公開しています。~~
+
+使用するデータが開発当初考えていたものよりかなり膨らんでしまったため、まだダミーデータの準備ができていません。現状でいじりたい方は型からの雰囲気で修正してください……。
 
 ビルドするにはローカルに clone した実データあるいはダミーデータへのパスを、`/data` から参照できるようにシンボリックリンクを貼ってください。
 
@@ -21,7 +23,7 @@ mklink /d C:\Users\Eai\ghq\github.com\laoplus\scv\data C:\Users\Eai\ghq\github.c
 
 #### アイコンライブラリ
 
-`[unplugin-icons](https://github.com/antfu/unplugin-icons)`を使っています。
+[`unplugin-icons`](https://github.com/antfu/unplugin-icons)を使っています。
 
 オンデマンドに作成される影響で IntelliSense などの補完が出ないので、アイコンを追加する際は https://icones.js.org/ からアイコンを選んで、キャメルケースの名前をコピーして貼るといいと思います。
 
@@ -29,4 +31,4 @@ mklink /d C:\Users\Eai\ghq\github.com\laoplus\scv\data C:\Users\Eai\ghq\github.c
 
 [`unplugin-auto-import`](https://github.com/antfu/unplugin-auto-import)を使っているため明示的な import は不要です。`auto-import.ts` は git から ignore しています。`yarn dev`でページを開いた時に作成されるはずです。
 
-新しいアイコンコレクションを使う際は `vite.config.ts` の `enabledCollections` をいじってください。
+Octicon 以外のアイコンコレクションを使う際は `vite.config.ts` の `enabledCollections` をいじってください。
