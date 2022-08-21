@@ -146,7 +146,7 @@ import type { SearchIndex } from "../pages/search/index.page";
                     : "unknown",
                 path:
                     "/scenes" +
-                    `/${info.chapterName}/${info.stage.StageIdxString}/${info.includedIn}`.toLowerCase(),
+                    `/${info.chapterName}/${info.stage.StageIdxString}/${info.includedIn}/`.toLowerCase(),
                 script: dialog["Script"],
             });
         }

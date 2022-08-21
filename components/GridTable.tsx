@@ -76,7 +76,7 @@ export function StageGridTable({
               "-"
             ) : (
               <a
-                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op`.toLowerCase()}
+                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/op/`.toLowerCase()}
                 className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 OP
@@ -90,7 +90,7 @@ export function StageGridTable({
               "-"
             ) : (
               <a
-                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed`.toLowerCase()}
+                href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed/`.toLowerCase()}
                 className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
               >
                 ED
@@ -106,7 +106,7 @@ export function StageGridTable({
                     key={sceneId}
                     href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
                       i + 1
-                    }`.toLowerCase()}
+                    }/`.toLowerCase()}
                     className="inline-block p-1 text-sky-700"
                   >
                     Mid {i + 1}

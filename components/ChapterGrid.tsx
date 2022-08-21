@@ -37,8 +37,8 @@ export const ChapterGrid = ({
           )}
           href={
             isEvent
-              ? `/events/${chapter.Event_CategoryIndex}`
-              : `/main/${chapter.Chapter_IDX}`
+              ? `/events/${chapter.Event_CategoryIndex}/`
+              : `/main/${chapter.Chapter_IDX}/`
           }
         >
           <div className="flex items-center justify-between sm:mb-7">

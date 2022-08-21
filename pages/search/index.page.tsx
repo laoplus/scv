@@ -104,7 +104,7 @@ export function Page() {
 
   useEffect(() => {
     (async () => {
-      const d = (await fetch("./searchIndex.json").then((r) =>
+      const d = (await fetch("/searchIndex.json").then((r) =>
         r.json()
       )) as SearchIndex[];
 

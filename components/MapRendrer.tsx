@@ -32,7 +32,7 @@ export function MapRenderer({
           )}
           href={
             s.hasCutscene
-              ? `/scenes/${eventIndexStr}/${s.StageIdxString}`.toLowerCase()
+              ? `/scenes/${eventIndexStr}/${s.StageIdxString}/`.toLowerCase()
               : undefined
           }
           title={`${s.StageIdxString} ${s.StageName}${

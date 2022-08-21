@@ -37,9 +37,9 @@ function Header() {
           </span>
         </a>
 
-        <Link href="/main">Main</Link>
-        <Link href="/events">Event</Link>
-        <Link href="/search">Search</Link>
+        <Link href="/main/">Main</Link>
+        <Link href="/events/">Event</Link>
+        <Link href="/search/">Search</Link>
       </div>
     </header>
   );
