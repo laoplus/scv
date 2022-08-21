@@ -175,6 +175,11 @@ export function Page() {
           <FAQItem title="ゲームに実装されていないテキストがSCVで公開されてるけどいいの？">
             <p>よくないです。最優先で修正するので報告してください。</p>
           </FAQItem>
+          <FAQItem title="ゲームが更新されたけどSCVで見れないんだけど？">
+            <p>
+              SCVは手動でデータを更新したタイミングで更新されます。数分から数日お待ち下さい。
+            </p>
+          </FAQItem>
           <FAQItem title="ゲーム内のどのシーンが見れる？">
             <p>現在は以下に対応しています。</p>
             <ol className="ml-5 flex list-outside list-disc flex-col gap-2">
