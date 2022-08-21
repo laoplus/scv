@@ -186,7 +186,7 @@ export function Page({ scene }: { scene: Scene }) {
 
         <div
           className={cn(
-            "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center",
+            "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center backdrop-blur-sm",
             {
               "opacity-0": history.length !== 1,
             }
@@ -199,7 +199,8 @@ export function Page({ scene }: { scene: Scene }) {
               <strong>セリフ送り</strong>
             </li>
             <li>
-              過去のセリフ下のBACKをクリックで<strong>ログジャンプ</strong>
+              過去のセリフの選択肢・BACKをクリックで
+              <strong>ログジャンプ</strong>
             </li>
           </ol>
         </div>
