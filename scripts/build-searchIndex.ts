@@ -74,7 +74,7 @@ import type { SearchIndex } from "../pages/search/index.page";
                         ? "OP"
                         : stage?.EndCutsceneIndex === cutscene.Key
                         ? "ED"
-                        : `MID${
+                        : `Mid${
                               // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
                               stage?.MidCutsceneIndex.indexOf(cutscene.Key)! + 1
                           }`;
