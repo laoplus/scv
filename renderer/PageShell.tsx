@@ -46,11 +46,7 @@ function Header() {
 }
 
 function Content({ children }: { children: React.ReactNode }) {
-  return (
-    <main className="z-10 bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-400">
-      {children}
-    </main>
-  );
+  return <main className="z-10 bg-white text-slate-700">{children}</main>;
 }
 
 function Footer() {
