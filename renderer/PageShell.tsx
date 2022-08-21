@@ -33,7 +33,7 @@ function Header() {
           <span className="font-bold tracking-wide text-amber-500">SCV</span>
           <span className="hidden text-sm opacity-50 lg:inline"> - </span>
           <span className="hidden text-sm opacity-50 lg:inline">
-            Last Origin Scenario Viewer
+            Scene Viewer for Last Origin
           </span>
         </a>
 

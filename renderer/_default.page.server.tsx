@@ -23,7 +23,7 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
   const title = (documentProps && documentProps.title) || "SCV";
   const desc =
     (documentProps && documentProps.description) ||
-    "App using Vite + vite-plugin-ssr";
+    "Scene Viewer for Last Origin";
 
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="ja">
