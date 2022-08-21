@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Checkout lo-data repo
+        uses: actions/checkout@v3
+        with:
+          repository: laoplus/lo-data
+          token: ${{ secrets.GH_PAT_CLONE_DATA_REPO }}
+          path: data
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages publish dist --project-name=scv
