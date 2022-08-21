@@ -9,19 +9,17 @@ type PageProps = Awaited<
 
 export function Page({ chapter }: PageProps) {
   return (
-    <>
+    <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>Main Stories</Heading>
 
-      <div className="flex flex-col gap-8 p-2">
-        <div
-          key={chapter.Chapter_IDX}
-          id={`${chapter.Chapter_IDX}`}
-          className="flex flex-col gap-4"
-        >
-          <h2 className="sticky top-0 text-2xl">{chapter.ChapterName}</h2>
-          <StageGridTable eventIndexStr="main" stages={chapter.ChapterStages} />
-        </div>
+      <div
+        key={chapter.Chapter_IDX}
+        id={`${chapter.Chapter_IDX}`}
+        className="flex flex-col gap-6 px-4 md:px-0"
+      >
+        <h2 className="text-2xl">{chapter.ChapterName}</h2>
+        <StageGridTable eventIndexStr="main" stages={chapter.ChapterStages} />
       </div>
-    </>
+    </div>
   );
 }
