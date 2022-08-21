@@ -10,9 +10,9 @@ const FAQItem = ({
   children: React.ReactNode;
 }) => {
   return (
-    <details className="w-full bg-white p-4">
-      <summary className="cursor-pointer font-bold">{title}</summary>
-      <div className="mt-2 flex flex-col gap-2 [&_a]:underline [&_a]:underline-offset-2">
+    <details className="w-full bg-white">
+      <summary className="cursor-pointer p-4 font-bold">{title}</summary>
+      <div className="m-4 mt-0 flex flex-col gap-2 [&_a]:underline [&_a]:underline-offset-2">
         {children}
       </div>
     </details>
