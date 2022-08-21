@@ -30,7 +30,7 @@ import type { SearchIndex } from "../pages/search/index.page";
     });
     const scenes = await Promise.all(
         filenames.map(async (file) => {
-            const data = await fs.readFile(`${dialogsPath}\\${file}`, "utf-8");
+            const data = await fs.readFile(`${dialogsPath}/${file}`, "utf-8");
             return JSON.parse(data) as Scene;
         })
     );
