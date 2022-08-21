@@ -183,6 +183,26 @@ export function Page({ scene }: { scene: Scene }) {
             )}
           />
         ))}
+
+        <div
+          className={cn(
+            "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center",
+            {
+              "opacity-0": history.length !== 1,
+            }
+          )}
+        >
+          <h2 className="text-xl font-bold">シーンビューアの使い方</h2>
+          <ol className="flex flex-col gap-2">
+            <li>
+              背景画像・セリフ下のNEXT・選択肢をクリックで
+              <strong>セリフ送り</strong>
+            </li>
+            <li>
+              過去のセリフ下のBACKをクリックで<strong>ログジャンプ</strong>
+            </li>
+          </ol>
+        </div>
       </div>
 
       <div className="relative -top-2 z-10 flex flex-col gap-2 px-2">
