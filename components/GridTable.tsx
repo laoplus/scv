@@ -91,7 +91,6 @@ export function StageGridTable({
             {/* Midの列 */}
             {s.MidCutsceneIndex[0] !== "0" && (
               <>
-                {console.log(s.MidCutsceneIndex, s.MidCutsceneCharcters)}
                 {s.MidCutsceneIndex.map((sceneId, i) => (
                   <>
                     <div />
