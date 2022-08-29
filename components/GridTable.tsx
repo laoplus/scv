@@ -72,7 +72,7 @@ export function StageGridTable({
               {s.StageDesc}
             </div>
 
-            {/* 3列目 */}
+            {/* OPの列 */}
             {s.StartCutsceneIndex !== "0" && (
               <>
                 <div />
@@ -88,25 +88,10 @@ export function StageGridTable({
               </>
             )}
 
-            {/* 4列目 */}
-            {s.EndCutsceneIndex !== "0" && (
+            {/* Midの列 */}
+            {s.MidCutsceneIndex[0] !== "0" && (
               <>
-                <div />
-                <a
-                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed/`.toLowerCase()}
-                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
-                >
-                  ED
-                </a>
-                <div className="pointer-events-none flex flex-wrap gap-1">
-                  <UnitIconGroup characters={s.EndCutsceneCharcters} />
-                </div>
-              </>
-            )}
-
-            {/* 5列目 */}
-            {s.MidCutsceneIndex.length !== 1 && s.MidCutsceneIndex[0] !== "0" && (
-              <>
+                {console.log(s.MidCutsceneIndex, s.MidCutsceneCharcters)}
                 {s.MidCutsceneIndex.map((sceneId, i) => (
                   <>
                     <div />
@@ -124,6 +109,22 @@ export function StageGridTable({
                     </div>
                   </>
                 ))}
+              </>
+            )}
+
+            {/* EDの列 */}
+            {s.EndCutsceneIndex !== "0" && (
+              <>
+                <div />
+                <a
+                  href={`/scenes/${eventIndexStr}/${s.StageIdxString}/ed/`.toLowerCase()}
+                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+                >
+                  ED
+                </a>
+                <div className="pointer-events-none flex flex-wrap gap-1">
+                  <UnitIconGroup characters={s.EndCutsceneCharcters} />
+                </div>
               </>
             )}
           </Fragment>
