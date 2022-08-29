@@ -174,7 +174,7 @@ export function Page({ scene }: { scene: Scene }) {
             key={index}
             src={image}
             className={cn(
-              "pointer-events-none absolute inset-6 opacity-0 transition-opacity delay-200 duration-300",
+              "pointer-events-none absolute left-0 right-0 mx-auto max-h-full object-contain p-2 pb-3 opacity-0 transition-opacity delay-200 duration-300",
               {
                 "pointer-events-auto opacity-100 delay-[0ms]":
                   latestDialog().Add_ImageName !== "" &&
