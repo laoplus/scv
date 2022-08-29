@@ -1,6 +1,19 @@
-# SCV
+<h1 align="center">
+    <a href="https://scv.laoplus.net/">SCV</a>
+</h1>
+<p align="center">
+    <a href="https://scv.laoplus.net/">scv.laoplus.net</a>
+<p>
 
-## build
+<p align="center">Scenario and Scene Viewer Website for Last Origin.</p>
+
+<p align="center">
+    <a href="https://discord.gg/Z6XSqZn6Zj">
+        <img src="https://img.shields.io/discord/913406465312690217.svg?label=&logo=discord&logoColor=ffffff&color=5865F2&labelColor=5865F2&style=flat-square" alt="Discord" />
+    </a>
+</p>
+
+## development
 
 ### data
 
@@ -19,9 +32,7 @@ SCV をビルドするには `/data` にデータが必要です。
 mklink /d C:\Users\Eai\ghq\github.com\laoplus\scv\data C:\Users\Eai\ghq\github.com\laoplus\lo-data
 ```
 
-### dev
-
-#### アイコンライブラリ
+### アイコンライブラリ
 
 [`unplugin-icons`](https://github.com/antfu/unplugin-icons)を使っています。
 
