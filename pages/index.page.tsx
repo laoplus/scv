@@ -75,7 +75,7 @@ export function Page() {
         <Heading level={1} className="px-0 py-0">
           SCV
         </Heading>
-        <span>Scene Viewer for Last Origin</span>
+        <span>SCVは日本版ラストオリジンのシーン・シナリオビューアです</span>
       </div>
 
       <Alerts title="SCVは現在プレリリース状態です" type="warning">
