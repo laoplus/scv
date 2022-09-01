@@ -51,7 +51,10 @@ function Content({ children }: { children: React.ReactNode }) {
 
 function Footer() {
   return (
-    <footer className="sticky top-[100vh] bg-slate-800 text-gray-300">
+    <footer
+      className="sticky top-[100vh] bg-slate-800 text-gray-300"
+      data-nosnippet
+    >
       <div className="mx-auto flex max-w-7xl flex-col justify-center gap-4 px-2 py-10 text-sm md:px-8">
         <span>
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.

@@ -191,6 +191,7 @@ export function Page({ scene }: { scene: Scene }) {
               "opacity-0": history.length !== 1,
             }
           )}
+          data-nosnippet
         >
           <h2 className="text-xl font-bold">シーンビューアの使い方</h2>
           <ol className="flex flex-col gap-2">
