@@ -31,6 +31,8 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description" content="${meta.description}" />
             <title>${meta.title}</title>
+            <meta property="og:description" content="${meta.description}" />
+            <meta property="og:title" content="${meta.title}" />
             <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
         </head>
     <body>

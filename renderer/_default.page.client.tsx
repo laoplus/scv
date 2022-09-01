@@ -34,10 +34,31 @@ async function render(pageContext: PageContextBuiltInClient & PageContext) {
   const meta = pageContext.exports.getDocumentProps
     ? createPageMeta(pageContext.exports.getDocumentProps(pageContext))
     : createPageMeta(pageContext.exports.documentProps);
-  document.title = meta.title;
-  document.head.querySelector<HTMLMetaElement>(
+  updateMetaTags(meta);
+}
+
+function updateMetaTags({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  const titleElement = document.querySelector("title")!;
+  const descriptionElement = document.head.querySelector<HTMLMetaElement>(
     'meta[name="description"]'
-  )!.content = meta.description;
+  )!;
+  const ogTitleElement = document.head.querySelector<HTMLMetaElement>(
+    'meta[property="og:title"]'
+  )!;
+  const ogDescriptionElement = document.head.querySelector<HTMLMetaElement>(
+    'meta[property="og:description"]'
+  )!;
+
+  titleElement.textContent = title;
+  descriptionElement.content = description;
+  ogTitleElement.content = title;
+  ogDescriptionElement.content = description;
 }
 
 function onHydrationEnd() {
