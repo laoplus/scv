@@ -3,11 +3,18 @@ import { StageGridTable } from "../../components/GridTable";
 import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./eventDetails.page.server";
 
-type PageProps = Awaited<
-  ReturnType<typeof onBeforeRender>
->["pageContext"]["pageProps"];
+type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 
-export function Page({ eventStories }: PageProps) {
+export function getDocumentProps({ pageProps: { eventStories } }: PageContext) {
+  return {
+    title: ["イベントストーリー", eventStories[0][0].Event_CategoryName].join(
+      " "
+    ),
+    description: "「" + eventStories[0][0].Event_CategoryDesc + "」",
+  };
+}
+
+export function Page({ eventStories }: PageContext["pageProps"]) {
   return (
     <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>

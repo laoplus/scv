@@ -3,11 +3,16 @@ import { StageGridTable } from "../../components/GridTable";
 import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./chapterDetail.page.server";
 
-type PageProps = Awaited<
-  ReturnType<typeof onBeforeRender>
->["pageContext"]["pageProps"];
+type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 
-export function Page({ chapter }: PageProps) {
+export function getDocumentProps({ pageProps: { chapter } }: PageContext) {
+  return {
+    title: ["メインストーリー", `第${chapter.Chapter_IDX}区域`].join(" "),
+    description: "「" + chapter.ChapterName + "」",
+  };
+}
+
+export function Page({ chapter }: PageContext["pageProps"]) {
   return (
     <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>Main Stories</Heading>

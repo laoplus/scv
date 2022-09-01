@@ -5,10 +5,11 @@ import { escapeInject, dangerouslySkipEscape } from "vite-plugin-ssr";
 import logoUrl from "./logo.svg";
 import type { PageContext } from "./types";
 import type { PageContextBuiltIn } from "vite-plugin-ssr";
+import { createPageMeta } from "./createPageMeta";
 
 export { render };
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ["pageProps"];
+export const passToClient = ["documentProps", "pageProps"];
 
 async function render(pageContext: PageContextBuiltIn & PageContext) {
   const { Page, pageProps } = pageContext;
@@ -18,12 +19,9 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
     </PageShell>
   );
 
-  // See https://vite-plugin-ssr.com/head
-  const { documentProps } = pageContext;
-  const title = (documentProps && documentProps.title) || "SCV";
-  const desc =
-    (documentProps && documentProps.description) ||
-    "Scene Viewer for Last Origin";
+  const meta = pageContext.exports.getDocumentProps
+    ? createPageMeta(pageContext.exports.getDocumentProps(pageContext))
+    : createPageMeta(pageContext.exports.documentProps);
 
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="ja">
@@ -31,8 +29,8 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
             <meta charset="UTF-8" />
             <link rel="icon" href="${logoUrl}" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta name="description" content="${desc}" />
-            <title>${title}</title>
+            <meta name="description" content="${meta.description}" />
+            <title>${meta.title}</title>
             <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
         </head>
     <body>

@@ -16,6 +16,11 @@ export type SearchIndex = {
   path: string;
 };
 
+export const documentProps = {
+  title: "Search",
+  description: "ゲーム内の全シナリオの文章を全文検索できます。",
+};
+
 const NotFound = () => {
   const notFoundIcons = [
     "https://cdn.laoplus.net/sticker/Diyap04_4.webp",

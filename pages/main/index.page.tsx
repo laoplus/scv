@@ -7,6 +7,10 @@ type PageProps = Awaited<
   ReturnType<typeof onBeforeRender>
 >["pageContext"]["pageProps"];
 
+export const documentProps = {
+  title: "メインストーリー",
+};
+
 export function Page({ chapters }: PageProps) {
   return (
     <div className="md:mx-4 lg:mx-8">

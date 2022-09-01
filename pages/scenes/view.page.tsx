@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
-import { Dialog, Scene } from "../types/Scene";
+import { Dialog } from "../types/Scene";
+import { onBeforeRender } from "./view.page.server";
+
+type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 
 type ExtendedDialog = Dialog & {
   speaker?: {
@@ -36,7 +39,13 @@ const parseDialog = (dialog: Dialog) => {
   };
 };
 
-export function Page({ scene }: { scene: Scene }) {
+export function getDocumentProps({
+  documentProps: { title, description },
+}: PageContext) {
+  return { title, description };
+}
+
+export function Page({ scene }: PageContext["pageProps"]) {
   if (scene.length === 0) {
     return <p>no dialogs...</p>;
   }

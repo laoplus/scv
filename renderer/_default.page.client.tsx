@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 import type { PageContextBuiltInClient } from "vite-plugin-ssr/client";
+import { createPageMeta } from "./createPageMeta";
 
 export const clientRouting = true;
 export { render };
@@ -28,7 +29,15 @@ async function render(pageContext: PageContextBuiltInClient & PageContext) {
     }
     root.render(page);
   }
-  // document.title = getPageTitle(pageContext);
+
+  // update title and description
+  const meta = pageContext.exports.getDocumentProps
+    ? createPageMeta(pageContext.exports.getDocumentProps(pageContext))
+    : createPageMeta(pageContext.exports.documentProps);
+  document.title = meta.title;
+  document.head.querySelector<HTMLMetaElement>(
+    'meta[name="description"]'
+  )!.content = meta.description;
 }
 
 function onHydrationEnd() {

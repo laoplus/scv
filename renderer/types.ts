@@ -4,8 +4,14 @@ export type PageContext = {
     Page: (pageProps: PageProps) => React.ReactElement;
     pageProps: PageProps;
     urlPathname: string;
-    documentProps?: {
-        title?: string;
-        description?: string;
+    exports: {
+        documentProps?: {
+            title?: string;
+            description?: string;
+        };
+        getDocumentProps?: (pageProps: PageProps) => {
+            title: string;
+            description?: string;
+        };
     };
 };
