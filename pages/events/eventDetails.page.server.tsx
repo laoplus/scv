@@ -16,7 +16,6 @@ const bannedEventChapter = [
   "Chapter_01Ev11",
   "Chapter_02Ev11",
   "Chapter_03Ev11",
-  "Chapter_01Ev13",
   "Chapter_02Ev13",
   "Chapter_01Ev14",
   "Chapter_02Ev14",

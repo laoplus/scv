@@ -14,11 +14,11 @@ import type { SearchIndex } from "../pages/search/index.page";
         //メイン 9区
         "Ch09Stage",
         "Ev11",
-        "Ev13",
+        "Ch02Ev13",
         "Ev14",
         "Ev15",
         "Ev16",
-        // 外伝
+        /** 外伝 */
         "ChCS",
         "SysOP",
         "TEST",
