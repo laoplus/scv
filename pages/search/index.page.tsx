@@ -181,7 +181,7 @@ export function Page() {
         </div>
 
         {showSpeakerSelector && (
-          <div className="flex flex-col gap-2  md:rounded-lg">
+          <div className="flex flex-col gap-2 md:rounded-lg">
             <SpeakerSelector
               searchIndexLoading={searchIndexLoading}
               speakerNames={speakerNames}
@@ -190,13 +190,13 @@ export function Page() {
           </div>
         )}
 
-        <div className="sticky top-14 z-20 flex flex-col gap-2  md:rounded-lg">
+        <div className="sticky top-14 z-20 flex flex-col gap-2 md:rounded-lg">
           <div className="relative shadow-sm">
             <input
               type="search"
               disabled={searchIndexLoading}
               className={cn(
-                "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white p-4  pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
+                "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white p-4 pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
                 searchIndexLoading && "cursor-not-allowed pl-11"
               )}
               placeholder={
