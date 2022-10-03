@@ -4,7 +4,7 @@ import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { UnitIcon } from "../../components/UnitIcon";
 import { Heading } from "../../components/Heading";
 import { toHiragana } from "./util";
-import { MemoSpeakerSelector, SpeakerOption } from "./SpeakerSelecter";
+import { MemoSpeakerSelector, SpeakerOption } from "./SpeakerSelector";
 import { countBy } from "lodash-es";
 
 export type SearchIndex = {
