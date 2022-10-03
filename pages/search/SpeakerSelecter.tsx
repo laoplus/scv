@@ -37,6 +37,8 @@ export const SpeakerSelector = ({
           setSearchSpeakerNames(v.map((v) => v.value));
         }}
         isMulti={true}
+        closeMenuOnSelect={false}
+        blurInputOnSelect={false}
         className={cn(
           "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
           searchIndexLoading && "cursor-not-allowed pl-11"
@@ -119,3 +121,5 @@ export const SpeakerSelector = ({
     </div>
   );
 };
+
+export const MemoSpeakerSelector = React.memo(SpeakerSelector);

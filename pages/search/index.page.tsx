@@ -4,7 +4,7 @@ import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { UnitIcon } from "../../components/UnitIcon";
 import { Heading } from "../../components/Heading";
 import { toHiragana } from "./util";
-import { SpeakerSelector } from "./SpeakerSelecter";
+import { MemoSpeakerSelector } from "./SpeakerSelecter";
 
 export type SearchIndex = {
   key: string;
@@ -182,7 +182,7 @@ export function Page() {
 
         {showSpeakerSelector && (
           <div className="flex flex-col gap-2 md:rounded-lg">
-            <SpeakerSelector
+            <MemoSpeakerSelector
               searchIndexLoading={searchIndexLoading}
               speakerNames={speakerNames}
               setSearchSpeakerNames={setSearchSpeakerNames}
