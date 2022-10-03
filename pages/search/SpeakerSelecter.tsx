@@ -27,7 +27,7 @@ const Option = (props: OptionProps<SpeakerOption>) => {
       <div className="flex items-center justify-between leading-tight">
         <div>{props.data.label}</div>
         <div className="shrink-0 rounded bg-gray-100 p-1 text-xs leading-none">
-          {props.data.count}
+          {props.data.count.toLocaleString()}
         </div>
       </div>
     </components.Option>
