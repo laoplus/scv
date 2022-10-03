@@ -1,9 +1,19 @@
 import React from "react";
-import ReactSelect, { components, DropdownIndicatorProps } from "react-select";
+import ReactSelect, {
+  components,
+  DropdownIndicatorProps,
+  OptionProps,
+} from "react-select";
 import { cn } from "../../components/utils";
 import { toHiragana } from "./util";
 
-const DropdownIndicator = (props: DropdownIndicatorProps) => {
+export type SpeakerOption = {
+  value: string | null;
+  label: string;
+  count: number;
+};
+
+const DropdownIndicator = (props: DropdownIndicatorProps<SpeakerOption>) => {
   return (
     <components.DropdownIndicator {...props}>
       <OcticonChevronDown24 className="h-6 w-6 text-slate-400" />
@@ -11,29 +21,37 @@ const DropdownIndicator = (props: DropdownIndicatorProps) => {
   );
 };
 
+const Option = (props: OptionProps<SpeakerOption>) => {
+  return (
+    <components.Option {...props}>
+      <div className="flex items-center justify-between leading-tight">
+        <div>{props.data.label}</div>
+        <div className="shrink-0 rounded bg-gray-100 p-1 text-xs leading-none">
+          {props.data.count}
+        </div>
+      </div>
+    </components.Option>
+  );
+};
+
 export const SpeakerSelector = ({
   searchIndexLoading,
-  speakerNames,
+  speakerOptions,
   setSearchSpeakerNames,
 }: {
   searchIndexLoading: boolean;
-  speakerNames: (string | null)[];
+  speakerOptions: SpeakerOption[];
   setSearchSpeakerNames: (speakerNames: (string | null)[]) => void;
 }) => {
-  console.log(speakerNames);
+  console.log(speakerOptions);
   return (
     <div className="relative shadow-sm">
       <ReactSelect
         inputId="speaker"
         instanceId={"speaker-select"}
-        options={speakerNames
-          .map((v) => ({
-            value: v,
-            label: v === null ? "(なし)" : v,
-          }))
-          .sort((a, b) => a.label.localeCompare(b.label))}
+        options={speakerOptions}
         onChange={(option) => {
-          const v = option as { value: string; label: string }[];
+          const v = option as SpeakerOption[];
           setSearchSpeakerNames(v.map((v) => v.value));
         }}
         isMulti={true}
@@ -48,7 +66,7 @@ export const SpeakerSelector = ({
             ? "検索インデックスを読み込み中..."
             : "話者で絞り込む..."
         }
-        components={{ DropdownIndicator }}
+        components={{ DropdownIndicator, Option }}
         filterOption={(option, rawInput) => {
           const haystack = toHiragana(
             option.label.toLowerCase().normalize("NFKC")

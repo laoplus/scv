@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from "lodash-es";
 import { tables } from "../serverUtil";
 
 export async function onBeforeRender() {

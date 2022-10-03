@@ -4,7 +4,8 @@ import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { UnitIcon } from "../../components/UnitIcon";
 import { Heading } from "../../components/Heading";
 import { toHiragana } from "./util";
-import { MemoSpeakerSelector } from "./SpeakerSelecter";
+import { MemoSpeakerSelector, SpeakerOption } from "./SpeakerSelecter";
+import { countBy } from "lodash-es";
 
 export type SearchIndex = {
   key: string;
@@ -107,13 +108,22 @@ export function Page() {
   const [searchIndexLoading, setSearchIndexLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [searchIndex, setSearchIndex] = useState<SearchIndex[]>([]);
-  const speakerNames = useMemo(
-    () => [...new Set(searchIndex.map((v) => v.speaker.name))],
-    [searchIndex]
-  );
   const [searchSpeakerNames, setSearchSpeakerNames] = useState<
     (string | null)[]
   >([]);
+  const speakerOptions = useMemo(() => {
+    const speakerNames = searchIndex.map((v) => v.speaker.name);
+    const speakerCounts = Object.entries(countBy(speakerNames));
+    const options = speakerCounts
+      .map<SpeakerOption>(([speaker, count]) => ({
+        // countByの時点でnullは"null"に変換されている
+        label: speaker === "null" ? "(なし)" : speaker,
+        value: speaker === "null" ? null : speaker,
+        count,
+      }))
+      .sort((s1, s2) => s1.label.localeCompare(s2.label));
+    return options;
+  }, [searchIndex]);
 
   const [showSpeakerSelector, setShowSpeakerSelector] = useState(false);
 
@@ -184,8 +194,8 @@ export function Page() {
           <div className="flex flex-col gap-2 md:rounded-lg">
             <MemoSpeakerSelector
               searchIndexLoading={searchIndexLoading}
-              speakerNames={speakerNames}
               setSearchSpeakerNames={setSearchSpeakerNames}
+              speakerOptions={speakerOptions}
             />
           </div>
         )}

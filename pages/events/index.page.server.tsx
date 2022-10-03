@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from "lodash-es";
 import { publicEvents } from "./eventDetails.page.server";
 
 export async function onBeforeRender() {
