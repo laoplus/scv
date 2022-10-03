@@ -38,7 +38,7 @@ export const SpeakerSelector = ({
         }}
         isMulti={true}
         className={cn(
-          "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white p-4 text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
+          "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
           searchIndexLoading && "cursor-not-allowed pl-11"
         )}
         placeholder={
@@ -65,6 +65,12 @@ export const SpeakerSelector = ({
             ...provided,
             border: "none",
             minHeight: "auto",
+            padding: "1rem", // p-4
+            borderRadius: 0,
+            // tailwind breakpoint md:
+            "@media (min-width: 768px)": {
+              borderRadius: "0.5rem", // rounded-lg
+            },
           }),
           valueContainer: (provided) => ({
             ...provided,
@@ -79,6 +85,7 @@ export const SpeakerSelector = ({
           placeholder: (provided) => ({
             ...provided,
             margin: 0,
+            color: "#64748b", // text-slate-500
           }),
           clearIndicator: () => ({
             display: "none",
