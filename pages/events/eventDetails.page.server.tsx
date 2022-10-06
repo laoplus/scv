@@ -13,7 +13,6 @@ export type EventStories = Awaited<
 // filter unreleased events
 
 const bannedEventChapter = [
-  "Chapter_01Ev11",
   "Chapter_02Ev11",
   "Chapter_03Ev11",
   "Chapter_01Ev14",
