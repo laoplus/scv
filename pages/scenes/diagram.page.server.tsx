@@ -1,6 +1,7 @@
 import { PageContextBuiltIn } from "vite-plugin-ssr";
 import { getDialogFromCutName, loadScene } from "../serverUtil";
 import { getCutInfoFromParam, isSceneType } from "./viewUtil";
+import { prerender as viewPagePrerender } from "./view.page.server";
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   const { chapter, stageIdxStr, sceneType } = routeParams;
@@ -78,8 +79,6 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     }
   });
 
-  console.log(cutInfo);
-
   return {
     pageContext: {
       pageProps: {
@@ -97,4 +96,9 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
       },
     },
   };
+}
+
+export async function prerender() {
+  const viewPathList = await viewPagePrerender();
+  return viewPathList.map((path) => path + "/diagram");
 }
