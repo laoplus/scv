@@ -13,7 +13,6 @@ import type { SearchIndex } from "../pages/search/index.page";
     const bannedKeywordFilename = [
         //メイン 9区
         "Ch09Stage",
-        "Ch02Ev11",
         "Ch03Ev11",
         "Ev14",
         "Ev15",
