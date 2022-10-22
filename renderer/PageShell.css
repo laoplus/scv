@@ -29,9 +29,14 @@ mark {
     font-style: inherit;
 }
 
-*:not([data-virtuoso-scroller] *)
-    :not(#mermaid *):not(.react-transform-wrapper *) {
+* {
     @apply transition-all;
+}
+
+[data-virtuoso-scroller] *,
+#mermaid *,
+.react-transform-wrapper * {
+    @apply transition-none;
 }
 
 #page-view main {
