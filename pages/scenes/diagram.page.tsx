@@ -78,7 +78,7 @@ export function Page({
             <div className="p-12">Rendering...</div>
           ) : (
             <div
-              className="pt-4 pb-24"
+              className="p-24"
               id="mermaid"
               dangerouslySetInnerHTML={{ __html: mermaidResult }}
             ></div>

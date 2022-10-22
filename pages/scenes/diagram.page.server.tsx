@@ -64,17 +64,28 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   });
 
   scene.forEach((dialog) => {
-    if (dialog.NextDialogScript !== "") {
+    // 選択肢がない場合
+    if (dialog.NextDialogScript !== "" && dialog.SelectionIndex.length === 0) {
       mermaidSourceArray.push(
         `    ${dialog.Key} --> ${dialog.NextDialogScript}`
       );
     }
 
+    // 選択肢がある場合
     if (dialog.SelectionIndex.length !== 0) {
       dialog.SelectionIndex.forEach((selection, index) => {
-        mermaidSourceArray.push(
-          `    ${dialog.Key} -- "${selection}" --> ${dialog.SelectionIndex_Next[index]}`
-        );
+        const dest = dialog.SelectionIndex_Next[index];
+        if (dest === undefined) {
+          // 選択肢があるがSelectionIndex_Nextがない場合
+          mermaidSourceArray.push(
+            `    ${dialog.Key} -- "${selection}" --> ${dialog.NextDialogScript}`
+          );
+        } else {
+          // 選択肢があってSelectionIndex_Nextもある場合
+          mermaidSourceArray.push(
+            `    ${dialog.Key} -- "${selection}" --> ${dialog.SelectionIndex_Next[index]}`
+          );
+        }
       });
     }
   });
