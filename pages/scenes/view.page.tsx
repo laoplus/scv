@@ -71,10 +71,23 @@ export function Page({ scene }: PageContext["pageProps"]) {
         return;
       }
       const nextDialog = scene.find((d) => d.Key === dialog.NextDialogScript);
-      if (!nextDialog) {
-        throw new Error("next dialog not found");
+      if (nextDialog) {
+        addHistory(nextDialog);
+        return;
       }
-      addHistory(nextDialog);
+
+      // nextDialogが見つからなかったときのfallback
+      // 次の番号のdialogを取得する
+      console.warn(
+        "'NextDialogScript' not found. fallback to next dialog...",
+        dialog
+      );
+      const currentDialogIndex = scene.findIndex((d) => d.Key === dialog.Key);
+      const anotherNextDialog = scene[currentDialogIndex + 1];
+      if (!anotherNextDialog) {
+        throw new Error("no next dialog");
+      }
+      addHistory(anotherNextDialog);
     } else {
       // is history
       const historyIndex = history.findIndex(
