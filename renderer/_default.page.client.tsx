@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 import type { PageContextBuiltInClient } from "vite-plugin-ssr/client";
@@ -67,6 +69,12 @@ function onHydrationEnd() {
     "Elements included in the current page:",
     document.body.querySelectorAll(`*:not(script, link)`).length
   );
+
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 1.0,
+  });
 }
 
 function onPageTransitionStart() {
