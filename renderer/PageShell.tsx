@@ -60,10 +60,9 @@ function Footer() {
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.
         </span>
         <span>
-          SCV and LAOPLUS is not affiliated with or endorsed by PiG Corporation
-          or SmartJoy Co., Ltd.
+          SCV and LAOPLUS is not affiliated with or endorsed by PiG Corporation.
         </span>
-        <span>&copy; PiG Corporation &amp; SmartJoy Co.,Ltd.</span>
+        <span>&copy; PiG Corporation</span>
       </div>
     </footer>
   );

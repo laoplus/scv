@@ -192,10 +192,7 @@ export function Page() {
           </FAQItem>
           <FAQItem title="SNSなどで共有してもいい？">
             <p>はい、共有しても問題ありません。</p>
-            <p>
-              ただし、画像やゲームテキストはPiG CorporationかSmartJoy Co.,
-              Ltd.の資産です。
-            </p>
+            <p>ただし、画像やゲームテキストはPiG Corporationの資産です。</p>
           </FAQItem>
           <FAQItem title="誰が作った？連絡先は？">
             <p>
