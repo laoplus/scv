@@ -11,8 +11,6 @@ import type { SearchIndex } from "../pages/search/index.page";
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        //メイン 9区
-        "Ch09Stage",
         "Ev14",
         "Ev15",
         "Ev16",

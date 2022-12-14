@@ -40,7 +40,7 @@ export async function onBeforeRender() {
     },
     {
       Key: "Chapter_09N",
-      CharacterIcon: "",
+      CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeGamma_N.webp`,
     },
   ];
 
