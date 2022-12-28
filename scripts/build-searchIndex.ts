@@ -11,7 +11,23 @@ import type { SearchIndex } from "../pages/search/index.page";
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        "Ev14",
+        "Ch01Ev14Stage11",
+        "Ch01Ev14Stage12",
+        "Ch01Ev14Stage13",
+        "Ch01Ev14Stage14",
+        "Ch01Ev14Stage15",
+        "Ch01Ev14Stage16",
+        "Ch01Ev14Stage17",
+        "Ch01Ev14Stage18",
+        "Ch01Ev14Stage06b",
+        "Ch01Ev14Stage07b",
+        "Ch01Ev14Stage08b",
+        "Ch01Ev14Stage09b",
+        "Ch01Ev14Stage04Ex",
+        "Ch01Ev14Stage05Ex",
+        "Ch01Ev14Stage06Ex",
+        "Ch01Ev14Stage19",
+        "Ch02Ev14",
         "Ev15",
         "Ev16",
         /** 外伝 */
@@ -19,6 +35,7 @@ import type { SearchIndex } from "../pages/search/index.page";
         "SysOP",
         "TEST",
         "Marriage",
+        "SubStory",
     ];
     const filenames = (await fs.readdir(dialogsPath)).filter((file) => {
         return !bannedKeywordFilename.some((keyword) => file.includes(keyword));
@@ -52,7 +69,9 @@ import type { SearchIndex } from "../pages/search/index.page";
                         s.MidCutsceneIndex.includes(cutscene?.Key)
                 );
                 if (stage === undefined) {
-                    throw new Error("stage not found");
+                    throw new Error(
+                        `stage not found for ${dialog.Dialog_Group} / ${cutscene?.Key}`
+                    );
                 }
 
                 const chapter =
