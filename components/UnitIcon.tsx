@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import { cn } from "./utils";
 
 export const UnitIcon = ({
@@ -25,35 +26,10 @@ export const UnitIcon = ({
     }
   }, [src, hasRendered]);
 
-  useEffect(() => {
-    setHasRendered(true);
-    if (ref.current) {
-      ref.current.onerror = onError1;
-    }
-  }, []);
-
-  const onError1 = (event: Event | string) => {
-    if (typeof event === "string") {
-      return;
-    }
-    // console.log("onError1", event);
-    const target = event.currentTarget as HTMLImageElement;
-    target.onerror = onError2;
-
-    const currentUrlObj = new URL(target.src);
-    // withour params
-    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
-
-    const newUrlObj = new URL(currentUrl);
-    const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
-    target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
-    target.src = target.src.replace(currentUrl, newUrl);
-  };
-
   /**
    * originalも見つからなかった時のフォールバック
    */
-  const onError2 = (event: Event | string) => {
+  const onErrorFallback = (event: Event | string) => {
     if (typeof event === "string") {
       return;
     }
@@ -72,6 +48,32 @@ export const UnitIcon = ({
     target.srcset = target.srcset.replaceAll(currentUrl, placeholder);
     target.src = target.src.replace(currentUrl, placeholder);
   };
+
+  useEffect(() => {
+    setHasRendered(true);
+
+    const onError = (event: Event | string) => {
+      if (typeof event === "string") {
+        return;
+      }
+      // console.log("onError1", event);
+      const target = event.currentTarget as HTMLImageElement;
+      target.onerror = onErrorFallback;
+
+      const currentUrlObj = new URL(target.src);
+      // withour params
+      const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
+
+      const newUrlObj = new URL(currentUrl);
+      const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
+      target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
+      target.src = target.src.replace(currentUrl, newUrl);
+    };
+
+    if (ref.current) {
+      ref.current.onerror = onError;
+    }
+  }, []);
 
   if (withInsetBorder) {
     return (

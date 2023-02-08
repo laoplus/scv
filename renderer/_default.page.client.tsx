@@ -1,11 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import type { PageContextBuiltInClient } from "vite-plugin-ssr/client";
+
+import { createPageMeta } from "./createPageMeta";
 import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
-import type { PageContextBuiltInClient } from "vite-plugin-ssr/client";
-import { createPageMeta } from "./createPageMeta";
 
 export const clientRouting = true;
 export { render };

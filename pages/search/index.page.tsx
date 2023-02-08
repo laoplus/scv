@@ -1,11 +1,12 @@
+import { countBy } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
-import { cn, convertScriptTextToHtml } from "../../components/utils";
-import { UnitIcon } from "../../components/UnitIcon";
+
 import { Heading } from "../../components/Heading";
-import { toHiragana } from "./util";
+import { UnitIcon } from "../../components/UnitIcon";
+import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { MemoSpeakerSelector, SpeakerOption } from "./SpeakerSelector";
-import { countBy } from "lodash-es";
+import { toHiragana } from "./util";
 
 export type SearchIndex = {
   key: string;
@@ -23,14 +24,14 @@ export const documentProps = {
   description: "ゲーム内の全シナリオの文章を全文検索できます。",
 };
 
-const NotFound = () => {
-  const notFoundIcons = [
-    "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
-    "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
-  ];
+const NotFound = () =>
+  useMemo(() => {
+    const notFoundIcons = [
+      "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
+      "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
+    ];
 
-  return useMemo(
-    () => (
+    return (
       <div>
         <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
           <img
@@ -47,10 +48,8 @@ const NotFound = () => {
           </h2>
         </div>
       </div>
-    ),
-    []
-  );
-};
+    );
+  }, []);
 
 const Dialog = ({ d }: { d: SearchIndex }) => {
   const url = d.speaker.icon
@@ -236,13 +235,15 @@ export function Page() {
               useWindowScroll
               data={searchResult}
               components={{
-                List: React.forwardRef((props, ref) => (
-                  <div
-                    {...props}
-                    ref={ref}
-                    className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
-                  />
-                )),
+                List: React.forwardRef(function VirtuosoWrapper(props, ref) {
+                  return (
+                    <div
+                      {...props}
+                      ref={ref}
+                      className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
+                    />
+                  );
+                }),
               }}
               itemContent={(index, searchIndex) => (
                 <Dialog d={searchIndex} key={index} />

@@ -88,11 +88,12 @@ export function getCutInfoFromParam({
                 ...cutMeta,
                 cutSceneIndex: stage.EndCutsceneIndex,
             };
-        default:
+        default: {
             const index = Number(sceneType.slice(3));
             return {
                 ...cutMeta,
                 cutSceneIndex: stage.MidCutsceneIndex[index - 1],
             };
+        }
     }
 }

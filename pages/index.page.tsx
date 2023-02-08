@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Heading } from "../components/Heading";
 import { cn } from "../components/utils";
 
@@ -102,7 +103,7 @@ export function Page() {
           <a
             href="https://discord.gg/Z6XSqZn6Zj"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Discord
           </a>
@@ -123,7 +124,7 @@ export function Page() {
           href="https://discord.gg/Z6XSqZn6Zj"
           className="m-auto"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           <img src="https://invidget.switchblade.xyz/Z6XSqZn6Zj" />
         </a>
@@ -200,7 +201,7 @@ export function Page() {
               <a
                 href="https://github.com/eai04191/laoplus#readme"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
               >
                 LAOPLUS（Mod）
               </a>
@@ -219,7 +220,7 @@ export function Page() {
                 <a
                   href="https://twitter.com/eai04191"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   @eai04191
                 </a>

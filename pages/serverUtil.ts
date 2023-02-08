@@ -1,9 +1,10 @@
 import fs from "fs";
+
+import { Scene } from "./types/Scene";
+import type { TableCutscene } from "./types/Table_Cutscene";
+import type { TableEventChapter } from "./types/Table_EventChapter";
 import type { TableMapChapter } from "./types/Table_MapChapter";
 import type { TableMapStage } from "./types/Table_MapStage";
-import type { TableEventChapter } from "./types/Table_EventChapter";
-import type { TableCutscene } from "./types/Table_Cutscene";
-import { Scene } from "./types/Scene";
 
 export const getAllScenesFilenames = async () => {
     const files = await fs.promises.readdir("data/dialogs");

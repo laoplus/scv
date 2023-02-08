@@ -1,4 +1,5 @@
 import { PageContextBuiltIn } from "vite-plugin-ssr";
+
 import { publicEvents } from "../events/eventDetails.page.server";
 import { getDialogFromCutName, loadScene, tables } from "../serverUtil";
 import { Stage } from "../types/Table_MapStage";
@@ -40,7 +41,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
 
 export async function prerender() {
   let stages: (Stage & { chapter: string })[] = [];
-  let pathList: string[] = [];
+  const pathList: string[] = [];
 
   publicEvents.forEach((event) => {
     const eventStages = tables.stages.filter(

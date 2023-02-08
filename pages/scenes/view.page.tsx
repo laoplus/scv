@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+
 import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { Dialog } from "../types/Scene";
 import { onBeforeRender } from "./view.page.server";
@@ -50,6 +51,10 @@ export function Page({ scene }: PageContext["pageProps"]) {
     return <p>no dialogs...</p>;
   }
 
+  return <Page2 scene={scene} />;
+}
+
+function Page2({ scene }: PageContext["pageProps"]) {
   const [history, setHistory] = useState<ExtendedDialog[]>([
     parseDialog(scene[0]),
   ]);
@@ -142,14 +147,6 @@ export function Page({ scene }: PageContext["pageProps"]) {
       .map((d) => CDN_BASE_URL + "/cut/" + d.Add_ImageName + `.webp`)
   );
 
-  useEffect(() => {
-    document.addEventListener("keydown", keyboardHandler, false);
-
-    return () => {
-      document.removeEventListener("keydown", keyboardHandler, false);
-    };
-  }, []);
-
   const keyboardHandler = useCallback((event: { key: string }) => {
     if (event.key === "Enter") {
       document
@@ -164,6 +161,14 @@ export function Page({ scene }: PageContext["pageProps"]) {
         ?.click();
     }
   }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", keyboardHandler, false);
+
+    return () => {
+      document.removeEventListener("keydown", keyboardHandler, false);
+    };
+  }, [keyboardHandler]);
 
   const screenClickHandler = useCallback(() => {
     document

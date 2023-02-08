@@ -1,10 +1,10 @@
+import { PageContextBuiltIn } from "vite-plugin-ssr";
+
 import {
   createSceneCharacters,
   getSceneCharacters,
   tables,
 } from "../serverUtil";
-import _ from "lodash-es";
-import { PageContextBuiltIn } from "vite-plugin-ssr";
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   console.log(routeParams);

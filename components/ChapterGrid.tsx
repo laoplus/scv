@@ -1,8 +1,9 @@
 import React from "react";
-import { onBeforeRender as onBeforeRenderMain } from "../pages/main/index.page.server";
+
 import { onBeforeRender as onBeforeRenderEvents } from "../pages/events/index.page.server";
-import { cn } from "./utils";
+import { onBeforeRender as onBeforeRenderMain } from "../pages/main/index.page.server";
 import { UnitIcon } from "./UnitIcon";
+import { cn } from "./utils";
 
 type MainPageProps = Awaited<
   ReturnType<typeof onBeforeRenderMain>

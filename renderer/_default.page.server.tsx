@@ -1,11 +1,12 @@
-import ReactDOMServer from "react-dom/server";
 import React from "react";
-import { PageShell } from "./PageShell";
-import { escapeInject, dangerouslySkipEscape } from "vite-plugin-ssr";
-import logoUrl from "./logo.svg";
-import type { PageContext } from "./types";
+import ReactDOMServer from "react-dom/server";
 import type { PageContextBuiltIn } from "vite-plugin-ssr";
+import { dangerouslySkipEscape,escapeInject } from "vite-plugin-ssr";
+
 import { createPageMeta } from "./createPageMeta";
+import logoUrl from "./logo.svg";
+import { PageShell } from "./PageShell";
+import type { PageContext } from "./types";
 
 export { render };
 // See https://vite-plugin-ssr.com/data-fetching

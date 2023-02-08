@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Heading } from "../../components/Heading";
-import { onBeforeRender } from "./diagram.page.server";
 import mermaid from "mermaid";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  TransformWrapper,
-  TransformComponent,
   ReactZoomPanPinchRef,
+  TransformComponent,
+  TransformWrapper,
 } from "react-zoom-pan-pinch";
+
+import { onBeforeRender } from "./diagram.page.server";
 
 type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 
@@ -29,7 +29,7 @@ export function Page({
     mermaid.mermaidAPI.render("mermaid", mermaidSource, (svg) => {
       setMermaidResult(svg);
     });
-  }, []);
+  }, [mermaidSource]);
 
   useEffect(() => {
     reactZoomPanPinchRef.current?.zoomOut();

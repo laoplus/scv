@@ -1,7 +1,8 @@
 import fs from "fs/promises";
-import type { Scene } from "../pages/types/Scene";
-import { tables } from "../pages/serverUtil";
+
 import type { SearchIndex } from "../pages/search/index.page";
+import { tables } from "../pages/serverUtil";
+import type { Scene } from "../pages/types/Scene";
 
 (async () => {
     // ワーキングディレクトリからの相対パス
@@ -74,7 +75,7 @@ import type { SearchIndex } from "../pages/search/index.page";
                         ? "ED"
                         : `Mid${
                               // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
-                              stage?.MidCutsceneIndex.indexOf(cutscene.Key)! + 1
+                              stage?.MidCutsceneIndex.indexOf(cutscene.Key) + 1
                           }`;
 
                 const chapterName = (() => {

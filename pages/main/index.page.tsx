@@ -1,7 +1,8 @@
 import React from "react";
-import { onBeforeRender } from "./index.page.server";
+
 import { ChapterGrid } from "../../components/ChapterGrid";
 import { Heading } from "../../components/Heading";
+import { onBeforeRender } from "./index.page.server";
 
 type PageProps = Awaited<
   ReturnType<typeof onBeforeRender>
