@@ -1,4 +1,3 @@
-
 import { tables } from "../serverUtil";
 
 export async function onBeforeRender() {
