@@ -10,7 +10,7 @@
         "build:searchIndex": "ts-node ./scripts/build-searchIndex.ts",
         "serve": "serve --no-clipboard -p 3081 dist/client",
         "preview": "run-s build serve",
-        "watch-preview": "onchange -k **/*.tsx -- yarn preview",
+        "watch-preview": "onchange -k \"**/*.tsx\" -- yarn preview",
         "lint": "eslint --ext .tsx,.ts . --fix"
     },
     "dependencies": {

@@ -1,6 +1,8 @@
 import fs from "fs";
 
 import { Scene } from "./types/Scene";
+import { TableChapterSubStory } from "./types/Table_ChapterSubStory";
+import { TableChapterSubStoryGroup } from "./types/Table_ChapterSubStoryGroup";
 import type { TableCutscene } from "./types/Table_Cutscene";
 import type { TableEventChapter } from "./types/Table_EventChapter";
 import type { TableMapChapter } from "./types/Table_MapChapter";
@@ -36,11 +38,27 @@ const stagesObj = JSON.parse(
 ) as TableMapStage;
 const stages = Object.entries(stagesObj).map(([, v]) => v);
 
+const chapterSubStoriesObj = JSON.parse(
+    fs.readFileSync("data/tables/_Table_ChapterSubStory.json", "utf8")
+) as TableChapterSubStory;
+const chapterSubStories = Object.entries(chapterSubStoriesObj).map(
+    ([, v]) => v
+);
+
+const chapterSubStoryGroupsObj = JSON.parse(
+    fs.readFileSync("data/tables/_Table_ChapterSubStoryGroup.json", "utf8")
+) as TableChapterSubStoryGroup;
+const chapterSubStoryGroups = Object.entries(chapterSubStoryGroupsObj).map(
+    ([, v]) => v
+);
+
 export const tables = {
     chapters,
     cutScenes,
     events,
     stages,
+    chapterSubStories,
+    chapterSubStoryGroups,
 };
 
 export type SceneCharacters = {
