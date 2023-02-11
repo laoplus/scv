@@ -14,9 +14,9 @@
         "lint": "eslint --ext .tsx,.ts . --fix"
     },
     "dependencies": {
-        "@iconify/json": "^2.2.19",
-        "@sentry/react": "^7.36.0",
-        "@sentry/tracing": "^7.36.0",
+        "@iconify/json": "^2.2.20",
+        "@sentry/react": "^7.37.1",
+        "@sentry/tracing": "^7.37.1",
         "@svgr/core": "^6.5.1",
         "@types/lodash": "^4.14.191",
         "@types/lodash-es": "^4.17.6",
@@ -29,7 +29,7 @@
         "autoprefixer": "^10.4.13",
         "clsx": "^1.2.1",
         "cross-env": "^7.0.3",
-        "eslint": "^8.33.0",
+        "eslint": "^8.34.0",
         "eslint-config-prettier": "^8.6.0",
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
@@ -46,15 +46,15 @@
         "react-dom": "^18.2.0",
         "react-select": "^5.7.0",
         "react-virtuoso": "^4.1.0",
-        "react-zoom-pan-pinch": "^2.5.0",
+        "react-zoom-pan-pinch": "^2.6.0",
         "serve": "^14.2.0",
         "tailwind-override": "^0.6.1",
-        "tailwindcss": "3.2.4",
+        "tailwindcss": "3.2.6",
         "ts-node": "^10.9.1",
         "typescript": "^4.9.5",
-        "unplugin-auto-import": "^0.13.0",
+        "unplugin-auto-import": "^0.14.2",
         "unplugin-icons": "^0.15.2",
         "vite": "^4.1.1",
-        "vite-plugin-ssr": "^0.4.77"
+        "vite-plugin-ssr": "^0.4.78"
     }
 }
