@@ -16,14 +16,13 @@ export function getDocumentProps({ pageProps: { chapter } }: PageContext) {
 export function Page({ chapter }: PageContext["pageProps"]) {
   return (
     <div className="md:mx-4 lg:mx-8">
-      <Heading level={1}>Main Stories</Heading>
+      <Heading level={1}>{chapter.ChapterName}</Heading>
 
       <div
         key={chapter.Chapter_IDX}
         id={`${chapter.Chapter_IDX}`}
         className="flex flex-col gap-6 px-4 md:px-0"
       >
-        <h2 className="text-2xl">{chapter.ChapterName}</h2>
         <StageGridTable eventIndexStr="main" stages={chapter.ChapterStages} />
       </div>
     </div>

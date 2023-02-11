@@ -19,7 +19,7 @@ export function Page({ eventStories }: PageContext["pageProps"]) {
   return (
     <div className="md:mx-4 lg:mx-8">
       <Heading level={1}>
-        Event Stories :: <span>{eventStories[0][0].Event_CategoryName}</span>
+        <span>{eventStories[0][0].Event_CategoryName}</span>
       </Heading>
 
       {eventStories.map((event) => (

@@ -6,6 +6,8 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
+import { Breadcrumb } from "../../components/Breadcrumb";
+import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./diagram.page.server";
 
 type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
@@ -25,6 +27,16 @@ export function Page({
   const [mermaidResult, setMermaidResult] = useState("");
   const reactZoomPanPinchRef = useRef<ReactZoomPanPinchRef>(null);
 
+  console.log(
+    cutSceneIndex,
+    cutType,
+    eventName,
+    stageDescription,
+    stageIdx,
+    stageName,
+    chapter
+  );
+
   useEffect(() => {
     mermaid.mermaidAPI.render("mermaid", mermaidSource, (svg) => {
       setMermaidResult(svg);
@@ -37,36 +49,36 @@ export function Page({
 
   return (
     <div className="px-4 md:mx-4 md:px-0 lg:mx-8">
-      {/* TODO: コンポーネントに移す */}
       <div className="flex flex-col gap-2 py-12">
-        <p className="opacity-70">
-          <a
-            href={
-              chapter === "main"
-                ? `/main/`
-                : `/events/${chapter.replace("ev", "")}/`
-            }
-          >
-            {eventName}
-          </a>{" "}
-          /{" "}
-          <a
-            href={
-              chapter === "main"
-                ? `/main/` // TODO
-                : `/events/${chapter.replace("ev", "")}/#${chapter}-${stageIdx}`
-            }
-          >
-            {stageIdx}
-          </a>{" "}
-          /{" "}
-          <a href="../">
-            {cutType} {stageName}
-          </a>
-        </p>
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
+        <Breadcrumb
+          levels={[
+            {
+              name: `${chapter.toUpperCase()} ${eventName}`,
+              href:
+                chapter === "main"
+                  ? `/main/`
+                  : `/events/${chapter.replace("ev", "")}/`,
+            },
+            {
+              name: `${stageIdx} ${stageName}`,
+              href:
+                chapter === "main"
+                  ? `/main/` // TODO
+                  : `/events/${chapter.replace(
+                      "ev",
+                      ""
+                    )}/#${chapter}-${stageIdx}`,
+            },
+            {
+              name: cutType,
+              href: "../",
+            },
+          ]}
+        />
+
+        <Heading level={1} className={"py-0"}>
           Diagram View (Beta)
-        </h1>
+        </Heading>
       </div>
 
       <TransformWrapper maxScale={16} ref={reactZoomPanPinchRef}>
