@@ -5,7 +5,9 @@ import { Virtuoso } from "react-virtuoso";
 import { Heading } from "../../components/Heading";
 import { UnitIcon } from "../../components/UnitIcon";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
-import { MemoSpeakerSelector, SpeakerOption } from "./SpeakerSelector";
+import { MemoSceneSelector } from "./SceneSelector";
+import { SearchOption } from "./SelectorUtil";
+import { MemoSpeakerSelector } from "./SpeakerSelector";
 import { toHiragana } from "./util";
 
 export type SearchIndex = {
@@ -107,6 +109,7 @@ export function Page() {
   const [searchIndexLoading, setSearchIndexLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [searchIndex, setSearchIndex] = useState<SearchIndex[]>([]);
+  // speaker
   const [searchSpeakerNames, setSearchSpeakerNames] = useState<
     (string | null)[]
   >([]);
@@ -114,7 +117,7 @@ export function Page() {
     const speakerNames = searchIndex.map((v) => v.speaker.name);
     const speakerCounts = Object.entries(countBy(speakerNames));
     const options = speakerCounts
-      .map<SpeakerOption>(([speaker, count]) => ({
+      .map<SearchOption>(([speaker, count]) => ({
         // countByの時点でnullは"null"に変換されている
         label: speaker === "null" ? "(なし)" : speaker,
         value: speaker === "null" ? null : speaker,
@@ -125,6 +128,26 @@ export function Page() {
   }, [searchIndex]);
 
   const [showSpeakerSelector, setShowSpeakerSelector] = useState(false);
+
+  // scene
+  const [searchSceneNames, setSearchSceneNames] = useState<(string | null)[]>(
+    []
+  );
+  const sceneOptions = useMemo(() => {
+    const sceneNames = searchIndex.map((v) => v.sceneName);
+    const sceneCounts = Object.entries(countBy(sceneNames));
+    const options = sceneCounts
+      .map<SearchOption>(([scene, count]) => ({
+        // countByの時点でnullは"null"に変換されている
+        label: scene === "null" ? "(なし)" : scene,
+        value: scene === "null" ? null : scene,
+        count,
+      }))
+      .sort((s1, s2) => s1.label.localeCompare(s2.label));
+
+    return options;
+  }, [searchIndex]);
+  const [showSceneSelector, setShowSceneSelector] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -158,9 +181,14 @@ export function Page() {
       );
     }
 
+    // シーンでの絞り込み
+    if (searchSceneNames.length !== 0) {
+      result = result.filter((d) => searchSceneNames.includes(d.sceneName));
+    }
+
     console.timeEnd("searchResult");
     return result;
-  }, [searchIndex, searchString, searchSpeakerNames])();
+  }, [searchIndex, searchSpeakerNames, searchString, searchSceneNames])();
 
   return (
     <div className="md:mx-4 lg:mx-8">
@@ -170,7 +198,10 @@ export function Page() {
           <p className="">全シナリオの文章から全文検索ができます。</p>
           <p className="">
             {searchIndex.length.toLocaleString()}件のうち
-            {searchResult.length.toLocaleString()}件を表示しています。
+            {searchResult.length === searchIndex.length
+              ? "全"
+              : searchResult.length.toLocaleString()}
+            件を表示しています。
           </p>
         </div>
 
@@ -195,6 +226,31 @@ export function Page() {
               searchIndexLoading={searchIndexLoading}
               setSearchSpeakerNames={setSearchSpeakerNames}
               speakerOptions={speakerOptions}
+            />
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 px-4 md:px-0 ">
+          <p className="inline-flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="sceneSelector"
+              checked={showSceneSelector}
+              onChange={(e) => {
+                setSearchSceneNames([]);
+                setShowSceneSelector(e.target.checked);
+              }}
+            />
+            <label htmlFor="sceneSelector">シーンでの絞り込みを使用する</label>
+          </p>
+        </div>
+
+        {showSceneSelector && (
+          <div className="flex flex-col gap-2 md:rounded-lg">
+            <MemoSceneSelector
+              searchIndexLoading={searchIndexLoading}
+              setSearchSceneNames={setSearchSceneNames}
+              sceneOptions={sceneOptions}
             />
           </div>
         )}

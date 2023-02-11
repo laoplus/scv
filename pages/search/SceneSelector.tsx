@@ -30,24 +30,24 @@ const Option = (props: OptionProps<SearchOption>) => {
   );
 };
 
-export const SpeakerSelector = ({
+export const SceneSelector = ({
   searchIndexLoading,
-  speakerOptions,
-  setSearchSpeakerNames,
+  sceneOptions,
+  setSearchSceneNames,
 }: {
   searchIndexLoading: boolean;
-  speakerOptions: SearchOption[];
-  setSearchSpeakerNames: (speakerNames: (string | null)[]) => void;
+  sceneOptions: SearchOption[];
+  setSearchSceneNames: (sceneNames: (string | null)[]) => void;
 }) => {
   return (
     <div className="relative shadow-sm">
       <ReactSelect
         inputId="speaker"
         instanceId={"speaker-select"}
-        options={speakerOptions}
+        options={sceneOptions}
         onChange={(option) => {
           const v = option as SearchOption[];
-          setSearchSpeakerNames(v.map((v) => v.value));
+          setSearchSceneNames(v.map((v) => v.value));
         }}
         isMulti={true}
         closeMenuOnSelect={false}
@@ -59,7 +59,7 @@ export const SpeakerSelector = ({
         placeholder={
           searchIndexLoading
             ? "検索インデックスを読み込み中..."
-            : "話者で絞り込む..."
+            : "シーンで絞り込む..."
         }
         components={{ DropdownIndicator, Option }}
         filterOption={(option, rawInput) => {
@@ -135,4 +135,4 @@ export const SpeakerSelector = ({
   );
 };
 
-export const MemoSpeakerSelector = React.memo(SpeakerSelector);
+export const MemoSceneSelector = React.memo(SceneSelector);
