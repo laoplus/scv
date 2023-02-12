@@ -27,16 +27,6 @@ export function Page({
   const [mermaidResult, setMermaidResult] = useState("");
   const reactZoomPanPinchRef = useRef<ReactZoomPanPinchRef>(null);
 
-  console.log(
-    cutSceneIndex,
-    cutType,
-    eventName,
-    stageDescription,
-    stageIdx,
-    stageName,
-    chapter
-  );
-
   useEffect(() => {
     mermaid.mermaidAPI.render("mermaid", mermaidSource, (svg) => {
       setMermaidResult(svg);

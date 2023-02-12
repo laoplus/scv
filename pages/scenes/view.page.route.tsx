@@ -1,1 +1,1 @@
-export default "/scenes/@chapter/@stageIdxStr/@sceneType";
+export default "/scenes/*";

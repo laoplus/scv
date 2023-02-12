@@ -2,7 +2,7 @@ import { PageContextBuiltIn } from "vite-plugin-ssr";
 
 import { getDialogFromCutName, loadScene } from "../serverUtil";
 import { prerender as viewPagePrerender } from "./view.page.server";
-import { getCutInfoFromParam, isSceneType } from "./viewUtil";
+import { getStoryCutInfoFromParam, isSceneType } from "./viewUtil";
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   const { chapter, stageIdxStr, sceneType } = routeParams;
@@ -11,7 +11,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     throw new Error("invalid sceneType");
   }
 
-  const cutInfo = getCutInfoFromParam({
+  const cutInfo = getStoryCutInfoFromParam({
     chapter,
     stageIdxStr,
     sceneType,

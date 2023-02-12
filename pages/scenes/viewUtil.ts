@@ -7,7 +7,54 @@ export function isSceneType(type: string): type is SceneType {
     return type === "op" || type === "ed" || type.startsWith("mid");
 }
 
-export function getCutInfoFromParam({
+export function getSubStoryInfoFromParam({
+    chapter,
+    unitName,
+    index,
+}: {
+    chapter: string;
+    unitName: string;
+    index: number;
+}) {
+    const subStoryGroup = tables.chapterSubStoryGroups.find(
+        (s) =>
+            s.ChapterIndex.toLowerCase().includes(chapter) &&
+            s.Key.toLowerCase().endsWith("_" + unitName)
+    );
+    if (!subStoryGroup) {
+        throw new Error(`no subStoryGroup found for ${chapter} ${unitName}`);
+    }
+
+    const subStoryKey = subStoryGroup?.ChapterSubStoryIndex[index - 1];
+    if (!subStoryKey) {
+        throw new Error(
+            `no subStoryKey found for ${chapter} ${unitName} ${index}`
+        );
+    }
+
+    const subStory = tables.chapterSubStories.find(
+        (s) => s.Key === subStoryKey
+    );
+    if (!subStory) {
+        throw new Error(
+            `no subStory found for ${chapter} ${unitName} ${index}`
+        );
+    }
+
+    const eventNumber = Number(chapter.replace("ev", ""));
+    const eventChapters = tables.events.filter(
+        (e) => e.Event_CategoryPos === eventNumber
+    );
+
+    return {
+        subStoryGroup,
+        subStoryKey,
+        subStory,
+        eventName: eventChapters[0].Event_CategoryName,
+    };
+}
+
+export function getStoryCutInfoFromParam({
     chapter,
     stageIdxStr,
     sceneType,

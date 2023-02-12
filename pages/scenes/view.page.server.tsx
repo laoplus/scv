@@ -2,18 +2,62 @@ import { PageContextBuiltIn } from "vite-plugin-ssr";
 
 import { publicEvents } from "../events/eventDetails.page.server";
 import { getDialogFromCutName, loadScene, tables } from "../serverUtil";
+import { ChapterSubStoryGroup } from "../types/Table_ChapterSubStoryGroup";
 import { Stage } from "../types/Table_MapStage";
-import { getCutInfoFromParam, isSceneType } from "./viewUtil";
+import {
+  getStoryCutInfoFromParam,
+  getSubStoryInfoFromParam,
+  isSceneType,
+} from "./viewUtil";
 
 // このページで表示する詳細を取得する
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
-  const { chapter, stageIdxStr, sceneType } = routeParams;
+  const catchAll = routeParams["*"];
+
+  if (catchAll.includes("sub")) {
+    const regex = /(?<chapter>ev\d+)\/sub\/(?<unitName>.+)\/(?<index>\d+)/;
+    const match = catchAll.match(regex);
+    if (!match || !match.groups) {
+      throw new Error("invalid route");
+    }
+    const { chapter, unitName, index } = match.groups;
+
+    const { subStory, eventName } = getSubStoryInfoFromParam({
+      chapter,
+      unitName,
+      index: Number(index),
+    });
+    const dialog = getDialogFromCutName(subStory.StoryDialog);
+    const scene = await loadScene(dialog.FileName + ".json");
+
+    return {
+      pageContext: {
+        pageProps: {
+          scene,
+        },
+        documentProps: {
+          title: [eventName, "Sub", subStory.StoryName].join(" "),
+          // サブストーリーには説明がない
+          description: "",
+        },
+      },
+    };
+  }
+
+  const regex =
+    /(?<chapter>ev\d+|main)\/(?<stageIdxStr>.+)\/(?<sceneType>op|ed|mid\d+)/;
+  const match = catchAll.match(regex);
+  if (!match || !match.groups) {
+    console.error("invalid route", catchAll);
+    throw new Error("invalid route");
+  }
+  const { chapter, stageIdxStr, sceneType } = match.groups;
 
   if (!isSceneType(sceneType)) {
     throw new Error("invalid sceneType");
   }
 
-  const cutInfo = getCutInfoFromParam({
+  const cutInfo = getStoryCutInfoFromParam({
     chapter,
     stageIdxStr,
     sceneType,
@@ -41,6 +85,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
 
 export async function prerender() {
   let stages: (Stage & { chapter: string })[] = [];
+  let subStoryGroups: (ChapterSubStoryGroup & { chapter: string })[] = [];
   const pathList: string[] = [];
 
   publicEvents.forEach((event) => {
@@ -52,6 +97,17 @@ export async function prerender() {
       ...eventStages.map((stage) => ({
         chapter: `ev${event.Event_CategoryPos}`,
         ...stage,
+      })),
+    ];
+
+    const eventSubStoryGroups = tables.chapterSubStoryGroups.filter(
+      (s) => s.ChapterIndex === event.Chapter_Key
+    );
+    subStoryGroups = [
+      ...subStoryGroups,
+      ...eventSubStoryGroups.map((subStoryGroup) => ({
+        chapter: `ev${event.Event_CategoryPos}`,
+        ...subStoryGroup,
       })),
     ];
   });
@@ -90,6 +146,17 @@ export async function prerender() {
         );
       });
     }
+  });
+
+  subStoryGroups.forEach((subStoryGroup) => {
+    subStoryGroup.ChapterSubStoryIndex.forEach((_, index) => {
+      const unitName = subStoryGroup.Key.split("_").at(-1);
+      pathList.push(
+        `/scenes/${subStoryGroup.chapter}/sub/${unitName}/${
+          index + 1
+        }`.toLowerCase()
+      );
+    });
   });
 
   return pathList;
