@@ -1,8 +1,16 @@
 import React, { Fragment } from "react";
 
-import { EventStories } from "../pages/events/eventDetails.page.server";
+import { onBeforeRender } from "../pages/events/eventDetails.page.server";
 import { UnitIcon } from "./UnitIcon";
 import { cn } from "./utils";
+
+type EventStories = Awaited<
+  ReturnType<typeof onBeforeRender>
+>["pageContext"]["pageProps"]["eventStories"];
+
+type SubStoryGroups = Awaited<
+  ReturnType<typeof onBeforeRender>
+>["pageContext"]["pageProps"]["subStoryGroups"];
 
 const UnitIconGroup = ({
   characters,
@@ -130,6 +138,34 @@ export function StageGridTable({
           </Fragment>
         )
       )}
+    </div>
+  );
+}
+
+export function SubStoryGridTable({
+  subStoryGroup,
+}: {
+  subStoryGroup: SubStoryGroups[number];
+}) {
+  return (
+    <div className="grid grid-cols-[max-content_minmax(10rem,1fr)] items-center gap-2">
+      {subStoryGroup.SubStory.map((s, i) => {
+        if (!s) return null;
+
+        return (
+          <React.Fragment key={i}>
+            <a
+              href={s.StoryPath}
+              className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+            >
+              {s.StoryName}
+            </a>
+            <div className="pointer-events-none flex flex-wrap gap-1">
+              <UnitIconGroup characters={s.Characters} />
+            </div>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }

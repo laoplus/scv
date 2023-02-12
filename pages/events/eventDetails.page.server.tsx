@@ -35,6 +35,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
       pageContext: {
         pageProps: {
           eventStories: [],
+          subStoryGroups: [],
         },
       },
     };
@@ -101,10 +102,46 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     .toArray()
     .value();
 
+  const subStoryGroups = _.flatten(
+    event.map((e) => {
+      const subStoryGroup = tables.chapterSubStoryGroups
+        .filter((s) => s.ChapterIndex === e.Chapter_Key)
+        .map((sgroup) => {
+          const unitName = sgroup.Key.split("_").at(-1);
+          const evIndex = e.Event_CategoryIndex;
+          return {
+            ...sgroup,
+            SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
+              tables.chapterSubStories.find(
+                (subStory) => subStory.Key === subStoryIndex
+              )
+            ).map((subStory, index) => {
+              if (!subStory) {
+                return null;
+              }
+              return {
+                StoryName: subStory.StoryName,
+                StoryPath: `/scenes/ev${evIndex}/sub/${unitName}/${
+                  index + 1
+                }/`.toLowerCase(),
+                Characters: getSceneCharacters({
+                  sceneCharacters,
+                  cutsceneIndex: subStory.StoryDialog,
+                }),
+              } as const;
+            }),
+          };
+        });
+
+      return subStoryGroup;
+    })
+  );
+
   return {
     pageContext: {
       pageProps: {
         eventStories: groupedEvents,
+        subStoryGroups,
       },
     },
   };
