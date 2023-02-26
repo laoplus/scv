@@ -32,8 +32,14 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description" content="${meta.description}" />
             <title>${meta.title}</title>
-            <meta property="og:description" content="${meta.description}" />
+            <meta name="twitter:card" content="summary" />
+            <meta property="og:site_name" content="SCV" />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content="${
+              import.meta.env.VITE_HOST_BASE_URL
+            }/ogp.png" />
             <meta property="og:title" content="${meta.title}" />
+            <meta property="og:description" content="${meta.description}" />
             <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
         </head>
     <body>
