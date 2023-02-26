@@ -15,7 +15,7 @@ export function createPageMeta(props: Props) {
       description,
       "SCVはラストオリジンのシーン・シナリオビューアです",
     ]
-      .join(" ")
+      .join("\n")
       .trim(),
   };
 }
