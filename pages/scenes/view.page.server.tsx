@@ -1,7 +1,12 @@
 import { PageContextBuiltIn } from "vite-plugin-ssr";
 
 import { publicEvents } from "../events/eventDetails.page.server";
-import { getDialogFromCutName, loadScene, tables } from "../serverUtil";
+import {
+  extractChapterIndexFromChapterKey,
+  getDialogFromCutName,
+  loadScene,
+  tables,
+} from "../serverUtil";
 import { ChapterSubStoryGroup } from "../types/Table_ChapterSubStoryGroup";
 import { Stage } from "../types/Table_MapStage";
 import {
@@ -14,16 +19,19 @@ import {
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   const catchAll = routeParams["*"];
 
-  if (catchAll.includes("sub")) {
-    const regex = /(?<chapter>ev\d+)\/sub\/(?<unitName>.+)\/(?<index>\d+)/;
+  if (catchAll.includes("/sub/")) {
+    const regex =
+      /ev(?<eventIndex>\d+)\/sub\/(?<chapterIndex>\d+)\/(?<unitName>.+)\/(?<index>\d+)/;
     const match = catchAll.match(regex);
     if (!match || !match.groups) {
+      console.error("invalid route", catchAll);
       throw new Error("invalid route");
     }
-    const { chapter, unitName, index } = match.groups;
+    const { eventIndex, chapterIndex, unitName, index } = match.groups;
 
     const { subStory, eventName } = getSubStoryInfoFromParam({
-      chapter,
+      eventIndex: Number(eventIndex),
+      chapterIndex: Number(chapterIndex),
       unitName,
       index: Number(index),
     });
@@ -85,7 +93,10 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
 
 export async function prerender() {
   let stages: (Stage & { chapter: string })[] = [];
-  let subStoryGroups: (ChapterSubStoryGroup & { chapter: string })[] = [];
+  let subStoryGroups: (ChapterSubStoryGroup & {
+    eventIndex: number;
+    chapterIndex: number;
+  })[] = [];
   const pathList: string[] = [];
 
   publicEvents.forEach((event) => {
@@ -106,7 +117,8 @@ export async function prerender() {
     subStoryGroups = [
       ...subStoryGroups,
       ...eventSubStoryGroups.map((subStoryGroup) => ({
-        chapter: `ev${event.Event_CategoryPos}`,
+        eventIndex: event.Event_CategoryIndex,
+        chapterIndex: extractChapterIndexFromChapterKey(event.Chapter_Key),
         ...subStoryGroup,
       })),
     ];
@@ -152,9 +164,17 @@ export async function prerender() {
     subStoryGroup.ChapterSubStoryIndex.forEach((_, index) => {
       const unitName = subStoryGroup.Key.split("_").at(-1);
       pathList.push(
-        `/scenes/${subStoryGroup.chapter}/sub/${unitName}/${
-          index + 1
-        }`.toLowerCase()
+        [
+          `/scenes`,
+          `ev${subStoryGroup.eventIndex}`,
+          `sub`,
+          `${subStoryGroup.chapterIndex}`,
+          `${unitName}`,
+          `${index + 1}`,
+          ``,
+        ]
+          .join("/")
+          .toLowerCase()
       );
     });
   });

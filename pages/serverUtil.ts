@@ -150,3 +150,13 @@ export const getDialogFromCutName = (cutName: string) => {
     }
     return dialog;
 };
+
+export const extractChapterIndexFromChapterKey = (chapterKey: string) => {
+    const chapterIndex = Number(chapterKey.match(/Chapter_(\d+)/)![1]);
+
+    if (Number.isNaN(chapterIndex)) {
+        throw new Error(`no chapter index found for ${chapterKey}`);
+    }
+
+    return chapterIndex;
+};

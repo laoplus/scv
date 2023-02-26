@@ -8,27 +8,31 @@ export function isSceneType(type: string): type is SceneType {
 }
 
 export function getSubStoryInfoFromParam({
-    chapter,
+    eventIndex,
+    chapterIndex,
     unitName,
     index,
 }: {
-    chapter: string;
+    eventIndex: number;
+    chapterIndex: number;
     unitName: string;
     index: number;
 }) {
     const subStoryGroup = tables.chapterSubStoryGroups.find(
         (s) =>
-            s.ChapterIndex.toLowerCase().includes(chapter) &&
-            s.Key.toLowerCase().endsWith("_" + unitName)
+            s.Key.toLowerCase().includes(`${chapterIndex}ev${eventIndex}_`) &&
+            s.Key.toLowerCase().endsWith(`_${unitName}`)
     );
     if (!subStoryGroup) {
-        throw new Error(`no subStoryGroup found for ${chapter} ${unitName}`);
+        throw new Error(
+            `no subStoryGroup found for ${chapterIndex} ${unitName}`
+        );
     }
 
     const subStoryKey = subStoryGroup?.ChapterSubStoryIndex[index - 1];
     if (!subStoryKey) {
         throw new Error(
-            `no subStoryKey found for ${chapter} ${unitName} ${index}`
+            `no subStoryKey found for ${chapterIndex} ${unitName} ${index}`
         );
     }
 
@@ -37,13 +41,12 @@ export function getSubStoryInfoFromParam({
     );
     if (!subStory) {
         throw new Error(
-            `no subStory found for ${chapter} ${unitName} ${index}`
+            `no subStory found for ${chapterIndex} ${unitName} ${index}`
         );
     }
 
-    const eventNumber = Number(chapter.replace("ev", ""));
     const eventChapters = tables.events.filter(
-        (e) => e.Event_CategoryPos === eventNumber
+        (e) => e.Event_CategoryPos === eventIndex
     );
 
     return {

@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 
 import type { SearchIndex } from "../pages/search/index.page";
-import { tables } from "../pages/serverUtil";
+import { extractChapterIndexFromChapterKey, tables } from "../pages/serverUtil";
 import type { Scene } from "../pages/types/Scene";
 import { ChapterSubStory } from "../pages/types/Table_ChapterSubStory";
 import { ChapterSubStoryGroup } from "../pages/types/Table_ChapterSubStoryGroup";
@@ -31,7 +31,6 @@ type SubStoryInfo = {
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        "Ch02Ev14",
         "Ev15",
         "Ev16",
         /** 外伝 */
@@ -220,6 +219,11 @@ type SubStoryInfo = {
                             };
                         }
                         case "subStory": {
+                            const eventIndex = info.event.Event_CategoryIndex;
+                            const chapterIndex =
+                                extractChapterIndexFromChapterKey(
+                                    info.event.Chapter_Key
+                                );
                             const unitName =
                                 info.subStoryGroup.Key.split("_").at(-1);
                             const subStoryIndex =
@@ -236,8 +240,9 @@ type SubStoryInfo = {
                                 ].join(" "),
                                 path: [
                                     "/scenes",
-                                    chapterPath,
+                                    `ev${eventIndex}`,
                                     "sub",
+                                    chapterIndex,
                                     unitName,
                                     subStoryIndex,
                                     "", // for trailing slash

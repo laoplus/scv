@@ -3,6 +3,7 @@ import { PageContextBuiltIn } from "vite-plugin-ssr";
 
 import {
   createSceneCharacters,
+  extractChapterIndexFromChapterKey,
   getSceneCharacters,
   tables,
 } from "../serverUtil";
@@ -108,7 +109,9 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         .filter((s) => s.ChapterIndex === e.Chapter_Key)
         .map((sgroup) => {
           const unitName = sgroup.Key.split("_").at(-1);
-          const evIndex = e.Event_CategoryIndex;
+          const eventIndex = e.Event_CategoryIndex;
+          const chapterIndex = extractChapterIndexFromChapterKey(e.Chapter_Key);
+
           return {
             ...sgroup,
             SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
@@ -121,9 +124,10 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
               }
               return {
                 StoryName: subStory.StoryName,
-                StoryPath: `/scenes/ev${evIndex}/sub/${unitName}/${
-                  index + 1
-                }/`.toLowerCase(),
+                StoryPath:
+                  `/scenes/ev${eventIndex}/sub/${chapterIndex}/${unitName}/${
+                    index + 1
+                  }/`.toLowerCase(),
                 Characters: getSceneCharacters({
                   sceneCharacters,
                   cutsceneIndex: subStory.StoryDialog,
