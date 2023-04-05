@@ -31,7 +31,6 @@ type SubStoryInfo = {
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        "Ev15",
         "Ev16",
         /** 外伝 */
         "ChCS",
@@ -56,6 +55,13 @@ type SubStoryInfo = {
             if (dialog.Script === "") {
                 continue;
             }
+
+            // 日本版追加要素の暫定対応
+            // /pages/scenes/view.page.tsx も参照
+            if (!dialog.Key.includes(dialog.Dialog_Group)) {
+                continue;
+            }
+
             try {
                 const info: StageStoryInfo | SubStoryInfo = (() => {
                     const cutscene = tables.cutScenes.find(
