@@ -161,138 +161,140 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
   }, []);
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-5xl flex-col">
-      <div
-        className="relative z-10 aspect-video max-h-80 w-full select-none overflow-hidden rounded-b bg-slate-500"
-        onClick={screenClickHandler}
-      >
-        {[...bgImages].map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            className={cn(
-              "pointer-events-none absolute inset-0 mx-auto h-full object-contain opacity-0 transition-opacity delay-200 duration-300",
-              {
-                "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
-                  latestDialog().BG_ImageName
-                ),
-              }
-            )}
-          />
-        ))}
-        {[...addImages].map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            className={cn(
-              "pointer-events-none absolute left-0 right-0 mx-auto max-h-full object-contain p-2 pb-3 opacity-0 transition-opacity delay-200 duration-300",
-              {
-                "pointer-events-auto opacity-100 delay-[0ms]":
-                  latestDialog().Add_ImageName !== "" &&
-                  image.includes(latestDialog().Add_ImageName),
-              }
-            )}
-          />
-        ))}
-
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-24">
+      <div className="flex flex-col">
         <div
-          className={cn(
-            "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center backdrop-blur-sm",
-            {
-              "opacity-0": history.length !== 1,
-            }
-          )}
-          data-nosnippet
+          className="relative z-10 aspect-video max-h-80 w-full select-none overflow-hidden rounded-b bg-slate-500"
+          onClick={screenClickHandler}
         >
-          <h2 className="text-xl font-bold">シーンビューアの使い方</h2>
-          <ol className="flex flex-col gap-2">
-            <li>
-              背景画像・セリフ下のNEXT・選択肢をクリックで
-              <strong>セリフ送り</strong>
-            </li>
-            <li>
-              過去のセリフの選択肢・BACKをクリックで
-              <strong>ログジャンプ</strong>
-            </li>
-          </ol>
+          {[...bgImages].map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              className={cn(
+                "pointer-events-none absolute inset-0 mx-auto h-full object-contain opacity-0 transition-opacity delay-200 duration-300",
+                {
+                  "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
+                    latestDialog().BG_ImageName
+                  ),
+                }
+              )}
+            />
+          ))}
+          {[...addImages].map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              className={cn(
+                "pointer-events-none absolute left-0 right-0 mx-auto max-h-full object-contain p-2 pb-3 opacity-0 transition-opacity delay-200 duration-300",
+                {
+                  "pointer-events-auto opacity-100 delay-[0ms]":
+                    latestDialog().Add_ImageName !== "" &&
+                    image.includes(latestDialog().Add_ImageName),
+                }
+              )}
+            />
+          ))}
+
+          <div
+            className={cn(
+              "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center backdrop-blur-sm",
+              {
+                "opacity-0": history.length !== 1,
+              }
+            )}
+            data-nosnippet
+          >
+            <h2 className="text-xl font-bold">シーンビューアの使い方</h2>
+            <ol className="flex flex-col gap-2">
+              <li>
+                背景画像・セリフ下のNEXT・選択肢をクリックで
+                <strong>セリフ送り</strong>
+              </li>
+              <li>
+                過去のセリフの選択肢・BACKをクリックで
+                <strong>ログジャンプ</strong>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div className="relative -top-2 z-10 flex flex-col gap-2 px-2">
+          {history.map((sd) => {
+            const hasNextDialog = sd.NextDialogScript !== "";
+            return (
+              <div
+                key={sd.Key}
+                className={cn(
+                  "js-dialog relative flex min-h-[4rem] animate-dialog-appear flex-col justify-center rounded border bg-white bg-opacity-90 p-4 opacity-75 transition-opacity hover:opacity-100",
+                  {
+                    "js-current-dialog opacity-100":
+                      latestDialog().Key === sd.Key,
+                  }
+                )}
+              >
+                <div className="flex flex-col gap-1">
+                  {sd.speaker?.name && (
+                    <span className="font-bold">{sd.speaker.name}</span>
+                  )}
+                  <div
+                    className="break-all leading-normal"
+                    style={{
+                      minHeight: "calc(1em * 2 * 1.5)",
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: convertScriptTextToHtml(sd.Script),
+                    }}
+                  />
+
+                  {/* NEXT / BACK */}
+                  {sd.SelectionIndex.length === 0 && hasNextDialog && (
+                    <button
+                      className={cn(
+                        "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
+                      )}
+                      onClick={() => {
+                        dialogNextHandler(sd);
+                      }}
+                    >
+                      {latestDialog().Key === sd.Key ? "NEXT" : "BACK"}
+                    </button>
+                  )}
+
+                  {
+                    // no next dialog and no selection
+                    sd.SelectionIndex.length === 0 && !hasNextDialog && (
+                      <div className="select-none text-right text-sm">END</div>
+                    )
+                  }
+
+                  {sd.SelectionIndex.map((si, i) => {
+                    return (
+                      <button
+                        key={i}
+                        className={cn(
+                          "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
+                          {
+                            "bg-orange-600 text-white":
+                              sd.SelectionSelectedIndex === i,
+                          }
+                        )}
+                        onClick={() => {
+                          selectionHandler(sd, i);
+                        }}
+                      >
+                        {si}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="relative -top-2 z-10 flex flex-col gap-2 px-2">
-        {history.map((sd) => {
-          const hasNextDialog = sd.NextDialogScript !== "";
-          return (
-            <div
-              key={sd.Key}
-              className={cn(
-                "js-dialog relative flex min-h-[4rem] animate-dialog-appear flex-col justify-center rounded border bg-white bg-opacity-90 p-4 opacity-75 transition-opacity hover:opacity-100",
-                {
-                  "js-current-dialog opacity-100":
-                    latestDialog().Key === sd.Key,
-                }
-              )}
-            >
-              <div className="flex flex-col gap-1">
-                {sd.speaker?.name && (
-                  <span className="font-bold">{sd.speaker.name}</span>
-                )}
-                <div
-                  className="break-all leading-normal"
-                  style={{
-                    minHeight: "calc(1em * 2 * 1.5)",
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: convertScriptTextToHtml(sd.Script),
-                  }}
-                />
-
-                {/* NEXT / BACK */}
-                {sd.SelectionIndex.length === 0 && hasNextDialog && (
-                  <button
-                    className={cn(
-                      "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
-                    )}
-                    onClick={() => {
-                      dialogNextHandler(sd);
-                    }}
-                  >
-                    {latestDialog().Key === sd.Key ? "NEXT" : "BACK"}
-                  </button>
-                )}
-
-                {
-                  // no next dialog and no selection
-                  sd.SelectionIndex.length === 0 && !hasNextDialog && (
-                    <div className="select-none text-right text-sm">END</div>
-                  )
-                }
-
-                {sd.SelectionIndex.map((si, i) => {
-                  return (
-                    <button
-                      key={i}
-                      className={cn(
-                        "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
-                        {
-                          "bg-orange-600 text-white":
-                            sd.SelectionSelectedIndex === i,
-                        }
-                      )}
-                      onClick={() => {
-                        selectionHandler(sd, i);
-                      }}
-                    >
-                      {si}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="h-screen" />
-      <div className="p-2">
+      <div className="flex flex-col gap-2  px-2">
         <h2 className="text-2xl">Transcription</h2>
         <ol className="list-outside list-decimal rounded border p-4 pl-10 text-sm text-gray-600">
           {scene.map((d, i) => {
