@@ -2,6 +2,27 @@ import React from "react";
 
 import { Heading } from "../components/Heading";
 import { cn } from "../components/utils";
+import { onBeforeRender } from "./index.page.server";
+
+type PageProps = Awaited<
+  ReturnType<typeof onBeforeRender>
+>["pageContext"]["pageProps"];
+
+function timeAgo(date: Date, now = new Date()): string {
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (seconds < 60) return `${seconds}秒前`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}分前`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}時間前`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days}日前`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}ヶ月前`;
+  const years = Math.floor(months / 12);
+  return `${years}年前`;
+}
 
 const FAQItem = ({
   title,
@@ -69,7 +90,7 @@ const Alerts = ({
   );
 };
 
-export function Page() {
+export function Page({ buildDate }: PageProps) {
   return (
     <div className="my-12 flex flex-col gap-8 px-2 text-center">
       <div className="flex flex-col gap-4">
@@ -77,11 +98,21 @@ export function Page() {
           SCV
         </Heading>
         <span>SCVは日本版ラストオリジンのシーン・シナリオビューアです</span>
+        <span
+          title={new Intl.DateTimeFormat("ja-JP", {
+            dateStyle: "medium",
+            timeStyle: "long",
+          }).format(new Date(buildDate))}
+        >
+          最終更新:&nbsp;
+          {timeAgo(new Date(buildDate))}
+        </span>
       </div>
 
       <Alerts title="SCVは現在プレリリース状態です" type="warning">
         <p>
           基本的な機能は動作するはずですが、すべては開発中であり最終的な品質ではありません。
+          <br />
         </p>
       </Alerts>
 
@@ -92,9 +123,26 @@ export function Page() {
         <p>
           キャラクターが表示されない・エフェクトが不完全などの理由で現在のSCVでのシナリオ閲覧体験はゲームより劣っています。最良の体験を得るために1回目はゲーム内で閲覧することを推奨します。
         </p>
-        <p className="text-sm">
-          （クリア済みステージのシナリオは基地内にある記録物保管所の記録室から閲覧できます。またメインシナリオを特定の箇所まで進めることで、未プレイであっても過去のイベントシナリオを閲覧できるようになります。）
-        </p>
+        <details className="rounded bg-slate-100">
+          <summary className="p-2">シナリオの解放条件について</summary>
+          <div className="flex flex-col gap-2 p-2 pt-0 ">
+            <p>
+              クリア済みステージのシナリオは基地内にある記録物保管所の記録室から閲覧できます。
+              <br />
+              また、メインシナリオを特定の箇所まで進めることで、未プレイであっても過去のイベントシナリオを閲覧できるようになります。
+            </p>
+            <p className="text-right">
+              <a
+                href="https://www.last-origin.com/news_view.html?no=485"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2"
+              >
+                公式サイトによる解放条件の解説
+              </a>
+            </p>
+          </div>
+        </details>
       </Alerts>
 
       <Alerts title="ご意見をお寄せください" type="info">
@@ -126,7 +174,10 @@ export function Page() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="https://invidget.switchblade.xyz/Z6XSqZn6Zj" />
+          <img
+            src="https://invidget.switchblade.xyz/Z6XSqZn6Zj"
+            className="aspect-[43/11] w-full"
+          />
         </a>
       </Alerts>
 
