@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Heading } from "../components/Heading";
 import { cn } from "../components/utils";
@@ -91,6 +91,12 @@ const Alerts = ({
 };
 
 export function Page({ buildDate }: PageProps) {
+  const [buildDateAgo, setBuildDateAgo] = useState<string | null>(null);
+  useEffect(() => {
+    setBuildDateAgo(timeAgo(new Date(buildDate)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="my-12 flex flex-col gap-8 px-2 text-center">
       <div className="flex flex-col gap-4">
@@ -98,15 +104,20 @@ export function Page({ buildDate }: PageProps) {
           SCV
         </Heading>
         <span>SCVは日本版ラストオリジンのシーン・シナリオビューアです</span>
-        <span
+        <time
+          dateTime={buildDate}
           title={new Intl.DateTimeFormat("ja-JP", {
             dateStyle: "medium",
             timeStyle: "long",
           }).format(new Date(buildDate))}
         >
           最終更新:&nbsp;
-          {timeAgo(new Date(buildDate))}
-        </span>
+          {buildDateAgo || (
+            <div className="inline animate-pulse rounded bg-slate-300 text-transparent">
+              0日前
+            </div>
+          )}
+        </time>
       </div>
 
       <Alerts title="SCVは現在プレリリース状態です" type="warning">
