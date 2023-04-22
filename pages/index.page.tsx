@@ -109,6 +109,7 @@ export function Page({ buildDate }: PageProps) {
           title={new Intl.DateTimeFormat("ja-JP", {
             dateStyle: "medium",
             timeStyle: "long",
+            timeZone: "Asia/Tokyo",
           }).format(new Date(buildDate))}
         >
           最終更新:&nbsp;
