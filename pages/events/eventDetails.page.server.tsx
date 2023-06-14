@@ -14,7 +14,12 @@ export type EventStories = Awaited<
 
 // filter unreleased events
 
-const bannedEventChapter = ["Chapter_01Ev16"];
+const bannedEventChapter: string[] = [
+  /** 10章 */
+  "Ch10",
+  "Ev18",
+  "Ev19",
+];
 
 export const publicEvents = tables.events.filter(
   (c) => !bannedEventChapter.includes(c.Chapter_Key)

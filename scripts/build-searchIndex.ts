@@ -31,12 +31,16 @@ type SubStoryInfo = {
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        "Ev16",
+        /** 10章 */
+        "Ch10",
+        "Ev18",
+        "Ev19",
         /** 外伝 */
         "ChCS",
         "SysOP",
         "TEST",
         "Marriage",
+        "DG_DamagedSeverely",
     ];
     const filenames = (await fs.readdir(dialogsPath)).filter((file) => {
         return !bannedKeywordFilename.some((keyword) => file.includes(keyword));
