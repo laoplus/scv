@@ -62,9 +62,9 @@ function Footer() {
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.
         </span>
         <span>
-          SCV and LAOPLUS is not affiliated with or endorsed by PiG Corporation.
+          SCV and LAOPLUS is not affiliated with or endorsed by studio Valkyrie.
         </span>
-        <span>&copy; PiG Corporation</span>
+        <span>&copy; studio Valkyrie</span>
       </div>
     </footer>
   );
