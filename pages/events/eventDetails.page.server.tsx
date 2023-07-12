@@ -17,7 +17,6 @@ export type EventStories = Awaited<
 const bannedEventChapter: string[] = [
   /** 10章 */
   "Ch10",
-  "Ev18",
   "Ev19",
 ];
 
