@@ -179,5 +179,12 @@ export async function prerender() {
     });
   });
 
-  return pathList;
+  const ignorePaths = [
+    // Cut_Ch01Ev13Stage02_3
+    "/scenes/ev13/ev1-2/mid1",
+  ];
+  const newPathList = pathList.filter((path) => !ignorePaths.includes(path));
+  // console.log(JSON.stringify(newPathList, null, 2));
+
+  return newPathList;
 }

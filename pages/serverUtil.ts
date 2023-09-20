@@ -136,6 +136,10 @@ export const getSceneCharacters = ({
         return [];
     }
 
+    if (cutsceneIndex === "Cut_Ch01Ev13Stage02_3") {
+        return [];
+    }
+
     const dialog = getDialogFromCutName(cutsceneIndex);
     const charcters = sceneCharacters.find(
         (s) => s.Cutscene_Key === dialog.Key
