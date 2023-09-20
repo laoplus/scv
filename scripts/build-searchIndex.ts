@@ -31,9 +31,9 @@ type SubStoryInfo = {
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        /** 10章 */
-        "Ch10",
         "Ev19",
+        "Ev20",
+        "Ev21",
         /** 外伝 */
         "ChCS",
         "SysOP",

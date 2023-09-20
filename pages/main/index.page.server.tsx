@@ -41,6 +41,10 @@ export async function onBeforeRender() {
       Key: "Chapter_09N",
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeGamma_N.webp`,
     },
+    {
+      Key: "Chapter_10N",
+      CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Vargr_N.webp`,
+    },
   ];
 
   const chapters = mainChapters.map((c) => {
