@@ -224,7 +224,14 @@ export function Page({ buildDate }: PageProps) {
               <span className="line-through opacity-50">仕様です。</span>
             </p>
             <p>
-              バグトラッカー（準備中）を確認して、同じ報告ながければ報告してください。
+              <a
+                href="https://github.com/laoplus/scv/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                バグトラッカー
+              </a>
+              を確認して、同じ報告ながければ報告してください。
             </p>
             <p>現在の既知のバグ</p>
             <ol className="ml-5 flex list-outside list-disc flex-col gap-2">
@@ -260,9 +267,16 @@ export function Page({ buildDate }: PageProps) {
           </FAQItem>
           <FAQItem title="誰が作った？連絡先は？">
             <p>
-              LAOPLUS（グループ）のえあいです。LAOPLUS（グループ）は
               <a
-                href="https://github.com/eai04191/laoplus#readme"
+                href="https://github.com/laoplus"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LAOPLUS（グループ）
+              </a>
+              のえあいです。LAOPLUS（グループ）は
+              <a
+                href="https://github.com/laoplus/laoplus#readme"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -276,7 +290,7 @@ export function Page({ buildDate }: PageProps) {
                 E-mail: <span>eai@mizle.net</span>
               </li>
               <li>
-                Discord: <span>Eai#4693</span>
+                Discord: <span>eai</span>
               </li>
               <li>
                 Twitter:{" "}
@@ -289,6 +303,22 @@ export function Page({ buildDate }: PageProps) {
                 </a>
               </li>
             </ol>
+          </FAQItem>
+          <FAQItem title="ソースコードは？">
+            <p>
+              ウェブサイトのソースコードは
+              <a
+                href="https://github.com/laoplus/scv/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/laoplus/scv
+              </a>
+              で公開されています。
+            </p>
+            <p>
+              このリポジトリにはSCVのウェブサイトのソースコードのみが含まれており、ゲームのデータは含まれていません。
+            </p>
           </FAQItem>
         </div>
       </div>
