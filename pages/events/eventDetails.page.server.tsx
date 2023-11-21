@@ -1,5 +1,5 @@
 import _ from "lodash-es";
-import { PageContextBuiltIn } from "vite-plugin-ssr";
+import { PageContextBuiltIn } from "vike";
 
 import {
   createSceneCharacters,

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import type { PageContextBuiltIn } from "vite-plugin-ssr";
-import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr";
+import type { PageContextBuiltIn } from "vike";
+import { dangerouslySkipEscape, escapeInject } from "vike";
 
 import { createPageMeta } from "./createPageMeta";
 import logoUrl from "./logo.svg";
@@ -9,7 +9,7 @@ import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 
 export { render };
-// See https://vite-plugin-ssr.com/data-fetching
+// See https://vike.dev/data-fetching
 export const passToClient = ["documentProps", "pageProps"];
 
 async function render(pageContext: PageContextBuiltIn & PageContext) {
@@ -50,7 +50,7 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
   return {
     documentHtml,
     pageContext: {
-      // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
+      // We can add some `pageContext` here, which is useful if we want to do page redirection https://vike.dev/page-redirection
     },
   };
 }

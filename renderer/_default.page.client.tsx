@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import type { PageContextBuiltInClient } from "vite-plugin-ssr/client";
+import type { PageContextBuiltInClient } from "vike/client";
 
 import { createPageMeta } from "./createPageMeta";
 import { PageShell } from "./PageShell";

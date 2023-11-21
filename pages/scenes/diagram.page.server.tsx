@@ -1,4 +1,4 @@
-import { PageContextBuiltIn } from "vite-plugin-ssr";
+import { PageContextBuiltIn } from "vike";
 
 import { getDialogFromCutName, loadScene } from "../serverUtil";
 import { prerender as viewPagePrerender } from "./view.page.server";
