@@ -17,7 +17,7 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
   const pageHtml = ReactDOMServer.renderToString(
     <PageShell pageContext={pageContext}>
       <Page {...pageProps} />
-    </PageShell>
+    </PageShell>,
   );
 
   const meta = pageContext.exports.getDocumentProps

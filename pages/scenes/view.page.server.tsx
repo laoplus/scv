@@ -101,7 +101,7 @@ export async function prerender() {
 
   publicEvents.forEach((event) => {
     const eventStages = tables.stages.filter(
-      (s) => s.ChapterIndex === event.Chapter_Key
+      (s) => s.ChapterIndex === event.Chapter_Key,
     );
     stages = [
       ...stages,
@@ -112,7 +112,7 @@ export async function prerender() {
     ];
 
     const eventSubStoryGroups = tables.chapterSubStoryGroups.filter(
-      (s) => s.ChapterIndex === event.Chapter_Key
+      (s) => s.ChapterIndex === event.Chapter_Key,
     );
     subStoryGroups = [
       ...subStoryGroups,
@@ -141,12 +141,12 @@ export async function prerender() {
   stages.forEach((stage) => {
     if (stage.StartCutsceneIndex !== "0") {
       pathList.push(
-        `/scenes/${stage.chapter}/${stage.StageIdxString}/op`.toLowerCase()
+        `/scenes/${stage.chapter}/${stage.StageIdxString}/op`.toLowerCase(),
       );
     }
     if (stage.EndCutsceneIndex !== "0") {
       pathList.push(
-        `/scenes/${stage.chapter}/${stage.StageIdxString}/ed`.toLowerCase()
+        `/scenes/${stage.chapter}/${stage.StageIdxString}/ed`.toLowerCase(),
       );
     }
     if (stage.MidCutsceneIndex[0] !== "0") {
@@ -154,7 +154,7 @@ export async function prerender() {
         pathList.push(
           `/scenes/${stage.chapter}/${stage.StageIdxString}/mid${
             i + 1
-          }`.toLowerCase()
+          }`.toLowerCase(),
         );
       });
     }
@@ -174,7 +174,7 @@ export async function prerender() {
           ``,
         ]
           .join("/")
-          .toLowerCase()
+          .toLowerCase(),
       );
     });
   });

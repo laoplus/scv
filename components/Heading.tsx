@@ -19,7 +19,7 @@ export const Heading = ({
           className={cn(
             "py-12 text-4xl font-extrabold tracking-tight text-gray-900",
             "px-4 md:px-0",
-            className
+            className,
           )}
         >
           {children}

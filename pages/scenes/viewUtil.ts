@@ -21,32 +21,32 @@ export function getSubStoryInfoFromParam({
     const subStoryGroup = tables.chapterSubStoryGroups.find(
         (s) =>
             s.Key.toLowerCase().includes(`${chapterIndex}ev${eventIndex}_`) &&
-            s.Key.toLowerCase().endsWith(`_${unitName}`)
+            s.Key.toLowerCase().endsWith(`_${unitName}`),
     );
     if (!subStoryGroup) {
         throw new Error(
-            `no subStoryGroup found for ${chapterIndex} ${unitName}`
+            `no subStoryGroup found for ${chapterIndex} ${unitName}`,
         );
     }
 
     const subStoryKey = subStoryGroup?.ChapterSubStoryIndex[index - 1];
     if (!subStoryKey) {
         throw new Error(
-            `no subStoryKey found for ${chapterIndex} ${unitName} ${index}`
+            `no subStoryKey found for ${chapterIndex} ${unitName} ${index}`,
         );
     }
 
     const subStory = tables.chapterSubStories.find(
-        (s) => s.Key === subStoryKey
+        (s) => s.Key === subStoryKey,
     );
     if (!subStory) {
         throw new Error(
-            `no subStory found for ${chapterIndex} ${unitName} ${index}`
+            `no subStory found for ${chapterIndex} ${unitName} ${index}`,
         );
     }
 
     const eventChapters = tables.events.filter(
-        (e) => e.Event_CategoryPos === eventIndex
+        (e) => e.Event_CategoryPos === eventIndex,
     );
 
     return {
@@ -90,7 +90,7 @@ export function getStoryCutInfoFromParam({
     if (chapter === "main") {
         cutMeta.eventName = "メインストーリー";
         const s = tables.stages.find(
-            (s) => s.StageIdxString.toLowerCase() === stageIdxStr
+            (s) => s.StageIdxString.toLowerCase() === stageIdxStr,
         );
         if (!s) {
             throw new Error(`no stage found for ${stageIdxStr}`);
@@ -99,7 +99,7 @@ export function getStoryCutInfoFromParam({
     } else {
         const eventNumber = Number(chapter.replace("ev", ""));
         const eventChapters = tables.events.filter(
-            (e) => e.Event_CategoryPos === eventNumber
+            (e) => e.Event_CategoryPos === eventNumber,
         );
         cutMeta.eventName = eventChapters[0].Event_CategoryName;
         const eventChaptersString = eventChapters.map((e) => e.Chapter_Key);
@@ -109,7 +109,7 @@ export function getStoryCutInfoFromParam({
             const result = tables.stages.find(
                 (s) =>
                     s.ChapterIndex === chapterKey &&
-                    s.StageIdxString.toLowerCase() === stageIdxStr
+                    s.StageIdxString.toLowerCase() === stageIdxStr,
             );
             if (result) {
                 found = result;

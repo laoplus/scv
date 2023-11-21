@@ -90,7 +90,7 @@ export async function onBeforeRender() {
     .map((c) => c[0])
     .map((c) => {
       const icon = CharacterIcon.find(
-        (i) => i.Event_Category === c.Event_Category
+        (i) => i.Event_Category === c.Event_Category,
       )?.CharacterIcon;
       return {
         ...c,

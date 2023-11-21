@@ -54,7 +54,7 @@ export const SpeakerSelector = ({
         blurInputOnSelect={false}
         className={cn(
           "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
-          searchIndexLoading && "cursor-not-allowed pl-11"
+          searchIndexLoading && "cursor-not-allowed pl-11",
         )}
         placeholder={
           searchIndexLoading
@@ -64,14 +64,14 @@ export const SpeakerSelector = ({
         components={{ DropdownIndicator, Option }}
         filterOption={(option, rawInput) => {
           const haystack = toHiragana(
-            option.label.toLowerCase().normalize("NFKC")
+            option.label.toLowerCase().normalize("NFKC"),
           );
           const needle = toHiragana(
             rawInput
               .toLowerCase()
               // SKK対応（！？）
               .replace(/▽|▼/gm, "")
-              .normalize("NFKC")
+              .normalize("NFKC"),
           );
           return haystack.includes(needle);
         }}

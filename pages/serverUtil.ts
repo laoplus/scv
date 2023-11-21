@@ -19,37 +19,37 @@ export const loadScene = async (filename: string) => {
 };
 
 const chaptersObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_MapChapter.json", "utf8")
+    fs.readFileSync("data/tables/_Table_MapChapter.json", "utf8"),
 ) as TableMapChapter;
 const chapters = Object.entries(chaptersObj).map(([, v]) => v);
 
 const cutScenesObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_CutScene.json", "utf8")
+    fs.readFileSync("data/tables/_Table_CutScene.json", "utf8"),
 ) as TableCutscene;
 const cutScenes = Object.entries(cutScenesObj).map(([, v]) => v);
 
 const eventsObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_EventChapter.json", "utf-8")
+    fs.readFileSync("data/tables/_Table_EventChapter.json", "utf-8"),
 ) as TableEventChapter;
 const events = Object.entries(eventsObj).map(([, v]) => v);
 
 const stagesObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_MapStage.json", "utf8")
+    fs.readFileSync("data/tables/_Table_MapStage.json", "utf8"),
 ) as TableMapStage;
 const stages = Object.entries(stagesObj).map(([, v]) => v);
 
 const chapterSubStoriesObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_ChapterSubStory.json", "utf8")
+    fs.readFileSync("data/tables/_Table_ChapterSubStory.json", "utf8"),
 ) as TableChapterSubStory;
 const chapterSubStories = Object.entries(chapterSubStoriesObj).map(
-    ([, v]) => v
+    ([, v]) => v,
 );
 
 const chapterSubStoryGroupsObj = JSON.parse(
-    fs.readFileSync("data/tables/_Table_ChapterSubStoryGroup.json", "utf8")
+    fs.readFileSync("data/tables/_Table_ChapterSubStoryGroup.json", "utf8"),
 ) as TableChapterSubStoryGroup;
 const chapterSubStoryGroups = Object.entries(chapterSubStoryGroupsObj).map(
-    ([, v]) => v
+    ([, v]) => v,
 );
 
 export const tables = {
@@ -99,21 +99,24 @@ export const createSceneCharacters = async () => {
             // .filter((c) => !c.image.includes("_Commu"))
             .filter((c) => !ignoreImages.includes(c.image))
             .filter((c) => c.name !== "主人公")
-            .reduce((acc, cur) => {
-                const found = acc.find((item) => item.image === cur.image);
-                if (found) {
-                    found.counts++;
-                } else {
-                    acc.push({ ...cur, counts: 1 });
-                }
-                return acc;
-            }, [] as { image: string; name: string; counts: number }[])
+            .reduce(
+                (acc, cur) => {
+                    const found = acc.find((item) => item.image === cur.image);
+                    if (found) {
+                        found.counts++;
+                    } else {
+                        acc.push({ ...cur, counts: 1 });
+                    }
+                    return acc;
+                },
+                [] as { image: string; name: string; counts: number }[],
+            )
             .sort((a, b) => b.counts - a.counts);
 
         sceneCharcters.push({
             Cutscene_Key:
                 tables.cutScenes.find(
-                    (t) => t.FileName === scene[0].Dialog_Group
+                    (t) => t.FileName === scene[0].Dialog_Group,
                 )?.Key || "",
             Dialog_Group: scene[0].Dialog_Group,
             characters,
@@ -142,7 +145,7 @@ export const getSceneCharacters = ({
 
     const dialog = getDialogFromCutName(cutsceneIndex);
     const charcters = sceneCharacters.find(
-        (s) => s.Cutscene_Key === dialog.Key
+        (s) => s.Cutscene_Key === dialog.Key,
     );
     return charcters?.characters || [];
 };

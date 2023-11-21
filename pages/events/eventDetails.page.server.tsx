@@ -21,7 +21,7 @@ const bannedEventChapter: string[] = [
 ];
 
 export const publicEvents = tables.events.filter(
-  (c) => !bannedEventChapter.includes(c.Chapter_Key)
+  (c) => !bannedEventChapter.includes(c.Chapter_Key),
 );
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
@@ -32,7 +32,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   // TODO: omit unused keys
 
   const event = publicEvents.filter(
-    (e) => e.Event_CategoryIndex === Number(routeParams.eventIndex)
+    (e) => e.Event_CategoryIndex === Number(routeParams.eventIndex),
   );
 
   if (!event) {
@@ -82,7 +82,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
             getSceneCharacters({
               sceneCharacters,
               cutsceneIndex,
-            })
+            }),
           ),
           hasCutscene:
             stage.StartCutsceneIndex !== "0" ||
@@ -120,8 +120,8 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
             ...sgroup,
             SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
               tables.chapterSubStories.find(
-                (subStory) => subStory.Key === subStoryIndex
-              )
+                (subStory) => subStory.Key === subStoryIndex,
+              ),
             ).map((subStory, index) => {
               if (!subStory) {
                 return null;
@@ -142,7 +142,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         });
 
       return subStoryGroup;
-    })
+    }),
   );
 
   return {

@@ -48,7 +48,7 @@ type SubStoryInfo = {
         filenames.map(async (file) => {
             const data = await fs.readFile(`${dialogsPath}/${file}`, "utf-8");
             return JSON.parse(data) as Scene;
-        })
+        }),
     );
 
     // create index
@@ -68,7 +68,7 @@ type SubStoryInfo = {
             try {
                 const info: StageStoryInfo | SubStoryInfo = (() => {
                     const cutscene = tables.cutScenes.find(
-                        (c) => c.FileName === dialog.Dialog_Group
+                        (c) => c.FileName === dialog.Dialog_Group,
                     );
                     if (cutscene === undefined) {
                         throw new Error("cutscene not found");
@@ -78,26 +78,26 @@ type SubStoryInfo = {
                         (s) =>
                             cutscene?.Key === s.StartCutsceneIndex ||
                             cutscene?.Key === s.EndCutsceneIndex ||
-                            s.MidCutsceneIndex.includes(cutscene?.Key)
+                            s.MidCutsceneIndex.includes(cutscene?.Key),
                     );
 
                     const subStory = tables.chapterSubStories.find(
-                        (s) => cutscene.Key === s.StoryDialog
+                        (s) => cutscene.Key === s.StoryDialog,
                     );
 
                     if (stage === undefined && subStory === undefined) {
                         throw new Error(
-                            `neither stage nor subStory found for ${dialog.Dialog_Group} / ${cutscene?.Key} \nScript bug or not implemented yet?`
+                            `neither stage nor subStory found for ${dialog.Dialog_Group} / ${cutscene?.Key} \nScript bug or not implemented yet?`,
                         );
                     }
 
                     if (stage) {
                         const chapter =
                             tables.events.find(
-                                (c) => c.Chapter_Key === stage?.ChapterIndex
+                                (c) => c.Chapter_Key === stage?.ChapterIndex,
                             ) ||
                             tables.chapters.find(
-                                (c) => c.Key === stage?.ChapterIndex
+                                (c) => c.Key === stage?.ChapterIndex,
                             );
                         if (chapter === undefined) {
                             throw new Error("chapter not found");
@@ -107,13 +107,13 @@ type SubStoryInfo = {
                             stage?.StartCutsceneIndex === cutscene.Key
                                 ? "OP"
                                 : stage?.EndCutsceneIndex === cutscene.Key
-                                ? "ED"
-                                : `Mid${
-                                      // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
-                                      stage?.MidCutsceneIndex.indexOf(
-                                          cutscene.Key
-                                      ) + 1
-                                  }`;
+                                  ? "ED"
+                                  : `Mid${
+                                        // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
+                                        stage?.MidCutsceneIndex.indexOf(
+                                            cutscene.Key,
+                                        ) + 1
+                                    }`;
 
                         return {
                             type: "stageStory",
@@ -125,11 +125,13 @@ type SubStoryInfo = {
 
                     if (subStory) {
                         const subStoryGroup = tables.chapterSubStoryGroups.find(
-                            (g) => g.ChapterSubStoryIndex.includes(subStory.Key)
+                            (g) =>
+                                g.ChapterSubStoryIndex.includes(subStory.Key),
                         );
 
                         const event = tables.events.find(
-                            (e) => e.Chapter_Key === subStoryGroup?.ChapterIndex
+                            (e) =>
+                                e.Chapter_Key === subStoryGroup?.ChapterIndex,
                         );
 
                         if (
@@ -173,7 +175,7 @@ type SubStoryInfo = {
 
                 const [chapterName, chapterPath]: [
                     string,
-                    "main" | `ev${number}`
+                    "main" | `ev${number}`,
                 ] = (() => {
                     if (info.type === "stageStory") {
                         if ("ChapterName" in info.chapter) {
@@ -231,13 +233,13 @@ type SubStoryInfo = {
                             const eventIndex = info.event.Event_CategoryIndex;
                             const chapterIndex =
                                 extractChapterIndexFromChapterKey(
-                                    info.event.Chapter_Key
+                                    info.event.Chapter_Key,
                                 );
                             const unitName =
                                 info.subStoryGroup.Key.split("_").at(-1);
                             const subStoryIndex =
                                 info.subStoryGroup.ChapterSubStoryIndex.indexOf(
-                                    info.subStory.Key
+                                    info.subStory.Key,
                                 ) + 1;
 
                             return {
@@ -274,7 +276,7 @@ type SubStoryInfo = {
     await fs.writeFile(
         "./public/searchIndex.json",
         JSON.stringify(searchIndexes, null, 2),
-        "utf-8"
+        "utf-8",
     );
     console.log(`done with ${searchIndexes.length} dialogs`);
 })();

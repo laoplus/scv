@@ -56,7 +56,7 @@ export function Page({
                   ? `/main/` // TODO
                   : `/events/${chapter.replace(
                       "ev",
-                      ""
+                      "",
                     )}/#${chapter}-${stageIdx}`,
             },
             {

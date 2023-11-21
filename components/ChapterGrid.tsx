@@ -13,7 +13,9 @@ type EventsPageProps = Awaited<
 >["pageContext"]["pageProps"];
 
 const checkIsEvent = (
-  chapter: MainPageProps["chapters"][number] | EventsPageProps["events"][number]
+  chapter:
+    | MainPageProps["chapters"][number]
+    | EventsPageProps["events"][number],
 ): chapter is EventsPageProps["events"][number] => {
   return chapter.Event_Category !== "";
 };
@@ -34,7 +36,7 @@ export const ChapterGrid = ({
           className={cn(
             "group flex gap-6 bg-white p-6 outline-none transition-colors sm:flex-col",
             "hover:bg-slate-50",
-            "focus:bg-slate-50 focus:ring focus:ring-inset"
+            "focus:bg-slate-50 focus:ring focus:ring-inset",
           )}
           href={
             isEvent
@@ -54,7 +56,7 @@ export const ChapterGrid = ({
               className={cn(
                 "hidden h-8 w-8 -translate-x-12 opacity-0 transition-all md:inline-block",
                 "group-hover:translate-x-0 group-hover:opacity-50",
-                "group-focus:translate-x-0 group-focus:opacity-50"
+                "group-focus:translate-x-0 group-focus:opacity-50",
               )}
             />
           </div>

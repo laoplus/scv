@@ -69,7 +69,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
       // 次の番号のdialogを取得する
       console.warn(
         "'NextDialogScript' not found. fallback to next dialog...",
-        dialog
+        dialog,
       );
       const currentDialogIndex = scene.findIndex((d) => d.Key === dialog.Key);
       const anotherNextDialog = scene[currentDialogIndex + 1];
@@ -80,7 +80,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
     } else {
       // is history
       const historyIndex = history.findIndex(
-        (historyDialog) => historyDialog.Key === dialog.Key
+        (historyDialog) => historyDialog.Key === dialog.Key,
       );
       setHistory(history.slice(historyIndex));
       scrollTo({ top: 0, behavior: "smooth" });
@@ -114,7 +114,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
     } else {
       // is history
       const historyIndex = history.findIndex(
-        (historyDialog) => historyDialog.Key === dialog.Key
+        (historyDialog) => historyDialog.Key === dialog.Key,
       );
       setHistory(history.slice(historyIndex));
       scrollTo({ top: 0, behavior: "smooth" });
@@ -123,12 +123,12 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
 
   const CDN_BASE_URL = import.meta.env.VITE_CDN_BASE_URL;
   const bgImages = new Set(
-    scene.map((d) => CDN_BASE_URL + "/bg/" + d.BG_ImageName + `.webp`)
+    scene.map((d) => CDN_BASE_URL + "/bg/" + d.BG_ImageName + `.webp`),
   );
   const addImages = new Set(
     scene
       .filter((d) => d.Add_ImageName !== "")
-      .map((d) => CDN_BASE_URL + "/cut/" + d.Add_ImageName + `.webp`)
+      .map((d) => CDN_BASE_URL + "/cut/" + d.Add_ImageName + `.webp`),
   );
 
   const keyboardHandler = useCallback((event: { key: string }) => {
@@ -140,7 +140,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
     if (event.key === "Backspace") {
       document
         .querySelector<HTMLButtonElement>(
-          ".js-dialog:not(.js-current-dialog) button"
+          ".js-dialog:not(.js-current-dialog) button",
         )
         ?.click();
     }
@@ -175,9 +175,9 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                 "pointer-events-none absolute inset-0 mx-auto h-full object-contain opacity-0 transition-opacity delay-200 duration-300",
                 {
                   "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
-                    latestDialog().BG_ImageName
+                    latestDialog().BG_ImageName,
                   ),
-                }
+                },
               )}
             />
           ))}
@@ -191,7 +191,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                   "pointer-events-auto opacity-100 delay-[0ms]":
                     latestDialog().Add_ImageName !== "" &&
                     image.includes(latestDialog().Add_ImageName),
-                }
+                },
               )}
             />
           ))}
@@ -201,7 +201,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
               "pointer-events-none absolute flex h-full w-full flex-col gap-4 bg-white bg-opacity-50 p-6 text-center backdrop-blur-sm",
               {
                 "opacity-0": history.length !== 1,
-              }
+              },
             )}
             data-nosnippet
           >
@@ -230,7 +230,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                   {
                     "js-current-dialog opacity-100":
                       latestDialog().Key === sd.Key,
-                  }
+                  },
                 )}
               >
                 <div className="flex flex-col gap-1">
@@ -251,7 +251,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                   {sd.SelectionIndex.length === 0 && hasNextDialog && (
                     <button
                       className={cn(
-                        "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
+                        "select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100",
                       )}
                       onClick={() => {
                         dialogNextHandler(sd);
@@ -277,7 +277,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                           {
                             "bg-orange-600 text-white":
                               sd.SelectionSelectedIndex === i,
-                          }
+                          },
                         )}
                         onClick={() => {
                           selectionHandler(sd, i);

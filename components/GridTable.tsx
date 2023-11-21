@@ -64,7 +64,7 @@ export function StageGridTable({
                 },
                 {
                   "bg-lime-500": s.StageSubTypeStr === "SUB",
-                }
+                },
               )}
             />
             <a
@@ -136,7 +136,7 @@ export function StageGridTable({
               </>
             )}
           </Fragment>
-        )
+        ),
       )}
     </div>
   );

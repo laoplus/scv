@@ -131,7 +131,7 @@ export function Page() {
 
   // scene
   const [searchSceneNames, setSearchSceneNames] = useState<(string | null)[]>(
-    []
+    [],
   );
   const sceneOptions = useMemo(() => {
     const sceneNames = searchIndex.map((v) => v.sceneName);
@@ -152,7 +152,7 @@ export function Page() {
   useEffect(() => {
     (async () => {
       const d = (await fetch("/searchIndex.json").then((r) =>
-        r.json()
+        r.json(),
       )) as SearchIndex[];
 
       setSearchIndex(d);
@@ -169,7 +169,7 @@ export function Page() {
           .toLowerCase()
           // SKK対応（！？）
           .replace(/▽|▼/gm, "")
-          .normalize("NFKC")
+          .normalize("NFKC"),
       );
       return haystack.includes(needle);
     });
@@ -177,7 +177,7 @@ export function Page() {
     // 話者での絞り込み
     if (searchSpeakerNames.length !== 0) {
       result = result.filter((d) =>
-        searchSpeakerNames.includes(d.speaker.name)
+        searchSpeakerNames.includes(d.speaker.name),
       );
     }
 
@@ -262,7 +262,7 @@ export function Page() {
               disabled={searchIndexLoading}
               className={cn(
                 "texm-sm block w-full !appearance-none rounded-none border-t border-b bg-white p-4 pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none md:rounded-lg md:border",
-                searchIndexLoading && "cursor-not-allowed pl-11"
+                searchIndexLoading && "cursor-not-allowed pl-11",
               )}
               placeholder={
                 searchIndexLoading

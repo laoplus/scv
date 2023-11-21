@@ -29,7 +29,7 @@ export function MapRenderer({
             },
             {
               "opacity-50": !s.hasCutscene,
-            }
+            },
           )}
           href={
             s.hasCutscene

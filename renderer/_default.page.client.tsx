@@ -49,13 +49,13 @@ function updateMetaTags({
 }) {
   const titleElement = document.querySelector("title")!;
   const descriptionElement = document.head.querySelector<HTMLMetaElement>(
-    'meta[name="description"]'
+    'meta[name="description"]',
   )!;
   const ogTitleElement = document.head.querySelector<HTMLMetaElement>(
-    'meta[property="og:title"]'
+    'meta[property="og:title"]',
   )!;
   const ogDescriptionElement = document.head.querySelector<HTMLMetaElement>(
-    'meta[property="og:description"]'
+    'meta[property="og:description"]',
   )!;
 
   titleElement.textContent = title;
@@ -68,7 +68,7 @@ function onHydrationEnd() {
   console.log("Hydration finished; page is now interactive.");
   console.log(
     "Elements included in the current page:",
-    document.body.querySelectorAll(`*:not(script, link)`).length
+    document.body.querySelectorAll(`*:not(script, link)`).length,
   );
 
   Sentry.init({

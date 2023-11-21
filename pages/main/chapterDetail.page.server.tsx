@@ -13,7 +13,8 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
 
   const chapter = chapters.find(
     (c) =>
-      c.GameModeType === 0 && c.Chapter_IDX === Number(routeParams.chapterIndex)
+      c.GameModeType === 0 &&
+      c.Chapter_IDX === Number(routeParams.chapterIndex),
   );
 
   if (!chapter) {
@@ -53,7 +54,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         getSceneCharacters({
           sceneCharacters,
           cutsceneIndex,
-        })
+        }),
       ),
       hasCutscene:
         stage.StartCutsceneIndex !== "0" ||

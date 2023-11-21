@@ -83,13 +83,13 @@ export const UnitIcon = ({
           src={src}
           ref={ref}
           className={cn(
-            "pointer-events-auto relative aspect-square h-full w-full"
+            "pointer-events-auto relative aspect-square h-full w-full",
           )}
         />
         <div
           className={cn(
             "pointer-events-none absolute inset-0 rounded-sm ring-1 ring-inset ring-gray-600 ring-opacity-30",
-            borderClassName
+            borderClassName,
           )}
         ></div>
       </div>

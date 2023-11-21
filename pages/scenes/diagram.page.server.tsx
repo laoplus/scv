@@ -68,7 +68,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     // 選択肢がない場合
     if (dialog.NextDialogScript !== "" && dialog.SelectionIndex.length === 0) {
       mermaidSourceArray.push(
-        `    ${dialog.Key} --> ${dialog.NextDialogScript}`
+        `    ${dialog.Key} --> ${dialog.NextDialogScript}`,
       );
     }
 
@@ -79,12 +79,12 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
         if (dest === undefined) {
           // 選択肢があるがSelectionIndex_Nextがない場合
           mermaidSourceArray.push(
-            `    ${dialog.Key} -- "${selection}" --> ${dialog.NextDialogScript}`
+            `    ${dialog.Key} -- "${selection}" --> ${dialog.NextDialogScript}`,
           );
         } else {
           // 選択肢があってSelectionIndex_Nextもある場合
           mermaidSourceArray.push(
-            `    ${dialog.Key} -- "${selection}" --> ${dialog.SelectionIndex_Next[index]}`
+            `    ${dialog.Key} -- "${selection}" --> ${dialog.SelectionIndex_Next[index]}`,
           );
         }
       });

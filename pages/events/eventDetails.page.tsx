@@ -9,7 +9,7 @@ type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 export function getDocumentProps({ pageProps: { eventStories } }: PageContext) {
   return {
     title: ["イベントストーリー", eventStories[0][0].Event_CategoryName].join(
-      " "
+      " ",
     ),
     description: "「" + eventStories[0][0].Event_CategoryDesc + "」",
   };
@@ -45,8 +45,8 @@ export function Page({
                   stages={chapter.ChapterStages}
                 />
               </div>
-            )
-          )
+            ),
+          ),
         )}
 
         {subStoryGroups.length !== 0 && (
