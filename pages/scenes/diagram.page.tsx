@@ -28,9 +28,10 @@ export function Page({
   const reactZoomPanPinchRef = useRef<ReactZoomPanPinchRef>(null);
 
   useEffect(() => {
-    mermaid.mermaidAPI.render("mermaid", mermaidSource, (svg) => {
+    (async () => {
+      const { svg } = await mermaid.render("mermaid", mermaidSource);
       setMermaidResult(svg);
-    });
+    })();
   }, [mermaidSource]);
 
   useEffect(() => {
