@@ -55,7 +55,7 @@ export function StageGridTable({
     <div className="grid grid-cols-[4px_max-content_minmax(10rem,1fr)] items-center gap-2">
       {stages.map((s) =>
         !s.hasCutscene ? null : (
-          <Fragment key={s.StageName}>
+          <Fragment key={`${s.StageIdxString} ${s.StageName}`}>
             <div
               className={cn(
                 "row-span-2 h-full min-h-[24px] rounded bg-yellow-500",
@@ -100,23 +100,25 @@ export function StageGridTable({
             {/* Midの列 */}
             {s.MidCutsceneIndex[0] !== "0" && (
               <>
-                {s.MidCutsceneIndex.map((sceneId, i) => (
-                  <>
-                    <div />
-                    <a
-                      key={sceneId}
-                      href={`/scenes/${eventIndexStr}/${s.StageIdxString}/mid${
-                        i + 1
-                      }/`.toLowerCase()}
-                      className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
-                    >
-                      Mid {i + 1}
-                    </a>
-                    <div className="pointer-events-none flex flex-wrap gap-1">
-                      <UnitIconGroup characters={s.MidCutsceneCharcters[i]} />
-                    </div>
-                  </>
-                ))}
+                {s.MidCutsceneIndex.map((sceneId, i) => {
+                  const href =
+                    `/scenes/${eventIndexStr}/${s.StageIdxString}/mid${i + 1}/`.toLowerCase();
+
+                  return (
+                    <React.Fragment key={sceneId}>
+                      <div />
+                      <a
+                        href={href}
+                        className="inline-flex h-10 min-w-[2.5rem] items-center justify-center self-start rounded border p-1 px-2 leading-[100%] text-sky-700"
+                      >
+                        Mid {i + 1}
+                      </a>
+                      <div className="pointer-events-none flex flex-wrap gap-1">
+                        <UnitIconGroup characters={s.MidCutsceneCharcters[i]} />
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
               </>
             )}
 

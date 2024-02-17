@@ -33,7 +33,7 @@ export function Page({
           event.map((chapter) =>
             chapter.ChapterStages.every((s) => !s.hasCutscene) ? undefined : ( // 全てのステージがシーンなしの場合
               <div
-                key={chapter.Chapter_Name}
+                key={chapter.Chapter_Key}
                 className="flex flex-col gap-6 px-4 md:px-0"
               >
                 {event.length !== 1 && (
