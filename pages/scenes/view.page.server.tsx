@@ -1,4 +1,4 @@
-import { PageContextBuiltIn } from "vike";
+import type { PageContextBuiltIn } from "vike/types";
 
 import { publicEvents } from "../events/eventDetails.page.server";
 import {

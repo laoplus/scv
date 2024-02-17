@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import type { PageContextBuiltIn } from "vike";
-import { dangerouslySkipEscape, escapeInject } from "vike";
+import { dangerouslySkipEscape, escapeInject } from "vike/server";
+import type { PageContextBuiltIn } from "vike/types";
 
 import { createPageMeta } from "./createPageMeta";
 import logoUrl from "./logo.svg";

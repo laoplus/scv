@@ -1,5 +1,5 @@
 import _ from "lodash-es";
-import { PageContextBuiltIn } from "vike";
+import type { PageContextBuiltIn } from "vike/types";
 
 import {
   createSceneCharacters,
@@ -14,11 +14,7 @@ export type EventStories = Awaited<
 
 // filter unreleased events
 
-const bannedEventChapter: string[] = [
-  /** 10章 */
-  "Ch10",
-  "Ev19",
-];
+const bannedEventChapter: string[] = [];
 
 export const publicEvents = tables.events.filter(
   (c) => !bannedEventChapter.includes(c.Chapter_Key),

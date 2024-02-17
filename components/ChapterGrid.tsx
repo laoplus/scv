@@ -46,7 +46,11 @@ export const ChapterGrid = ({
         >
           <div className="flex items-center justify-between sm:mb-7">
             <UnitIcon
-              src={chapter.CharacterIcon}
+              src={
+                chapter.CharacterIcon ||
+                import.meta.env.VITE_CDN_BASE_URL +
+                  "/formationicon/FormationIcon_empty.webp"
+              }
               alt={isEvent ? chapter.Event_CategoryName : chapter.ChapterName}
               className="h-12 w-12 rounded-md"
               borderClassName="rounded-md"

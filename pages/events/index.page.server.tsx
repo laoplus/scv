@@ -78,6 +78,10 @@ export async function onBeforeRender() {
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Spriggan_NS1.webp`,
     },
     {
+      Event_Category: "Open_Event19",
+      CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_BlindPrincess_N.webp`,
+    },
+    {
       Event_Category: "Open_Event22",
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_DS_Sarena_N.webp`,
     },

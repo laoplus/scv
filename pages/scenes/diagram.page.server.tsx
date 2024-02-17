@@ -1,4 +1,4 @@
-import { PageContextBuiltIn } from "vike";
+import type { PageContextBuiltIn } from "vike/types";
 
 import { getDialogFromCutName, loadScene } from "../serverUtil";
 import { prerender as viewPagePrerender } from "./view.page.server";
