@@ -85,6 +85,10 @@ export async function onBeforeRender() {
       Event_Category: "Open_Event22",
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_DS_Sarena_N.webp`,
     },
+    {
+      Event_Category: "Open_Event23",
+      CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_DS_Koyori_N.webp`,
+    },
   ];
 
   const events = _.chain(publicEvents)
