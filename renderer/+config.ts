@@ -1,3 +1,5 @@
 import type { Config } from "vike/types";
 
-export default {} satisfies Config;
+export default {
+    clientRouting: true,
+} satisfies Config;
