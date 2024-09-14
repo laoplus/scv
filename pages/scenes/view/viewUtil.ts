@@ -1,5 +1,5 @@
-import { tables } from "../serverUtil";
-import { Stage } from "../types/Table_MapStage";
+import { tables } from "../../serverUtil";
+import { Stage } from "../../types/Table_MapStage";
 
 type SceneType = "op" | "ed" | `mid${number}`;
 

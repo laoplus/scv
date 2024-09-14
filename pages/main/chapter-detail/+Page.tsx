@@ -1,8 +1,8 @@
 import React from "react";
 
-import { StageGridTable } from "../../components/GridTable";
-import { Heading } from "../../components/Heading";
-import { onBeforeRender } from "./chapterDetail.page.server";
+import { StageGridTable } from "../../../components/GridTable";
+import { Heading } from "../../../components/Heading";
+import { onBeforeRender } from "./+onBeforeRender";
 
 type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 

@@ -1,7 +1,7 @@
 import React from "react";
 
-import { onBeforeRender as onBeforeRenderEvents } from "../pages/events/index.page.server";
-import { onBeforeRender as onBeforeRenderMain } from "../pages/main/index.page.server";
+import { onBeforeRender as onBeforeRenderEvents } from "../pages/events/+onBeforeRender";
+import { onBeforeRender as onBeforeRenderMain } from "../pages/main/+onBeforeRender";
 import { UnitIcon } from "./UnitIcon";
 import { cn } from "./utils";
 

@@ -4,7 +4,7 @@ import {
   createSceneCharacters,
   getSceneCharacters,
   tables,
-} from "../serverUtil";
+} from "../../serverUtil";
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   console.log(routeParams);
@@ -74,7 +74,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   };
 }
 
-export const prerender = async () => {
+export const onBeforePrerenderStart = async () => {
   const chapters = tables.chapters.filter((c) => c.GameModeType === 0);
 
   const chapterIndex = [...new Set(chapters.map((e) => e.Chapter_IDX))];

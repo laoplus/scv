@@ -1,8 +1,8 @@
 import type { PageContextBuiltIn } from "vike/types";
 
-import { getDialogFromCutName, loadScene } from "../serverUtil";
-import { prerender as viewPagePrerender } from "./view.page.server";
-import { getStoryCutInfoFromParam, isSceneType } from "./viewUtil";
+import { getDialogFromCutName, loadScene } from "../../serverUtil";
+import { onBeforePrerenderStart as viewPagePrerender } from "../view/+onBeforeRender";
+import { getStoryCutInfoFromParam, isSceneType } from "../view/viewUtil";
 
 export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   const { chapter, stageIdxStr, sceneType } = routeParams;
@@ -110,7 +110,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   };
 }
 
-export async function prerender() {
+export async function onBeforePrerenderStart() {
   const viewPathList = await viewPagePrerender();
   return viewPathList.map((path) => path + "/diagram");
 }

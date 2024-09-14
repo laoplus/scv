@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Heading } from "../components/Heading";
 import { cn } from "../components/utils";
-import { onBeforeRender } from "./index.page.server";
+import { onBeforeRender } from "./+onBeforeRender";
 
 type PageProps = Awaited<
   ReturnType<typeof onBeforeRender>

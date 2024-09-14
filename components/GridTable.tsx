@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import { onBeforeRender } from "../pages/events/eventDetails.page.server";
+import { onBeforeRender } from "../pages/events/details/+onBeforeRender";
 import { UnitIcon } from "./UnitIcon";
 import { cn } from "./utils";
 

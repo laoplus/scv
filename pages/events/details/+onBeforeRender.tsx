@@ -6,7 +6,7 @@ import {
   extractChapterIndexFromChapterKey,
   getSceneCharacters,
   tables,
-} from "../serverUtil";
+} from "../../serverUtil";
 
 export type EventStories = Awaited<
   ReturnType<typeof onBeforeRender>
@@ -151,7 +151,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   };
 }
 
-export const prerender = async () => {
+export const onBeforePrerenderStart = async () => {
   const eventIndex = [
     ...new Set(publicEvents.map((e) => e.Event_CategoryIndex)),
   ];

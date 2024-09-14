@@ -6,9 +6,9 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
-import { Breadcrumb } from "../../components/Breadcrumb";
-import { Heading } from "../../components/Heading";
-import { onBeforeRender } from "./diagram.page.server";
+import { Breadcrumb } from "../../../components/Breadcrumb";
+import { Heading } from "../../../components/Heading";
+import { onBeforeRender } from "./+onBeforeRender";
 
 type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 

@@ -1,8 +1,11 @@
 import React from "react";
 
-import { StageGridTable, SubStoryGridTable } from "../../components/GridTable";
-import { Heading } from "../../components/Heading";
-import { onBeforeRender } from "./eventDetails.page.server";
+import {
+  StageGridTable,
+  SubStoryGridTable,
+} from "../../../components/GridTable";
+import { Heading } from "../../../components/Heading";
+import { onBeforeRender } from "./+onBeforeRender";
 
 type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 

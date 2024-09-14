@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EventStories } from "../pages/events/index.page.server";
+import { EventStories } from "../pages/events/+onBeforeRender";
 import { cn } from "./utils";
 
 export function MapRenderer({

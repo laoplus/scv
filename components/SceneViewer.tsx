@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { PageContext } from "../pages/scenes/view.page";
+import { PageContext } from "../pages/scenes/view/+Page";
 import { Dialog } from "../pages/types/Scene";
 import { cn, convertScriptTextToHtml } from "./utils";
 

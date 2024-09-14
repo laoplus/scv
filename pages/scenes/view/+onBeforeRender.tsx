@@ -1,14 +1,14 @@
 import type { PageContextBuiltIn } from "vike/types";
 
-import { publicEvents } from "../events/eventDetails.page.server";
+import { publicEvents } from "../../events/details/+onBeforeRender";
 import {
   extractChapterIndexFromChapterKey,
   getDialogFromCutName,
   loadScene,
   tables,
-} from "../serverUtil";
-import { ChapterSubStoryGroup } from "../types/Table_ChapterSubStoryGroup";
-import { Stage } from "../types/Table_MapStage";
+} from "../../serverUtil";
+import { ChapterSubStoryGroup } from "../../types/Table_ChapterSubStoryGroup";
+import { Stage } from "../../types/Table_MapStage";
 import {
   getStoryCutInfoFromParam,
   getSubStoryInfoFromParam,
@@ -91,7 +91,7 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
   };
 }
 
-export async function prerender() {
+export async function onBeforePrerenderStart() {
   let stages: (Stage & { chapter: string })[] = [];
   let subStoryGroups: (ChapterSubStoryGroup & {
     eventIndex: number;

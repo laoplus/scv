@@ -8,7 +8,7 @@ import logoUrl from "./logo.svg";
 import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 
-export { render };
+export { render as onRenderHtml };
 // See https://vike.dev/data-fetching
 export const passToClient = ["documentProps", "pageProps"];
 

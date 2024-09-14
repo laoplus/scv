@@ -9,7 +9,7 @@ import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 
 export const clientRouting = true;
-export { render };
+export { render as onRenderClient };
 export { onHydrationEnd };
 
 export { onPageTransitionStart };

@@ -1,6 +1,6 @@
 import _ from "lodash-es";
 
-import { publicEvents } from "./eventDetails.page.server";
+import { publicEvents } from "./details/+onBeforeRender";
 
 export async function onBeforeRender() {
   const CDN_BASE_URL = import.meta.env.VITE_CDN_BASE_URL;

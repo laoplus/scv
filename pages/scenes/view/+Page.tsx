@@ -1,7 +1,7 @@
 import React from "react";
 
-import { SceneViewer } from "../../components/SceneViewer";
-import { onBeforeRender } from "./view.page.server";
+import { SceneViewer } from "../../../components/SceneViewer";
+import { onBeforeRender } from "./+onBeforeRender";
 
 export type PageContext = Awaited<
   ReturnType<typeof onBeforeRender>

@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 
-import type { SearchIndex } from "../pages/search/index.page";
+import type { SearchIndex } from "../pages/search/+Page";
 import { extractChapterIndexFromChapterKey, tables } from "../pages/serverUtil";
 import type { Scene } from "../pages/types/Scene";
 import { ChapterSubStory } from "../pages/types/Table_ChapterSubStory";
