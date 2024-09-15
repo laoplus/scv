@@ -82,12 +82,20 @@ export async function onBeforeRender() {
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_BlindPrincess_N.webp`,
     },
     {
+      Event_Category: "Open_Event20",
+      CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_3P_Alcyone_N.webp`,
+    },
+    {
       Event_Category: "Open_Event22",
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_DS_Sarena_N.webp`,
     },
     {
       Event_Category: "Open_Event23",
       CharacterIcon: `${CDN_BASE_URL}/formationicon/FormationIcon_DS_Koyori_N.webp`,
+    },
+    {
+      Event_Category: "Open_Event25",
+      CharacterIcon: `${CDN_BASE_URL}/original/formationicon/FormationIcon_3P_Jiseok_N.webp`,
     },
   ];
 
