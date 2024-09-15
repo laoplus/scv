@@ -62,9 +62,10 @@ function Footer() {
           Made with <span className="text-rose-500">&lt;3</span> by the LAOPLUS.
         </span>
         <span>
-          SCV and LAOPLUS is not affiliated with or endorsed by studio Valkyrie.
+          SCV and LAOPLUS is not affiliated with or endorsed by VALOFE Co., Ltd.
+          & GOP Co., Ltd..
         </span>
-        <span>&copy; studio Valkyrie</span>
+        <span>&copy; VALOFE Co., Ltd. & GOP Co., Ltd.</span>
       </div>
     </footer>
   );

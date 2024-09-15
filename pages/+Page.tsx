@@ -263,7 +263,10 @@ export function Page({ buildDate }: PageProps) {
           </FAQItem>
           <FAQItem title="SNSなどで共有してもいい？">
             <p>はい、共有しても問題ありません。</p>
-            <p>ただし、画像やゲームテキストはstudio Valkyrieの資産です。</p>
+            <p>
+              ただし、画像やゲームテキストはVALOFE Co., Ltd. & GOP Co.,
+              Ltd.の資産です。
+            </p>
           </FAQItem>
           <FAQItem title="誰が作った？連絡先は？">
             <p>
