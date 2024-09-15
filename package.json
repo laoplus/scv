@@ -12,10 +12,13 @@
         "serve": "serve --no-clipboard -p 3081 dist/client",
         "preview": "run-s build serve",
         "watch-preview": "onchange -k \"**/*.tsx\" -- yarn preview",
-        "lint": "eslint --ext .tsx,.ts . --fix",
+        "lint": "eslint . --fix",
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "dependencies": {
+        "@eslint/compat": "^1.1.1",
+        "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.10.0",
         "@iconify/json": "^2.2.248",
         "@sentry/react": "^8.30.0",
         "@svgr/core": "^8.1.0",
@@ -37,6 +40,7 @@
         "eslint-plugin-react-hooks": "^4.6.2",
         "eslint-plugin-simple-import-sort": "^12.1.1",
         "eslint-plugin-unused-imports": "^4.1.4",
+        "globals": "^15.9.0",
         "lodash-es": "^4.17.21",
         "mermaid": "^11.2.0",
         "npm-run-all": "^4.1.5",
