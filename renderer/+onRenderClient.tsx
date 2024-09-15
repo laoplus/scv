@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import type { PageContextBuiltInClient } from "vike/client";
@@ -72,7 +71,9 @@ function onHydrationEnd() {
 
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
-    integrations: [new BrowserTracing()],
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 1.0,
+    integrations: [Sentry.replayIntegration()],
     tracesSampleRate: 1.0,
   });
 }
