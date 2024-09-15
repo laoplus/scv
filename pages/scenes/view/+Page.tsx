@@ -18,9 +18,5 @@ export function Page({ scene }: PageContext["pageProps"]) {
     return <p>no dialogs...</p>;
   }
 
-  // 日本版追加要素の暫定対応
-  // 既存のシナリオのKeyを変えてシナリオを追加してるので、ゲームで参照されないsceneは無視する
-  const filteredScene = scene.filter((s) => s.Key.includes(s.Dialog_Group));
-
-  return <SceneViewer scene={filteredScene} />;
+  return <SceneViewer scene={scene} />;
 }

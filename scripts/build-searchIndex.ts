@@ -58,12 +58,6 @@ type SubStoryInfo = {
                 continue;
             }
 
-            // 日本版追加要素の暫定対応
-            // /pages/scenes/view.page.tsx も参照
-            if (!dialog.Key.includes(dialog.Dialog_Group)) {
-                continue;
-            }
-
             try {
                 const info: StageStoryInfo | SubStoryInfo = (() => {
                     const cutscene = tables.cutScenes.find(
