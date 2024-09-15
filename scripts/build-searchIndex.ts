@@ -31,7 +31,6 @@ type SubStoryInfo = {
      * 公開してはいけないファイル名（部分一致）
      */
     const bannedKeywordFilename = [
-        "Ev20",
         "Ev21",
         /** 外伝 */
         "ChCS",
