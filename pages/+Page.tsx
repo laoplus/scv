@@ -293,7 +293,14 @@ export function Page({ buildDate }: PageProps) {
                 E-mail: <span>eai@mizle.net</span>
               </li>
               <li>
-                Discord: <span>eai</span>
+                Discord:{" "}
+                <a
+                  href="https://discord.com/channels/913406465312690217/994859556599513139"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LAOPLUS Discord #📜general
+                </a>
               </li>
               <li>
                 Twitter:{" "}
