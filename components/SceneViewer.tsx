@@ -38,6 +38,25 @@ export const parseDialog = (dialog: Dialog) => {
   };
 };
 
+function findClosestBgImage(dialogs: ExtendedDialog[]) {
+  const findClosestBgImage = dialogs
+    .map((d) => d.BG_ImageName)
+    .filter((b) => b)
+    .at(0);
+  return findClosestBgImage;
+}
+
+function findClosestCutImage(dialogs: ExtendedDialog[]) {
+  const findClosestCutImage = dialogs
+    .map((d) => d.Add_ImageName)
+    .filter((b) => b)
+    // ゼロ幅スペースを削除
+    .map((d) => d.replace(/\u200B/g, ""))
+    .at(0);
+  console.log(findClosestCutImage);
+  return findClosestCutImage;
+}
+
 export function SceneViewer({ scene }: PageContext["pageProps"]) {
   const [history, setHistory] = useState<ExtendedDialog[]>([
     parseDialog(scene[0]),
@@ -123,12 +142,13 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
 
   const CDN_BASE_URL = import.meta.env.VITE_CDN_BASE_URL;
   const bgImages = new Set(
-    scene.map((d) => CDN_BASE_URL + "/bg/" + d.BG_ImageName + `.webp`),
+    [...new Set(scene.map((d) => d.BG_ImageName))].filter((e) => e),
   );
-  const addImages = new Set(
-    scene
-      .filter((d) => d.Add_ImageName !== "")
-      .map((d) => CDN_BASE_URL + "/cut/" + d.Add_ImageName + `.webp`),
+  const cutImages = new Set(
+    [...new Set(scene.map((d) => d.Add_ImageName))]
+      .filter((e) => e)
+      // ゼロ幅スペースを削除
+      .map((d) => d.replace(/\u200B/g, "")),
   );
 
   const keyboardHandler = useCallback((event: { key: string }) => {
@@ -160,6 +180,9 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
       ?.click();
   }, []);
 
+  const closetBgImage = findClosestBgImage(history);
+  const closetCutImage = findClosestCutImage(history);
+
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-24">
       <div className="flex flex-col">
@@ -170,27 +193,25 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
           {[...bgImages].map((image, index) => (
             <img
               key={index}
-              src={image}
+              src={CDN_BASE_URL + "/bg/" + image + `.webp`}
               className={cn(
                 "pointer-events-none absolute inset-0 mx-auto h-full object-contain opacity-0 transition-opacity delay-200 duration-300",
                 {
-                  "pointer-events-auto opacity-100 delay-[0ms]": image.includes(
-                    latestDialog().BG_ImageName,
-                  ),
+                  "pointer-events-auto opacity-100 delay-[0ms]":
+                    closetBgImage === image,
                 },
               )}
             />
           ))}
-          {[...addImages].map((image, index) => (
+          {[...cutImages].map((image, index) => (
             <img
               key={index}
-              src={image}
+              src={CDN_BASE_URL + "/cut/" + image + `.webp`}
               className={cn(
                 "pointer-events-none absolute left-0 right-0 mx-auto max-h-full object-contain p-2 pb-3 opacity-0 transition-opacity delay-200 duration-300",
                 {
                   "pointer-events-auto opacity-100 delay-[0ms]":
-                    latestDialog().Add_ImageName !== "" &&
-                    image.includes(latestDialog().Add_ImageName),
+                    closetCutImage === image,
                 },
               )}
             />
