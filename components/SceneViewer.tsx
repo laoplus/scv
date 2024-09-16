@@ -46,17 +46,6 @@ function findClosestBgImage(dialogs: ExtendedDialog[]) {
   return findClosestBgImage;
 }
 
-function findClosestCutImage(dialogs: ExtendedDialog[]) {
-  const findClosestCutImage = dialogs
-    .map((d) => d.Add_ImageName)
-    .filter((b) => b)
-    // ゼロ幅スペースを削除
-    .map((d) => d.replace(/\u200B/g, ""))
-    .at(0);
-  console.log(findClosestCutImage);
-  return findClosestCutImage;
-}
-
 export function SceneViewer({ scene }: PageContext["pageProps"]) {
   const [history, setHistory] = useState<ExtendedDialog[]>([
     parseDialog(scene[0]),
@@ -180,8 +169,12 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
       ?.click();
   }, []);
 
+  // bg imageは最後のものを表示する
   const closetBgImage = findClosestBgImage(history);
-  const closetCutImage = findClosestCutImage(history);
+  // cut imageはその時指定されているものだけ表示する
+  const currentCutImage = latestDialog()
+    .Add_ImageName // ゼロ幅スペースを削除
+    .replace(/\u200B/g, "");
 
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-24">
@@ -211,7 +204,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                 "pointer-events-none absolute left-0 right-0 mx-auto max-h-full object-contain p-2 pb-3 opacity-0 transition-opacity delay-200 duration-300",
                 {
                   "pointer-events-auto opacity-100 delay-[0ms]":
-                    closetCutImage === image,
+                    currentCutImage === image,
                 },
               )}
             />
