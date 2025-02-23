@@ -161,22 +161,27 @@ export async function onBeforePrerenderStart() {
   });
 
   subStoryGroups.forEach((subStoryGroup) => {
-    subStoryGroup.ChapterSubStoryIndex.forEach((_, index) => {
-      const unitName = subStoryGroup.Key.split("_").at(-1);
-      pathList.push(
-        [
-          `/scenes`,
-          `ev${subStoryGroup.eventIndex}`,
-          `sub`,
-          `${subStoryGroup.chapterIndex}`,
-          `${unitName}`,
-          `${index + 1}`,
-          ``,
-        ]
-          .join("/")
-          .toLowerCase(),
-      );
-    });
+    subStoryGroup.ChapterSubStoryIndex
+      // 未実装のものをフィルタする
+      .filter((idx) =>
+        tables.chapterSubStories.find((subStory) => subStory.Key === idx),
+      )
+      .forEach((_, index) => {
+        const unitName = subStoryGroup.Key.split("_").at(-1);
+        pathList.push(
+          [
+            `/scenes`,
+            `ev${subStoryGroup.eventIndex}`,
+            `sub`,
+            `${subStoryGroup.chapterIndex}`,
+            `${unitName}`,
+            `${index + 1}`,
+            ``,
+          ]
+            .join("/")
+            .toLowerCase(),
+        );
+      });
   });
 
   const ignorePaths = [
