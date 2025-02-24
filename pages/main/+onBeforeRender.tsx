@@ -5,18 +5,18 @@ export async function onBeforeRender() {
   const mainChapters = tables.chapters.filter((c) => c.GameModeType === 0);
 
   const CharacterIcon: Record<string, string> = {
-    Chapter_01N: `${CDN_BASE_URL}/formationicon/FormationIcon_3P_ConstantiaS2_N.webp`,
-    Chapter_02N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Amy_N.webp`,
-    Chapter_03N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Marie_N.webp`,
-    Chapter_04N: `${CDN_BASE_URL}/formationicon/FormationIcon_AGS_Aeda_N.webp`,
-    Chapter_05N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Scathy_N.webp`,
-    Chapter_06N: `${CDN_BASE_URL}/formationicon/FormationIcon_3P_Labiata_N.webp`,
-    Chapter_07N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_InvDragon_N.webp`,
-    Chapter_08N: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeAlpha_N.webp`,
-    Chapter_09N: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeGamma_N.webp`,
-    Chapter_10N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Vargr_N.webp`,
-    Chapter_11N: `${CDN_BASE_URL}/original/formationicon/FormationIcon_PECS_LemonadeDelta_N.webp`,
-    Chapter_12N: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeBeta_N.webp`,
+    Chapter01: `${CDN_BASE_URL}/formationicon/FormationIcon_3P_ConstantiaS2_N.webp`,
+    Chapter02: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Amy_N.webp`,
+    Chapter03: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Marie_N.webp`,
+    Chapter04: `${CDN_BASE_URL}/formationicon/FormationIcon_AGS_Aeda_N.webp`,
+    Chapter05: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Scathy_N.webp`,
+    Chapter06: `${CDN_BASE_URL}/formationicon/FormationIcon_3P_Labiata_N.webp`,
+    Chapter07: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_InvDragon_N.webp`,
+    Chapter08: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeAlpha_N.webp`,
+    Chapter09: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeGamma_N.webp`,
+    Chapter10: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Vargr_N.webp`,
+    Chapter11: `${CDN_BASE_URL}/original/formationicon/FormationIcon_PECS_LemonadeDelta_N.webp`,
+    Chapter12: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeBeta_N.webp`,
   };
 
   const chapters = (() => {
@@ -30,7 +30,7 @@ export async function onBeforeRender() {
   })();
   const chaptersWithIcon = chapters.map((c) => ({
     ...c,
-    CharacterIcon: CharacterIcon[c.Key],
+    CharacterIcon: CharacterIcon[c.ChapterString],
   }));
 
   return {
