@@ -18,7 +18,16 @@ export async function onBeforeRender() {
     Chapter_11N: `${CDN_BASE_URL}/original/formationicon/FormationIcon_PECS_LemonadeDelta_N.webp`,
   };
 
-  const chapters = mainChapters.map((c) => ({
+  const chapters = (() => {
+    const map = new Map<string, (typeof mainChapters)[number]>();
+    for (const item of mainChapters) {
+      if (!map.has(item.ChapterString)) {
+        map.set(item.ChapterString, item);
+      }
+    }
+    return [...map.values()];
+  })();
+  const chaptersWithIcon = chapters.map((c) => ({
     ...c,
     CharacterIcon: CharacterIcon[c.Key],
   }));
@@ -26,7 +35,7 @@ export async function onBeforeRender() {
   return {
     pageContext: {
       pageProps: {
-        chapters,
+        chapters: chaptersWithIcon,
       },
     },
   };
