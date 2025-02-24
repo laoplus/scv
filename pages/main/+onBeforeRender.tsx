@@ -16,6 +16,7 @@ export async function onBeforeRender() {
     Chapter_09N: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeGamma_N.webp`,
     Chapter_10N: `${CDN_BASE_URL}/formationicon/FormationIcon_BR_Vargr_N.webp`,
     Chapter_11N: `${CDN_BASE_URL}/original/formationicon/FormationIcon_PECS_LemonadeDelta_N.webp`,
+    Chapter_12N: `${CDN_BASE_URL}/formationicon/FormationIcon_PECS_LemonadeBeta_N.webp`,
   };
 
   const chapters = (() => {
