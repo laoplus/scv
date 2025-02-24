@@ -1,5 +1,3 @@
-import _ from "lodash-es";
-
 import { publicEvents } from "./details/+onBeforeRender";
 
 export async function onBeforeRender() {
@@ -99,25 +97,26 @@ export async function onBeforeRender() {
     },
   ];
 
-  const events = _.chain(publicEvents)
-    .groupBy((c) => c.Event_Category)
-    .toArray()
-    .value()
-    .map((c) => c[0])
-    .map((c) => {
-      const icon = CharacterIcon.find(
-        (i) => i.Event_Category === c.Event_Category,
-      )?.CharacterIcon;
-      return {
-        ...c,
-        CharacterIcon: icon,
-      };
-    });
+  const events = (() => {
+    const map = new Map<string, (typeof publicEvents)[number]>();
+    for (const item of publicEvents) {
+      if (!map.has(item.Event_Category)) {
+        map.set(item.Event_Category, item);
+      }
+    }
+    return [...map.values()];
+  })();
+  const eventsWithIcon = events.map((c) => ({
+    ...c,
+    CharacterIcon: CharacterIcon.find(
+      (i) => i.Event_Category === c.Event_Category,
+    )?.CharacterIcon,
+  }));
 
   return {
     pageContext: {
       pageProps: {
-        events,
+        events: eventsWithIcon,
       },
     },
   };
