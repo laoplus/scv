@@ -267,7 +267,7 @@ type SubStoryInfo = {
 
     await fs.writeFile(
         "./public/searchIndex.json",
-        JSON.stringify(searchIndexes, null, 2),
+        JSON.stringify(searchIndexes, null, 0),
         "utf-8",
     );
     console.log(`done with ${searchIndexes.length} dialogs`);
