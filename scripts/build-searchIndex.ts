@@ -264,10 +264,53 @@ type SubStoryInfo = {
         }
     }
 
-    await fs.writeFile(
-        "./public/searchIndex.json",
-        JSON.stringify(searchIndexes, null, 0),
-        "utf-8",
-    );
-    console.log(`done with ${searchIndexes.length} dialogs`);
+    const MAX_CHUNK_SIZE = 10 * 1024 * 1024; // 10MB
+
+    // 古いファイルを削除
+    const publicFiles = await fs.readdir("./public");
+    for (const file of publicFiles) {
+        if (file.startsWith("searchIndex")) {
+            await fs.unlink(`./public/${file}`);
+        }
+    }
+
+    const fullJson = JSON.stringify(searchIndexes, null, 0);
+    const byteSize = Buffer.byteLength(fullJson, "utf-8");
+
+    if (byteSize <= MAX_CHUNK_SIZE) {
+        await fs.writeFile(
+            "./public/searchIndex.manifest.json",
+            JSON.stringify({ chunks: 1 }),
+            "utf-8",
+        );
+        await fs.writeFile("./public/searchIndex.0.json", fullJson, "utf-8");
+        console.log(
+            `done with ${searchIndexes.length} dialogs (1 chunk, ${(byteSize / 1024 / 1024).toFixed(2)}MB)`,
+        );
+    } else {
+        const numChunks = Math.ceil(byteSize / MAX_CHUNK_SIZE);
+        const chunkSize = Math.ceil(searchIndexes.length / numChunks);
+        const chunks: SearchIndex[][] = [];
+        for (let i = 0; i < searchIndexes.length; i += chunkSize) {
+            chunks.push(searchIndexes.slice(i, i + chunkSize));
+        }
+
+        await fs.writeFile(
+            "./public/searchIndex.manifest.json",
+            JSON.stringify({ chunks: chunks.length }),
+            "utf-8",
+        );
+        await Promise.all(
+            chunks.map((chunk, i) =>
+                fs.writeFile(
+                    `./public/searchIndex.${i}.json`,
+                    JSON.stringify(chunk, null, 0),
+                    "utf-8",
+                ),
+            ),
+        );
+        console.log(
+            `done with ${searchIndexes.length} dialogs (${chunks.length} chunks, ${(byteSize / 1024 / 1024).toFixed(2)}MB total)`,
+        );
+    }
 })();

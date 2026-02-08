@@ -151,11 +151,18 @@ export function Page() {
 
   useEffect(() => {
     (async () => {
-      const d = (await fetch("/searchIndex.json").then((r) =>
+      const manifest = (await fetch("/searchIndex.manifest.json").then((r) =>
         r.json(),
-      )) as SearchIndex[];
+      )) as { chunks: number };
+      const chunks = await Promise.all(
+        Array.from({ length: manifest.chunks }, (_, i) =>
+          fetch(`/searchIndex.${i}.json`).then(
+            (r) => r.json() as Promise<SearchIndex[]>,
+          ),
+        ),
+      );
 
-      setSearchIndex(d);
+      setSearchIndex(chunks.flat());
       setSearchIndexLoading(false);
     })();
   }, []);

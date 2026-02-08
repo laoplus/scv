@@ -23,4 +23,4 @@ dist-ssr
 
 data
 auto-imports.d.ts
-public/searchIndex.json
+public/searchIndex.*
