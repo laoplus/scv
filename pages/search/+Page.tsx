@@ -311,8 +311,7 @@ export function Page() {
               itemContent={(index, searchIndex) => (
                 <Dialog d={searchIndex} key={index} />
               )}
-              // overscan in pixels
-              overscan={500}
+              increaseViewportBy={500}
             />
           ))}
       </div>
