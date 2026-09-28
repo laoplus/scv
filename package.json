@@ -7,14 +7,21 @@
     "scripts": {
         "dev": "vite",
         "test": "node --test",
-        "build": "run-p build:*",
+        "build": "run-s check:compiler bundle lint:compiler",
         "build:vite": "vite build",
         "build:searchIndex": "tsx ./scripts/build-searchIndex.ts",
         "serve": "serve --no-clipboard -p 3081 dist/client",
         "preview": "run-s build serve",
         "watch-preview": "onchange -k \"**/*.tsx\" -- yarn preview",
-        "lint": "eslint . --fix",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "lint": "run-s lint:eslint lint:compiler",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "lint:compiler": "oxlint --max-warnings 0",
+        "check:compiler": "node scripts/check-react-compiler.ts",
+        "test:compiler": "node --test scripts/react-compiler.test.ts",
+        "lint:check": "eslint .",
+        "typecheck": "tsc --noEmit",
+        "bundle": "run-p build:*",
+        "lint:eslint": "eslint . --fix"
     },
     "dependencies": {
         "@eslint/compat": "^1.1.1",
@@ -50,6 +57,7 @@
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.6",
         "react": "^18.3.1",
+        "react-compiler-runtime": "1.0.0",
         "react-dom": "^18.3.1",
         "react-select": "^5.8.0",
         "react-virtuoso": "^4.10.4",
@@ -63,5 +71,19 @@
         "unplugin-icons": "^0.19.3",
         "vike": "^0.4.195",
         "vite": "^5.4.5"
+    },
+    "devDependencies": {
+        "oxc-transform-react": "0.151.0",
+        "oxlint": "1.86.0"
+    },
+    "engines": {
+        "node": "24.x"
+    },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "24.x",
+            "onFail": "error"
+        }
     }
 }

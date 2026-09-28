@@ -1,14 +1,14 @@
 import { countBy } from "lodash-es";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 
 import { Heading } from "../../components/Heading";
 import { UnitIcon } from "../../components/UnitIcon";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { filterSearchIndex } from "./filterSearchIndex";
-import { MemoSceneSelector } from "./SceneSelector";
+import { SceneSelector } from "./SceneSelector";
 import { SearchOption } from "./SelectorUtil";
-import { MemoSpeakerSelector } from "./SpeakerSelector";
+import { SpeakerSelector } from "./SpeakerSelector";
 
 export type SearchIndex = {
   key: string;
@@ -26,32 +26,29 @@ export const documentProps = {
   description: "ゲーム内の全シナリオの文章を全文検索できます。",
 };
 
-const NotFound = () =>
-  useMemo(() => {
-    const notFoundIcons = [
-      "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
-      "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
-    ];
+const NotFound = () => {
+  const notFoundIcons = [
+    "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
+    "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
+  ];
 
-    return (
-      <div>
-        <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
-          <img
-            src={
-              notFoundIcons[Math.floor(Math.random() * notFoundIcons.length)]
-            }
-            className="h-32 w-32 flex-shrink-0"
-          />
-          <h2 className="text-xl font-bold [&>span]:inline-block [&>span]:whitespace-nowrap">
-            <span>指定した</span>
-            <span>キーワードを</span>
-            <span>含む文章は</span>
-            <span>見つかりませんでした</span>
-          </h2>
-        </div>
+  const [icon] = useState(
+    () => notFoundIcons[Math.floor(Math.random() * notFoundIcons.length)],
+  );
+  return (
+    <div>
+      <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
+        <img src={icon} className="h-32 w-32 flex-shrink-0" />
+        <h2 className="text-xl font-bold [&>span]:inline-block [&>span]:whitespace-nowrap">
+          <span>指定した</span>
+          <span>キーワードを</span>
+          <span>含む文章は</span>
+          <span>見つかりませんでした</span>
+        </h2>
       </div>
-    );
-  }, []);
+    </div>
+  );
+};
 
 const Dialog = ({ d }: { d: SearchIndex }) => {
   const url = d.speaker.icon
@@ -105,6 +102,19 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
   );
 };
 
+const VirtuosoList = React.forwardRef(function VirtuosoWrapper(
+  props: React.HTMLAttributes<HTMLDivElement>,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
+    />
+  );
+});
+
 export function Page() {
   const [searchIndexLoading, setSearchIndexLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
@@ -113,19 +123,16 @@ export function Page() {
   const [searchSpeakerNames, setSearchSpeakerNames] = useState<
     (string | null)[]
   >([]);
-  const speakerOptions = useMemo(() => {
-    const speakerNames = searchIndex.map((v) => v.speaker.name);
-    const speakerCounts = Object.entries(countBy(speakerNames));
-    const options = speakerCounts
-      .map<SearchOption>(([speaker, count]) => ({
-        // countByの時点でnullは"null"に変換されている
-        label: speaker === "null" ? "(なし)" : speaker,
-        value: speaker === "null" ? null : speaker,
-        count,
-      }))
-      .sort((s1, s2) => s1.label.localeCompare(s2.label));
-    return options;
-  }, [searchIndex]);
+  const speakerOptions = Object.entries(
+    countBy(searchIndex.map((v) => v.speaker.name)),
+  )
+    .map<SearchOption>(([speaker, count]) => ({
+      // countByの時点でnullは"null"に変換されている
+      label: speaker === "null" ? "(なし)" : speaker,
+      value: speaker === "null" ? null : speaker,
+      count,
+    }))
+    .sort((s1, s2) => s1.label.localeCompare(s2.label));
 
   const [showSpeakerSelector, setShowSpeakerSelector] = useState(false);
 
@@ -133,20 +140,16 @@ export function Page() {
   const [searchSceneNames, setSearchSceneNames] = useState<(string | null)[]>(
     [],
   );
-  const sceneOptions = useMemo(() => {
-    const sceneNames = searchIndex.map((v) => v.sceneName);
-    const sceneCounts = Object.entries(countBy(sceneNames));
-    const options = sceneCounts
-      .map<SearchOption>(([scene, count]) => ({
-        // countByの時点でnullは"null"に変換されている
-        label: scene === "null" ? "(なし)" : scene,
-        value: scene === "null" ? null : scene,
-        count,
-      }))
-      .sort((s1, s2) => s1.label.localeCompare(s2.label));
-
-    return options;
-  }, [searchIndex]);
+  const sceneOptions = Object.entries(
+    countBy(searchIndex.map((v) => v.sceneName)),
+  )
+    .map<SearchOption>(([scene, count]) => ({
+      // countByの時点でnullは"null"に変換されている
+      label: scene === "null" ? "(なし)" : scene,
+      value: scene === "null" ? null : scene,
+      count,
+    }))
+    .sort((s1, s2) => s1.label.localeCompare(s2.label));
   const [showSceneSelector, setShowSceneSelector] = useState(false);
 
   useEffect(() => {
@@ -167,15 +170,11 @@ export function Page() {
     })();
   }, []);
 
-  const searchResult = useMemo(
-    () =>
-      filterSearchIndex(
-        searchIndex,
-        searchString,
-        searchSpeakerNames,
-        searchSceneNames,
-      ),
-    [searchIndex, searchString, searchSpeakerNames, searchSceneNames],
+  const searchResult = filterSearchIndex(
+    searchIndex,
+    searchString,
+    searchSpeakerNames,
+    searchSceneNames,
   );
 
   return (
@@ -212,7 +211,7 @@ export function Page() {
 
         {showSpeakerSelector && (
           <div className="flex flex-col gap-2 md:rounded-lg">
-            <MemoSpeakerSelector
+            <SpeakerSelector
               searchIndexLoading={searchIndexLoading}
               setSearchSpeakerNames={setSearchSpeakerNames}
               speakerOptions={speakerOptions}
@@ -239,7 +238,7 @@ export function Page() {
 
         {showSceneSelector && (
           <div className="flex flex-col gap-2 md:rounded-lg">
-            <MemoSceneSelector
+            <SceneSelector
               searchIndexLoading={searchIndexLoading}
               setSearchSceneNames={setSearchSceneNames}
               sceneOptions={sceneOptions}
@@ -283,15 +282,7 @@ export function Page() {
               useWindowScroll
               data={searchResult}
               components={{
-                List: React.forwardRef(function VirtuosoWrapper(props, ref) {
-                  return (
-                    <div
-                      {...props}
-                      ref={ref}
-                      className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
-                    />
-                  );
-                }),
+                List: VirtuosoList,
               }}
               itemContent={(index, searchIndex) => (
                 <Dialog d={searchIndex} key={index} />

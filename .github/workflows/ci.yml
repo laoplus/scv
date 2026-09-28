@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          cache: "yarn"
+
+      - run: yarn install --frozen-lockfile
+
+      - name: ESLint
+        run: yarn lint:check
+
+      - name: Oxlint
+        run: yarn lint:compiler
+
+      - name: React Compiler
+        run: yarn check:compiler
+
+      - name: Tests
+        run: yarn test

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { PageContext } from "../pages/scenes/view/+Page";
 import { Dialog } from "../pages/types/Scene";
@@ -44,6 +44,23 @@ function findClosestBgImage(dialogs: ExtendedDialog[]) {
     .filter((b) => b)
     .at(0);
   return findClosestBgImage;
+}
+
+function keyboardHandler(event: KeyboardEvent) {
+  if (event.key === "Enter") screenClickHandler();
+  if (event.key === "Backspace") {
+    document
+      .querySelector<HTMLButtonElement>(
+        ".js-dialog:not(.js-current-dialog) button",
+      )
+      ?.click();
+  }
+}
+
+function screenClickHandler() {
+  document
+    .querySelector<HTMLButtonElement>(".js-current-dialog button")
+    ?.click();
 }
 
 export function SceneViewer({ scene }: PageContext["pageProps"]) {
@@ -140,33 +157,10 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
       .map((d) => d.replace(/\u200B/g, "")),
   );
 
-  const keyboardHandler = useCallback((event: { key: string }) => {
-    if (event.key === "Enter") {
-      document
-        .querySelector<HTMLButtonElement>(".js-current-dialog button")
-        ?.click();
-    }
-    if (event.key === "Backspace") {
-      document
-        .querySelector<HTMLButtonElement>(
-          ".js-dialog:not(.js-current-dialog) button",
-        )
-        ?.click();
-    }
-  }, []);
-
   useEffect(() => {
     document.addEventListener("keydown", keyboardHandler, false);
-
-    return () => {
+    return () =>
       document.removeEventListener("keydown", keyboardHandler, false);
-    };
-  }, [keyboardHandler]);
-
-  const screenClickHandler = useCallback(() => {
-    document
-      .querySelector<HTMLButtonElement>(".js-current-dialog button")
-      ?.click();
   }, []);
 
   // bg imageは最後のものを表示する

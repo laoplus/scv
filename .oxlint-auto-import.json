@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "OcticonAlert24": "readonly",
+    "OcticonCheckCircle24": "readonly",
+    "OcticonCircleSlash24": "readonly",
+    "OcticonInfo24": "readonly",
+    "OcticonChevronRight24": "readonly",
+    "OcticonSearch24": "readonly",
+    "OcticonSync24": "readonly",
+    "OcticonChevronDown24": "readonly"
+  }
+}

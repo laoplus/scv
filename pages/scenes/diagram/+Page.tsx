@@ -16,10 +16,8 @@ mermaid.initialize({});
 
 export function Page({
   mermaidSource,
-  cutSceneIndex,
   cutType,
   eventName,
-  stageDescription,
   stageIdx,
   stageName,
   chapter,
@@ -33,10 +31,6 @@ export function Page({
       setMermaidResult(svg);
     })();
   }, [mermaidSource]);
-
-  useEffect(() => {
-    reactZoomPanPinchRef.current?.zoomOut();
-  }, [mermaidResult]);
 
   return (
     <div className="px-4 md:mx-4 md:px-0 lg:mx-8">
@@ -83,6 +77,10 @@ export function Page({
             <div
               className="p-24"
               id="mermaid"
+              ref={(element) => {
+                if (element && mermaidResult)
+                  reactZoomPanPinchRef.current?.zoomOut();
+              }}
               dangerouslySetInnerHTML={{ __html: mermaidResult }}
             ></div>
           )}
