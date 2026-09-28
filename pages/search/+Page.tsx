@@ -1,10 +1,10 @@
-import { countBy } from "lodash-es";
 import React, { useEffect, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 
 import { Heading } from "../../components/Heading";
 import { UnitIcon } from "../../components/UnitIcon";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
+import { countNames } from "../../utils/countNames";
 import { filterSearchIndex } from "./filterSearchIndex";
 import { SceneSelector } from "./SceneSelector";
 import { SearchOption } from "./SelectorUtil";
@@ -123,13 +123,12 @@ export function Page() {
   const [searchSpeakerNames, setSearchSpeakerNames] = useState<
     (string | null)[]
   >([]);
-  const speakerOptions = Object.entries(
-    countBy(searchIndex.map((v) => v.speaker.name)),
+  const speakerOptions = Array.from(
+    countNames(searchIndex.map((v) => v.speaker.name)),
   )
     .map<SearchOption>(([speaker, count]) => ({
-      // countByの時点でnullは"null"に変換されている
-      label: speaker === "null" ? "(なし)" : speaker,
-      value: speaker === "null" ? null : speaker,
+      label: speaker ?? "(なし)",
+      value: speaker,
       count,
     }))
     .sort((s1, s2) => s1.label.localeCompare(s2.label));
@@ -140,13 +139,12 @@ export function Page() {
   const [searchSceneNames, setSearchSceneNames] = useState<(string | null)[]>(
     [],
   );
-  const sceneOptions = Object.entries(
-    countBy(searchIndex.map((v) => v.sceneName)),
+  const sceneOptions = Array.from(
+    countNames(searchIndex.map((v) => v.sceneName)),
   )
     .map<SearchOption>(([scene, count]) => ({
-      // countByの時点でnullは"null"に変換されている
-      label: scene === "null" ? "(なし)" : scene,
-      value: scene === "null" ? null : scene,
+      label: scene ?? "(なし)",
+      value: scene,
       count,
     }))
     .sort((s1, s2) => s1.label.localeCompare(s2.label));

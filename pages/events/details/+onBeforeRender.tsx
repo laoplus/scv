@@ -1,6 +1,6 @@
-import _ from "lodash-es";
 import type { PageContextBuiltIn } from "vike/types";
 
+import { groupEventStories } from "../../../features/events/groupEventStories";
 import {
   createSceneCharacters,
   extractChapterIndexFromChapterKey,
@@ -98,48 +98,43 @@ export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
     // not include no cutscene events;
     .filter((e) => e.ChapterStages.length > 0);
 
-  const groupedEvents = _.chain(eventsWithStages)
-    .groupBy((c) => c.Event_Category)
-    .toArray()
-    .value();
+  const groupedEvents = groupEventStories(eventsWithStages);
 
-  const subStoryGroups = _.flatten(
-    event.map((e) => {
-      const subStoryGroup = tables.chapterSubStoryGroups
-        .filter((s) => s.ChapterIndex === e.Chapter_Key)
-        .map((sgroup) => {
-          const unitName = sgroup.Key.split("_").at(-1);
-          const eventIndex = e.Event_CategoryIndex;
-          const chapterIndex = extractChapterIndexFromChapterKey(e.Chapter_Key);
+  const subStoryGroups = event.flatMap((e) => {
+    const subStoryGroup = tables.chapterSubStoryGroups
+      .filter((s) => s.ChapterIndex === e.Chapter_Key)
+      .map((sgroup) => {
+        const unitName = sgroup.Key.split("_").at(-1);
+        const eventIndex = e.Event_CategoryIndex;
+        const chapterIndex = extractChapterIndexFromChapterKey(e.Chapter_Key);
 
-          return {
-            ...sgroup,
-            SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
-              tables.chapterSubStories.find(
-                (subStory) => subStory.Key === subStoryIndex,
-              ),
-            ).map((subStory, index) => {
-              if (!subStory) {
-                return null;
-              }
-              return {
-                StoryName: subStory.StoryName,
-                StoryPath:
-                  `/scenes/ev${eventIndex}/sub/${chapterIndex}/${unitName}/${
-                    index + 1
-                  }/`.toLowerCase(),
-                Characters: getSceneCharacters({
-                  sceneCharacters,
-                  cutsceneIndex: subStory.StoryDialog,
-                }),
-              } as const;
-            }),
-          };
-        });
+        return {
+          ...sgroup,
+          SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
+            tables.chapterSubStories.find(
+              (subStory) => subStory.Key === subStoryIndex,
+            ),
+          ).map((subStory, index) => {
+            if (!subStory) {
+              return null;
+            }
+            return {
+              StoryName: subStory.StoryName,
+              StoryPath:
+                `/scenes/ev${eventIndex}/sub/${chapterIndex}/${unitName}/${
+                  index + 1
+                }/`.toLowerCase(),
+              Characters: getSceneCharacters({
+                sceneCharacters,
+                cutsceneIndex: subStory.StoryDialog,
+              }),
+            } as const;
+          }),
+        };
+      });
 
-      return subStoryGroup;
-    }),
-  );
+    return subStoryGroup;
+  });
 
   return {
     pageContext: {
