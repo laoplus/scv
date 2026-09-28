@@ -46,6 +46,16 @@ function findClosestBgImage(dialogs: ExtendedDialog[]) {
 }
 
 function keyboardHandler(event: KeyboardEvent) {
+    if (event.defaultPrevented || event.isComposing) return;
+    const target = event.target;
+    if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+            target.closest("button, a[href], input, textarea, select, summary, [tabindex]"))
+    ) {
+        return;
+    }
+
     if (event.key === "Enter") screenClickHandler();
     if (event.key === "Backspace") {
         document
