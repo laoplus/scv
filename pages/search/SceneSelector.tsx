@@ -134,5 +134,3 @@ export const SceneSelector = ({
     </div>
   );
 };
-
-export const MemoSceneSelector = React.memo(SceneSelector);

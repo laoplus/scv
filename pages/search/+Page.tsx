@@ -1,14 +1,14 @@
 import { countBy } from "lodash-es";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 
 import { Heading } from "../../components/Heading";
 import { UnitIcon } from "../../components/UnitIcon";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
 import { filterSearchIndex } from "./filterSearchIndex";
-import { MemoSceneSelector } from "./SceneSelector";
+import { SceneSelector } from "./SceneSelector";
 import { SearchOption } from "./SelectorUtil";
-import { MemoSpeakerSelector } from "./SpeakerSelector";
+import { SpeakerSelector } from "./SpeakerSelector";
 
 export type SearchIndex = {
   key: string;
@@ -123,19 +123,16 @@ export function Page() {
   const [searchSpeakerNames, setSearchSpeakerNames] = useState<
     (string | null)[]
   >([]);
-  const speakerOptions = useMemo(() => {
-    const speakerNames = searchIndex.map((v) => v.speaker.name);
-    const speakerCounts = Object.entries(countBy(speakerNames));
-    const options = speakerCounts
-      .map<SearchOption>(([speaker, count]) => ({
-        // countByの時点でnullは"null"に変換されている
-        label: speaker === "null" ? "(なし)" : speaker,
-        value: speaker === "null" ? null : speaker,
-        count,
-      }))
-      .sort((s1, s2) => s1.label.localeCompare(s2.label));
-    return options;
-  }, [searchIndex]);
+  const speakerOptions = Object.entries(
+    countBy(searchIndex.map((v) => v.speaker.name)),
+  )
+    .map<SearchOption>(([speaker, count]) => ({
+      // countByの時点でnullは"null"に変換されている
+      label: speaker === "null" ? "(なし)" : speaker,
+      value: speaker === "null" ? null : speaker,
+      count,
+    }))
+    .sort((s1, s2) => s1.label.localeCompare(s2.label));
 
   const [showSpeakerSelector, setShowSpeakerSelector] = useState(false);
 
@@ -143,20 +140,16 @@ export function Page() {
   const [searchSceneNames, setSearchSceneNames] = useState<(string | null)[]>(
     [],
   );
-  const sceneOptions = useMemo(() => {
-    const sceneNames = searchIndex.map((v) => v.sceneName);
-    const sceneCounts = Object.entries(countBy(sceneNames));
-    const options = sceneCounts
-      .map<SearchOption>(([scene, count]) => ({
-        // countByの時点でnullは"null"に変換されている
-        label: scene === "null" ? "(なし)" : scene,
-        value: scene === "null" ? null : scene,
-        count,
-      }))
-      .sort((s1, s2) => s1.label.localeCompare(s2.label));
-
-    return options;
-  }, [searchIndex]);
+  const sceneOptions = Object.entries(
+    countBy(searchIndex.map((v) => v.sceneName)),
+  )
+    .map<SearchOption>(([scene, count]) => ({
+      // countByの時点でnullは"null"に変換されている
+      label: scene === "null" ? "(なし)" : scene,
+      value: scene === "null" ? null : scene,
+      count,
+    }))
+    .sort((s1, s2) => s1.label.localeCompare(s2.label));
   const [showSceneSelector, setShowSceneSelector] = useState(false);
 
   useEffect(() => {
@@ -177,15 +170,11 @@ export function Page() {
     })();
   }, []);
 
-  const searchResult = useMemo(
-    () =>
-      filterSearchIndex(
-        searchIndex,
-        searchString,
-        searchSpeakerNames,
-        searchSceneNames,
-      ),
-    [searchIndex, searchString, searchSpeakerNames, searchSceneNames],
+  const searchResult = filterSearchIndex(
+    searchIndex,
+    searchString,
+    searchSpeakerNames,
+    searchSceneNames,
   );
 
   return (
@@ -222,7 +211,7 @@ export function Page() {
 
         {showSpeakerSelector && (
           <div className="flex flex-col gap-2 md:rounded-lg">
-            <MemoSpeakerSelector
+            <SpeakerSelector
               searchIndexLoading={searchIndexLoading}
               setSearchSpeakerNames={setSearchSpeakerNames}
               speakerOptions={speakerOptions}
@@ -249,7 +238,7 @@ export function Page() {
 
         {showSceneSelector && (
           <div className="flex flex-col gap-2 md:rounded-lg">
-            <MemoSceneSelector
+            <SceneSelector
               searchIndexLoading={searchIndexLoading}
               setSearchSceneNames={setSearchSceneNames}
               sceneOptions={sceneOptions}

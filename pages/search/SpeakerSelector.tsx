@@ -134,5 +134,3 @@ export const SpeakerSelector = ({
     </div>
   );
 };
-
-export const MemoSpeakerSelector = React.memo(SpeakerSelector);
