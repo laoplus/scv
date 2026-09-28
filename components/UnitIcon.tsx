@@ -1,10 +1,4 @@
-import React, {
-  DetailedHTMLProps,
-  ImgHTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 
 import { cn } from "./utils";
 
@@ -17,15 +11,6 @@ export const UnitIcon = ({
   withInsetBorder?: boolean;
   borderClassName?: string;
 }) => {
-  const [hasRendered, setHasRendered] = useState(false);
-  const ref = useRef<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    if (ref.current && hasRendered) {
-      ref.current!.src = src || "";
-    }
-  }, [src, hasRendered]);
-
   /**
    * originalも見つからなかった時のフォールバック
    */
@@ -49,31 +34,30 @@ export const UnitIcon = ({
     target.src = target.src.replace(currentUrl, placeholder);
   };
 
-  useEffect(() => {
-    setHasRendered(true);
-
-    const onError = (event: Event | string) => {
-      if (typeof event === "string") {
-        return;
-      }
-      // console.log("onError1", event);
-      const target = event.currentTarget as HTMLImageElement;
-      target.onerror = onErrorFallback;
-
-      const currentUrlObj = new URL(target.src);
-      // withour params
-      const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
-
-      const newUrlObj = new URL(currentUrl);
-      const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
-      target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
-      target.src = target.src.replace(currentUrl, newUrl);
-    };
-
-    if (ref.current) {
-      ref.current.onerror = onError;
+  const onError = (event: Event | string) => {
+    if (typeof event === "string") {
+      return;
     }
-  }, []);
+    // console.log("onError1", event);
+    const target = event.currentTarget as HTMLImageElement;
+    target.onerror = onErrorFallback;
+
+    const currentUrlObj = new URL(target.src);
+    // withour params
+    const currentUrl = currentUrlObj.origin + currentUrlObj.pathname;
+
+    const newUrlObj = new URL(currentUrl);
+    const newUrl = newUrlObj.origin + "/original" + newUrlObj.pathname;
+    target.srcset = target.srcset.replaceAll(currentUrl, newUrl);
+    target.src = target.src.replace(currentUrl, newUrl);
+  };
+
+  const ref = (image: HTMLImageElement | null) => {
+    if (image) {
+      image.onerror = onError;
+      image.src = src || "";
+    }
+  };
 
   if (withInsetBorder) {
     return (

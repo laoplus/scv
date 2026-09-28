@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 
 import { Heading } from "../components/Heading";
 import { cn } from "../components/utils";
@@ -90,12 +90,21 @@ const Alerts = ({
   );
 };
 
+const subscribeToHydration = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
+
+function BuildDateAgo({ buildDate }: { buildDate: string }) {
+  const [text] = useState(() => timeAgo(new Date(buildDate)));
+  return <>{text}</>;
+}
+
 export function Page({ buildDate }: PageProps) {
-  const [buildDateAgo, setBuildDateAgo] = useState<string | null>(null);
-  useEffect(() => {
-    setBuildDateAgo(timeAgo(new Date(buildDate)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    clientSnapshot,
+    serverSnapshot,
+  );
 
   return (
     <div className="my-12 flex flex-col gap-8 px-2 text-center">
@@ -113,7 +122,9 @@ export function Page({ buildDate }: PageProps) {
           }).format(new Date(buildDate))}
         >
           最終更新:&nbsp;
-          {buildDateAgo || (
+          {hydrated ? (
+            <BuildDateAgo buildDate={buildDate} />
+          ) : (
             <div className="inline animate-pulse rounded bg-slate-300 text-transparent">
               0日前
             </div>

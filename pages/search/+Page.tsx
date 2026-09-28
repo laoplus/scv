@@ -26,32 +26,29 @@ export const documentProps = {
   description: "ゲーム内の全シナリオの文章を全文検索できます。",
 };
 
-const NotFound = () =>
-  useMemo(() => {
-    const notFoundIcons = [
-      "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
-      "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
-    ];
+const NotFound = () => {
+  const notFoundIcons = [
+    "https://cdn.laoplus.net/sticker/Diyap04_4.webp",
+    "https://cdn.laoplus.net/sticker/Diyap08_2.webp",
+  ];
 
-    return (
-      <div>
-        <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
-          <img
-            src={
-              notFoundIcons[Math.floor(Math.random() * notFoundIcons.length)]
-            }
-            className="h-32 w-32 flex-shrink-0"
-          />
-          <h2 className="text-xl font-bold [&>span]:inline-block [&>span]:whitespace-nowrap">
-            <span>指定した</span>
-            <span>キーワードを</span>
-            <span>含む文章は</span>
-            <span>見つかりませんでした</span>
-          </h2>
-        </div>
+  const [icon] = useState(
+    () => notFoundIcons[Math.floor(Math.random() * notFoundIcons.length)],
+  );
+  return (
+    <div>
+      <div className="flex flex-col items-center gap-2 bg-slate-200 p-6 py-12 text-center md:rounded-lg md:p-12">
+        <img src={icon} className="h-32 w-32 flex-shrink-0" />
+        <h2 className="text-xl font-bold [&>span]:inline-block [&>span]:whitespace-nowrap">
+          <span>指定した</span>
+          <span>キーワードを</span>
+          <span>含む文章は</span>
+          <span>見つかりませんでした</span>
+        </h2>
       </div>
-    );
-  }, []);
+    </div>
+  );
+};
 
 const Dialog = ({ d }: { d: SearchIndex }) => {
   const url = d.speaker.icon
@@ -104,6 +101,19 @@ const Dialog = ({ d }: { d: SearchIndex }) => {
     </div>
   );
 };
+
+const VirtuosoList = React.forwardRef(function VirtuosoWrapper(
+  props: React.HTMLAttributes<HTMLDivElement>,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
+    />
+  );
+});
 
 export function Page() {
   const [searchIndexLoading, setSearchIndexLoading] = useState(true);
@@ -283,15 +293,7 @@ export function Page() {
               useWindowScroll
               data={searchResult}
               components={{
-                List: React.forwardRef(function VirtuosoWrapper(props, ref) {
-                  return (
-                    <div
-                      {...props}
-                      ref={ref}
-                      className="flex flex-col gap-px border-t border-b border-gray-200 bg-gray-200 md:gap-2 md:border-none md:bg-white"
-                    />
-                  );
-                }),
+                List: VirtuosoList,
               }}
               itemContent={(index, searchIndex) => (
                 <Dialog d={searchIndex} key={index} />
