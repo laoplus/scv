@@ -14,26 +14,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@v7
+      - name: Checkout lo-data repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version-file: package.json
-          cache: "yarn"
+          repository: laoplus/lo-data
+          token: ${{ secrets.GH_PAT_CLONE_DATA_REPO }}
+          path: data
 
-      - run: yarn install --frozen-lockfile
+      - name: Enable pnpm
+        run: corepack enable
 
-      - name: TypeScript
-        run: yarn typecheck
+      - run: pnpm install --frozen-lockfile
 
-      - name: ESLint
-        run: yarn lint:check
+      - name: Check
+        run: pnpm check
 
-      - name: Oxlint
-        run: yarn lint:compiler
-
-      - name: React Compiler
-        run: yarn check:compiler
-
-      - name: Tests
-        run: yarn test
+      - name: Build
+        run: pnpm build
