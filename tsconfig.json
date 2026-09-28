@@ -1,21 +1,17 @@
 {
+    "extends": "@tsconfig/strictest/tsconfig.json",
     "compilerOptions": {
-        "strict": true,
         "noEmit": true,
         "allowImportingTsExtensions": true,
-        "module": "ES2020",
-        "moduleResolution": "Node",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
         "target": "ESNext",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "types": ["vite/client", "unplugin-icons/types/react"],
-        "jsx": "react",
-        "skipLibCheck": true,
-        "esModuleInterop": true
+        "jsx": "react-jsx",
+        "erasableSyntaxOnly": true,
+        "verbatimModuleSyntax": true,
+        "resolveJsonModule": true
     },
-    "ts-node": {
-        "transpileOnly": true,
-        "compilerOptions": {
-            "module": "CommonJS"
-        }
-    }
+    "exclude": ["node_modules", "dist", "data"]
 }

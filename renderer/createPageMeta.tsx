@@ -1,21 +1,18 @@
 type Props =
-  | {
-      title?: string;
-      description?: string;
-    }
-  | undefined;
+    | {
+          title?: string;
+          description?: string;
+      }
+    | undefined;
 
 export function createPageMeta(props: Props) {
-  const title = props?.title || undefined;
-  const description = props?.description || undefined;
+    const title = props?.title;
+    const description = props?.description;
 
-  return {
-    title: title ? title + " - SCV" : "SCV - Scene Viewer for Last Origin",
-    description: [
-      description,
-      "SCVはラストオリジンのシーン・シナリオビューアです",
-    ]
-      .join("\n")
-      .trim(),
-  };
+    return {
+        title: title ? title + " - SCV" : "SCV - Scene Viewer for Last Origin",
+        description: [description, "SCVはラストオリジンのシーン・シナリオビューアです"]
+            .join("\n")
+            .trim(),
+    };
 }

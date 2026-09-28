@@ -1,8 +1,6 @@
-export type TableMapChapter = {
-    [key: string]: Chapter;
-};
+export type TableMapChapter = Record<string, Chapter>;
 
-export type Chapter = {
+export interface Chapter {
     Key: string;
     /**
      * チャプター名
@@ -25,4 +23,4 @@ export type Chapter = {
     ChapterSearch_IDX: string;
     Chapter_3DWorldMap: string;
     Chapter_PrefabName: string;
-};
+}

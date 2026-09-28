@@ -1,23 +1,15 @@
-import React from "react";
-
 import { ChapterGrid } from "../../components/ChapterGrid";
 import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./+onBeforeRender";
 
-type PageProps = Awaited<
-  ReturnType<typeof onBeforeRender>
->["pageContext"]["pageProps"];
-
-export const documentProps = {
-  title: "メインストーリー",
-};
+type PageProps = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"]["pageProps"];
 
 export function Page({ chapters }: PageProps) {
-  return (
-    <div className="md:mx-4 lg:mx-8">
-      <Heading level={1}>Main Stories</Heading>
+    return (
+        <div className="md:mx-4 lg:mx-8">
+            <Heading level={1}>Main Stories</Heading>
 
-      <ChapterGrid chapters={chapters} />
-    </div>
-  );
+            <ChapterGrid chapters={chapters} />
+        </div>
+    );
 }

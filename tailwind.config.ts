@@ -1,10 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-    content: [
-        "./components/**/*.{ts,tsx}",
-        "./pages/**/*.{ts,tsx}",
-        "./renderer/**/*.{ts,tsx}",
-    ],
+import type { Config } from "tailwindcss";
+
+export default {
+    content: ["./components/**/*.{ts,tsx}", "./pages/**/*.{ts,tsx}", "./renderer/**/*.{ts,tsx}"],
     theme: {
         extend: {
             animation: {
@@ -13,11 +10,11 @@ module.exports = {
             keyframes: {
                 "dialog-appear": {
                     "0%": {
-                        opacity: 0,
+                        opacity: "0",
                         transform: "translateX(20px)",
                     },
                     "100%": {
-                        opacity: 1,
+                        opacity: "1",
                         transform: "translateX(0)",
                     },
                 },
@@ -28,4 +25,4 @@ module.exports = {
         },
     },
     plugins: [],
-};
+} satisfies Config;

@@ -1,29 +1,29 @@
 import fs from "fs/promises";
 
-import type { SearchIndex } from "../pages/search/+Page";
-import { extractChapterIndexFromChapterKey, tables } from "../pages/serverUtil";
-import type { Scene } from "../pages/types/Scene";
-import { ChapterSubStory } from "../pages/types/Table_ChapterSubStory";
-import { ChapterSubStoryGroup } from "../pages/types/Table_ChapterSubStoryGroup";
-import type { EventChapter } from "../pages/types/Table_EventChapter";
-import type { Chapter } from "../pages/types/Table_MapChapter";
-import type { Stage } from "../pages/types/Table_MapStage";
+import type { SearchIndex } from "../pages/search/+Page.tsx";
+import { extractChapterIndexFromChapterKey, tables } from "../pages/serverUtil.ts";
+import type { Scene } from "../pages/types/Scene.ts";
+import type { ChapterSubStory } from "../pages/types/Table_ChapterSubStory.ts";
+import type { ChapterSubStoryGroup } from "../pages/types/Table_ChapterSubStoryGroup.ts";
+import type { EventChapter } from "../pages/types/Table_EventChapter.ts";
+import type { Chapter } from "../pages/types/Table_MapChapter.ts";
+import type { Stage } from "../pages/types/Table_MapStage.ts";
 
-type StageStoryInfo = {
+interface StageStoryInfo {
     type: "stageStory";
     chapter: Chapter | EventChapter;
     stage: Stage;
     includedIn: string;
-};
+}
 
-type SubStoryInfo = {
+interface SubStoryInfo {
     type: "subStory";
     subStory: ChapterSubStory;
     subStoryGroup: ChapterSubStoryGroup;
     event: EventChapter;
-};
+}
 
-(async () => {
+await (async () => {
     // ワーキングディレクトリからの相対パス
     // 通常、プロジェクトルート
     const dialogsPath = `./data/dialogs`;
@@ -67,9 +67,9 @@ type SubStoryInfo = {
 
                     const stage = tables.stages.find(
                         (s) =>
-                            cutscene?.Key === s.StartCutsceneIndex ||
-                            cutscene?.Key === s.EndCutsceneIndex ||
-                            s.MidCutsceneIndex.includes(cutscene?.Key),
+                            cutscene.Key === s.StartCutsceneIndex ||
+                            cutscene.Key === s.EndCutsceneIndex ||
+                            s.MidCutsceneIndex.includes(cutscene.Key),
                     );
 
                     const subStory = tables.chapterSubStories.find(
@@ -78,32 +78,26 @@ type SubStoryInfo = {
 
                     if (stage === undefined && subStory === undefined) {
                         throw new Error(
-                            `neither stage nor subStory found for ${dialog.Dialog_Group} / ${cutscene?.Key} \nScript bug or not implemented yet?`,
+                            `neither stage nor subStory found for ${dialog.Dialog_Group} / ${cutscene.Key} \nScript bug or not implemented yet?`,
                         );
                     }
 
                     if (stage) {
                         const chapter =
-                            tables.events.find(
-                                (c) => c.Chapter_Key === stage?.ChapterIndex,
-                            ) ||
-                            tables.chapters.find(
-                                (c) => c.Key === stage?.ChapterIndex,
-                            );
+                            tables.events.find((c) => c.Chapter_Key === stage.ChapterIndex) ??
+                            tables.chapters.find((c) => c.Key === stage.ChapterIndex);
                         if (chapter === undefined) {
                             throw new Error("chapter not found");
                         }
 
                         const includedIn =
-                            stage?.StartCutsceneIndex === cutscene.Key
+                            stage.StartCutsceneIndex === cutscene.Key
                                 ? "OP"
-                                : stage?.EndCutsceneIndex === cutscene.Key
+                                : stage.EndCutsceneIndex === cutscene.Key
                                   ? "ED"
                                   : `Mid${
-                                        // s.MidCutsceneIndex.includes(cutscene?.Key) で取得しているのであることは確実
-                                        stage?.MidCutsceneIndex.indexOf(
-                                            cutscene.Key,
-                                        ) + 1
+                                        // s.MidCutsceneIndex.includes(cutscene.Key) で取得しているのであることは確実
+                                        stage.MidCutsceneIndex.indexOf(cutscene.Key) + 1
                                     }`;
 
                         return {
@@ -115,20 +109,15 @@ type SubStoryInfo = {
                     }
 
                     if (subStory) {
-                        const subStoryGroup = tables.chapterSubStoryGroups.find(
-                            (g) =>
-                                g.ChapterSubStoryIndex.includes(subStory.Key),
+                        const subStoryGroup = tables.chapterSubStoryGroups.find((g) =>
+                            g.ChapterSubStoryIndex.includes(subStory.Key),
                         );
 
                         const event = tables.events.find(
-                            (e) =>
-                                e.Chapter_Key === subStoryGroup?.ChapterIndex,
+                            (e) => e.Chapter_Key === subStoryGroup?.ChapterIndex,
                         );
 
-                        if (
-                            subStoryGroup === undefined ||
-                            event === undefined
-                        ) {
+                        if (subStoryGroup === undefined || event === undefined) {
                             throw new Error("subStoryGroup or event not found");
                         }
 
@@ -164,10 +153,7 @@ type SubStoryInfo = {
                     speaker.icon = "";
                 }
 
-                const [chapterName, chapterPath]: [
-                    string,
-                    "main" | `ev${number}`,
-                ] = (() => {
+                const [chapterName, chapterPath]: [string, "main" | `ev${number}`] = (() => {
                     if (info.type === "stageStory") {
                         if ("ChapterName" in info.chapter) {
                             return ["メインストーリー", "main"];
@@ -178,29 +164,16 @@ type SubStoryInfo = {
                         ];
                     }
 
-                    if (info.type === "subStory") {
-                        return [
-                            info.event.Event_CategoryName,
-                            `ev${info.event.Event_CategoryIndex}`,
-                        ];
-                    }
-
-                    throw new Error("unreachable");
+                    return [info.event.Event_CategoryName, `ev${info.event.Event_CategoryIndex}`];
                 })();
 
                 const searchIndexBase = {
-                    key: dialog["Key"],
+                    key: dialog.Key,
                     speaker: {
-                        name:
-                            speaker === undefined || speaker.name === ""
-                                ? null
-                                : speaker.name,
-                        icon:
-                            speaker === undefined || speaker.icon === ""
-                                ? null
-                                : speaker.icon,
+                        name: speaker === undefined || speaker.name === "" ? null : speaker.name,
+                        icon: speaker === undefined || speaker.icon === "" ? null : speaker.icon,
                     },
-                    script: dialog["Script"],
+                    script: dialog.Script,
                 };
 
                 const index: SearchIndex = (() => {
@@ -208,7 +181,7 @@ type SubStoryInfo = {
                         case "stageStory": {
                             return {
                                 ...searchIndexBase,
-                                sceneName: `${chapterName} ${info.stage?.StageIdxString} ${info.includedIn}`,
+                                sceneName: `${chapterName} ${info.stage.StageIdxString} ${info.includedIn}`,
                                 path: [
                                     "/scenes",
                                     chapterPath,
@@ -222,16 +195,14 @@ type SubStoryInfo = {
                         }
                         case "subStory": {
                             const eventIndex = info.event.Event_CategoryIndex;
-                            const chapterIndex =
-                                extractChapterIndexFromChapterKey(
-                                    info.event.Chapter_Key,
-                                );
-                            const unitName =
-                                info.subStoryGroup.Key.split("_").at(-1);
+                            const chapterIndex = extractChapterIndexFromChapterKey(
+                                info.event.Chapter_Key,
+                            );
+                            const unitName = info.subStoryGroup.Key.split("_").at(-1);
+                            if (unitName === undefined) throw new Error("Missing unit name");
                             const subStoryIndex =
-                                info.subStoryGroup.ChapterSubStoryIndex.indexOf(
-                                    info.subStory.Key,
-                                ) + 1;
+                                info.subStoryGroup.ChapterSubStoryIndex.indexOf(info.subStory.Key) +
+                                1;
 
                             return {
                                 ...searchIndexBase,

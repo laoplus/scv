@@ -21,9 +21,7 @@ export function filterSearchIndex(
 
     // 話者での絞り込み
     if (searchSpeakerNames.length !== 0) {
-        result = result.filter((d) =>
-            searchSpeakerNames.includes(d.speaker.name),
-        );
+        result = result.filter((d) => searchSpeakerNames.includes(d.speaker.name));
     }
 
     // シーンでの絞り込み

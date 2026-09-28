@@ -1,4 +1,4 @@
-export type ChapterSubStoryGroup = {
+export interface ChapterSubStoryGroup {
     Key: string;
     ChapterIndex: string;
     StoryPCNo: string;
@@ -10,8 +10,6 @@ export type ChapterSubStoryGroup = {
      */
     PCName: string;
     PCInvenIconID: string;
-};
+}
 
-export type TableChapterSubStoryGroup = {
-    [key: string]: ChapterSubStoryGroup;
-};
+export type TableChapterSubStoryGroup = Record<string, ChapterSubStoryGroup>;

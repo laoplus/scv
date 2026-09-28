@@ -1,0 +1,19 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "sortImports": true,
+    "sortPackageJson": {
+        "sortScripts": true,
+    },
+    "sortTailwindcss": {
+        "functions": ["cn"],
+    },
+    "ignorePatterns": [
+        "dist/**",
+        "data/**",
+        "auto-imports.d.ts",
+        ".oxlint-auto-import.json",
+        "public/searchIndex.*",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+    ],
+}

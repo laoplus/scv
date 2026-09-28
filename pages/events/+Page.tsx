@@ -1,24 +1,15 @@
-import React from "react";
-
 import { ChapterGrid } from "../../components/ChapterGrid";
 import { Heading } from "../../components/Heading";
 import { onBeforeRender } from "./+onBeforeRender";
 
-type PageProps = Awaited<
-  ReturnType<typeof onBeforeRender>
->["pageContext"]["pageProps"];
-
-export const documentProps = {
-  title: "イベントストーリー",
-  description: "過去に開催されたイベントの一覧です。",
-};
+type PageProps = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"]["pageProps"];
 
 export function Page({ events }: PageProps) {
-  return (
-    <div className="md:mx-4 lg:mx-8">
-      <Heading level={1}>Event Stories</Heading>
+    return (
+        <div className="md:mx-4 lg:mx-8">
+            <Heading level={1}>Event Stories</Heading>
 
-      <ChapterGrid chapters={events} />
-    </div>
-  );
+            <ChapterGrid chapters={events} />
+        </div>
+    );
 }

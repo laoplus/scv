@@ -1,4 +1,5 @@
-# http://editorconfig.org
+# EditorConfig is awesome: https://editorconfig.org
+
 root = true
 
 [*]
@@ -13,7 +14,4 @@ insert_final_newline = true
 trim_trailing_whitespace = false
 
 [*.{yml,yaml}]
-indent_size = 2
-
-[*.tsx]
 indent_size = 2

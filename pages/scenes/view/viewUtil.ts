@@ -1,5 +1,5 @@
 import { tables } from "../../serverUtil";
-import { Stage } from "../../types/Table_MapStage";
+import type { Stage } from "../../types/Table_MapStage";
 
 type SceneType = "op" | "ed" | `mid${number}`;
 
@@ -24,36 +24,28 @@ export function getSubStoryInfoFromParam({
             s.Key.toLowerCase().endsWith(`_${unitName}`),
     );
     if (!subStoryGroup) {
-        throw new Error(
-            `no subStoryGroup found for ${chapterIndex} ${unitName}`,
-        );
+        throw new Error(`no subStoryGroup found for ${chapterIndex} ${unitName}`);
     }
 
-    const subStoryKey = subStoryGroup?.ChapterSubStoryIndex[index - 1];
+    const subStoryKey = subStoryGroup.ChapterSubStoryIndex[index - 1];
     if (!subStoryKey) {
-        throw new Error(
-            `no subStoryKey found for ${chapterIndex} ${unitName} ${index}`,
-        );
+        throw new Error(`no subStoryKey found for ${chapterIndex} ${unitName} ${index}`);
     }
 
-    const subStory = tables.chapterSubStories.find(
-        (s) => s.Key === subStoryKey,
-    );
+    const subStory = tables.chapterSubStories.find((s) => s.Key === subStoryKey);
     if (!subStory) {
-        throw new Error(
-            `no subStory found for ${chapterIndex} ${unitName} ${index}`,
-        );
+        throw new Error(`no subStory found for ${chapterIndex} ${unitName} ${index}`);
     }
 
-    const eventChapters = tables.events.filter(
-        (e) => e.Event_CategoryPos === eventIndex,
-    );
+    const eventChapters = tables.events.filter((e) => e.Event_CategoryPos === eventIndex);
 
+    const firstEvent = eventChapters[0];
+    if (!firstEvent) throw new Error(`no event found for ${eventIndex}`);
     return {
         subStoryGroup,
         subStoryKey,
         subStory,
-        eventName: eventChapters[0].Event_CategoryName,
+        eventName: firstEvent.Event_CategoryName,
     };
 }
 
@@ -89,27 +81,24 @@ export function getStoryCutInfoFromParam({
 
     if (chapter === "main") {
         cutMeta.eventName = "メインストーリー";
-        const s = tables.stages.find(
-            (s) => s.StageIdxString.toLowerCase() === stageIdxStr,
-        );
+        const s = tables.stages.find((s) => s.StageIdxString.toLowerCase() === stageIdxStr);
         if (!s) {
             throw new Error(`no stage found for ${stageIdxStr}`);
         }
         stage = s;
     } else {
         const eventNumber = Number(chapter.replace("ev", ""));
-        const eventChapters = tables.events.filter(
-            (e) => e.Event_CategoryPos === eventNumber,
-        );
-        cutMeta.eventName = eventChapters[0].Event_CategoryName;
+        const eventChapters = tables.events.filter((e) => e.Event_CategoryPos === eventNumber);
+        const firstEvent = eventChapters[0];
+        if (!firstEvent) throw new Error(`no event found for ${eventNumber}`);
+        cutMeta.eventName = firstEvent.Event_CategoryName;
         const eventChaptersString = eventChapters.map((e) => e.Chapter_Key);
-        let found;
+        let found: Stage | undefined;
 
         eventChaptersString.forEach((chapterKey) => {
             const result = tables.stages.find(
                 (s) =>
-                    s.ChapterIndex === chapterKey &&
-                    s.StageIdxString.toLowerCase() === stageIdxStr,
+                    s.ChapterIndex === chapterKey && s.StageIdxString.toLowerCase() === stageIdxStr,
             );
             if (result) {
                 found = result;
@@ -140,9 +129,12 @@ export function getStoryCutInfoFromParam({
             };
         default: {
             const index = Number(sceneType.slice(3));
+            const cutSceneIndex = stage.MidCutsceneIndex[index - 1];
+            if (cutSceneIndex === undefined)
+                throw new Error(`no mid cutscene found for ${sceneType}`);
             return {
                 ...cutMeta,
-                cutSceneIndex: stage.MidCutsceneIndex[index - 1],
+                cutSceneIndex,
             };
         }
     }

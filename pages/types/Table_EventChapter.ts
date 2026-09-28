@@ -1,4 +1,4 @@
-export type EventChapter = {
+export interface EventChapter {
     Key: string;
     Event_Category: string;
     /**
@@ -14,8 +14,6 @@ export type EventChapter = {
     Chapter_Key: string;
     StartCutsceneIndex: string;
     Event_OpenType: number;
-};
+}
 
-export type TableEventChapter = {
-    [key: string]: EventChapter;
-};
+export type TableEventChapter = Record<string, EventChapter>;

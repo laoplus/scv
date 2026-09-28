@@ -1,7 +1,6 @@
-import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { dangerouslySkipEscape, escapeInject } from "vike/server";
-import type { PageContextBuiltIn } from "vike/types";
+import type { PageContextServer } from "vike/types";
 
 import { createPageMeta } from "./createPageMeta";
 import logoUrl from "./logo.svg";
@@ -9,22 +8,20 @@ import { PageShell } from "./PageShell";
 import type { PageContext } from "./types";
 
 export { render as onRenderHtml };
-// See https://vike.dev/data-fetching
-export const passToClient = ["documentProps", "pageProps"];
 
-async function render(pageContext: PageContextBuiltIn & PageContext) {
-  const { Page, pageProps } = pageContext;
-  const pageHtml = ReactDOMServer.renderToString(
-    <PageShell pageContext={pageContext}>
-      <Page {...pageProps} />
-    </PageShell>,
-  );
+function render(pageContext: PageContextServer & PageContext) {
+    const { Page, pageProps } = pageContext;
+    const pageHtml = ReactDOMServer.renderToString(
+        <PageShell pageContext={pageContext}>
+            <Page {...pageProps} />
+        </PageShell>,
+    );
 
-  const meta = pageContext.exports.getDocumentProps
-    ? createPageMeta(pageContext.exports.getDocumentProps(pageContext))
-    : createPageMeta(pageContext.exports.documentProps);
+    const meta = pageContext.exports.getDocumentProps
+        ? createPageMeta(pageContext.exports.getDocumentProps(pageContext))
+        : createPageMeta(pageContext.exports.documentProps);
 
-  const documentHtml = escapeInject`<!DOCTYPE html>
+    const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="ja">
         <head>
             <meta charset="UTF-8" />
@@ -35,9 +32,7 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
             <meta name="twitter:card" content="summary" />
             <meta property="og:site_name" content="SCV" />
             <meta property="og:type" content="website" />
-            <meta property="og:image" content="${
-              import.meta.env.VITE_HOST_BASE_URL
-            }/ogp.png" />
+            <meta property="og:image" content="${import.meta.env.VITE_HOST_BASE_URL}/ogp.png" />
             <meta property="og:title" content="${meta.title}" />
             <meta property="og:description" content="${meta.description}" />
             <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
@@ -47,10 +42,10 @@ async function render(pageContext: PageContextBuiltIn & PageContext) {
     </body>
     </html>`;
 
-  return {
-    documentHtml,
-    pageContext: {
-      // We can add some `pageContext` here, which is useful if we want to do page redirection https://vike.dev/page-redirection
-    },
-  };
+    return {
+        documentHtml,
+        pageContext: {
+            // We can add some `pageContext` here, which is useful if we want to do page redirection https://vike.dev/page-redirection
+        },
+    };
 }
