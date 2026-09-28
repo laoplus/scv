@@ -22,5 +22,4 @@ dist-ssr
 *.sw?
 
 data
-auto-imports.d.ts
 public/searchIndex.*
