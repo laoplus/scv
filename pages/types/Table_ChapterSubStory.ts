@@ -1,4 +1,4 @@
-export type ChapterSubStory = {
+export interface ChapterSubStory {
     Key: string;
     StoryNo: number;
     StoryName: string;
@@ -15,8 +15,6 @@ export type ChapterSubStory = {
     Param3: string;
     Param4: string;
     Param5: string;
-};
+}
 
-export type TableChapterSubStory = {
-    [key: string]: ChapterSubStory;
-};
+export type TableChapterSubStory = Record<string, ChapterSubStory>;

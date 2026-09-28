@@ -1,6 +1,6 @@
 export type PageProps = object;
 // The `pageContext` that are available in both on the server-side and browser-side
-export type PageContext = {
+export interface PageContext {
     Page: (pageProps: PageProps) => React.ReactElement;
     pageProps: PageProps;
     urlPathname: string;
@@ -14,4 +14,4 @@ export type PageContext = {
             description?: string;
         };
     };
-};
+}

@@ -1,8 +1,6 @@
-export type TableMapStage = {
-    [key: string]: Stage;
-};
+export type TableMapStage = Record<string, Stage>;
 
-export type Stage = {
+export interface Stage {
     Key: string;
     StageName: string;
     StageDesc: string;
@@ -19,4 +17,4 @@ export type Stage = {
     MidCutsceneIndex: string[];
     MidCutsceneWave: number[];
     MidCutsceneTiming: number[];
-};
+}

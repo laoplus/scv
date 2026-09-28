@@ -5,22 +5,22 @@ import React, { useContext } from "react";
 
 import type { PageContext } from "./types";
 
-export { PageContextProvider };
-export { usePageContext };
+export { PageContextProvider, usePageContext };
 
-const Context = React.createContext<PageContext>(undefined as any);
+const Context = React.createContext<PageContext | undefined>(undefined);
 
 function PageContextProvider({
-  pageContext,
-  children,
+    pageContext,
+    children,
 }: {
-  pageContext: PageContext;
-  children: React.ReactNode;
+    pageContext: PageContext;
+    children: React.ReactNode;
 }) {
-  return <Context.Provider value={pageContext}>{children}</Context.Provider>;
+    return <Context.Provider value={pageContext}>{children}</Context.Provider>;
 }
 
 function usePageContext() {
-  const pageContext = useContext(Context);
-  return pageContext;
+    const pageContext = useContext(Context);
+    if (!pageContext) throw new Error("PageContextProvider is missing");
+    return pageContext;
 }

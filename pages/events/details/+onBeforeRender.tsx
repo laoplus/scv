@@ -1,154 +1,128 @@
-import type { PageContextBuiltIn } from "vike/types";
+import type { PageContextServer } from "vike/types";
 
 import { groupEventStories } from "../../../features/events/groupEventStories";
 import {
-  createSceneCharacters,
-  extractChapterIndexFromChapterKey,
-  getSceneCharacters,
-  tables,
+    createSceneCharacters,
+    extractChapterIndexFromChapterKey,
+    getSceneCharacters,
+    tables,
 } from "../../serverUtil";
 
 export type EventStories = Awaited<
-  ReturnType<typeof onBeforeRender>
+    ReturnType<typeof onBeforeRender>
 >["pageContext"]["pageProps"]["eventStories"];
 
-// filter unreleased events
+import { publicEvents } from "../publicEvents";
 
-const bannedEventChapter: string[] = [];
+export async function onBeforeRender({ routeParams }: PageContextServer) {
+    console.log(routeParams);
+    const { chapters, stages } = tables;
+    const sceneCharacters = await createSceneCharacters();
 
-export const publicEvents = tables.events.filter(
-  (c) => !bannedEventChapter.includes(c.Chapter_Key),
-);
+    // TODO: omit unused keys
 
-export async function onBeforeRender({ routeParams }: PageContextBuiltIn) {
-  console.log(routeParams);
-  const { chapters, stages } = tables;
-  const sceneCharacters = await createSceneCharacters();
+    const event = publicEvents.filter(
+        (e) => e.Event_CategoryIndex === Number(routeParams["eventIndex"]),
+    );
 
-  // TODO: omit unused keys
+    // eventsにchapterつめる
+    const eventsWithStages = event
+        .map((e) => {
+            const ChapterStages = stages
+                .filter((stage) => stage.ChapterIndex === e.Chapter_Key)
+                .map((stage) => ({
+                    StageName: stage.StageName,
+                    StageDesc: stage.StageDesc,
+                    StageIdxString: stage.StageIdxString,
+                    StageSubType: stage.StageSubType,
+                    StageSubTypeStr: (() => {
+                        switch (stage.StageSubType) {
+                            case 0:
+                                return "NORMAL" as const;
+                            case 1:
+                                return "SUB" as const;
+                            case 2:
+                                return "EX" as const;
+                            default:
+                                return undefined;
+                        }
+                    })(),
+                    StagePos: stage.Stage_Pos,
+                    StartCutsceneIndex: stage.StartCutsceneIndex,
+                    StartCutsceneCharcters: getSceneCharacters({
+                        sceneCharacters,
+                        cutsceneIndex: stage.StartCutsceneIndex,
+                    }),
+                    EndCutsceneIndex: stage.EndCutsceneIndex,
+                    EndCutsceneCharcters: getSceneCharacters({
+                        sceneCharacters,
+                        cutsceneIndex: stage.EndCutsceneIndex,
+                    }),
+                    MidCutsceneIndex: stage.MidCutsceneIndex,
+                    MidCutsceneCharcters: stage.MidCutsceneIndex.map((cutsceneIndex) =>
+                        getSceneCharacters({
+                            sceneCharacters,
+                            cutsceneIndex,
+                        }),
+                    ),
+                    hasCutscene:
+                        stage.StartCutsceneIndex !== "0" ||
+                        stage.EndCutsceneIndex !== "0" ||
+                        stage.MidCutsceneIndex[0] !== "0",
+                }))
+                // not include no cutscene stages
+                .filter((stage) => stage.hasCutscene);
 
-  const event = publicEvents.filter(
-    (e) => e.Event_CategoryIndex === Number(routeParams.eventIndex),
-  );
-
-  if (!event) {
-    return {
-      pageContext: {
-        pageProps: {
-          eventStories: [],
-          subStoryGroups: [],
-        },
-      },
-    };
-  }
-
-  // eventsにchapterつめる
-  const eventsWithStages = event
-    .map((e) => {
-      const ChapterStages = stages
-        .filter((stage) => stage.ChapterIndex === e.Chapter_Key)
-        .map((stage) => ({
-          StageName: stage.StageName,
-          StageDesc: stage.StageDesc,
-          StageIdxString: stage.StageIdxString,
-          StageSubType: stage.StageSubType,
-          StageSubTypeStr: (() => {
-            switch (stage.StageSubType) {
-              case 0:
-                return "NORMAL" as const;
-              case 1:
-                return "SUB" as const;
-              case 2:
-                return "EX" as const;
-            }
-          })(),
-          StagePos: stage.Stage_Pos,
-          StartCutsceneIndex: stage.StartCutsceneIndex,
-          StartCutsceneCharcters: getSceneCharacters({
-            sceneCharacters,
-            cutsceneIndex: stage.StartCutsceneIndex,
-          }),
-          EndCutsceneIndex: stage.EndCutsceneIndex,
-          EndCutsceneCharcters: getSceneCharacters({
-            sceneCharacters,
-            cutsceneIndex: stage.EndCutsceneIndex,
-          }),
-          MidCutsceneIndex: stage.MidCutsceneIndex,
-          MidCutsceneCharcters: stage.MidCutsceneIndex.map((cutsceneIndex) =>
-            getSceneCharacters({
-              sceneCharacters,
-              cutsceneIndex,
-            }),
-          ),
-          hasCutscene:
-            stage.StartCutsceneIndex !== "0" ||
-            stage.EndCutsceneIndex !== "0" ||
-            stage.MidCutsceneIndex[0] !== "0",
-        }))
-        // not include no cutscene stages
-        .filter((stage) => stage.hasCutscene);
-
-      return {
-        ...e,
-        Chapter_Name: chapters.find((c) => c.Key === e.Chapter_Key)
-          ?.ChapterName,
-        ChapterStages: ChapterStages,
-      };
-    })
-    // not include no cutscene events;
-    .filter((e) => e.ChapterStages.length > 0);
-
-  const groupedEvents = groupEventStories(eventsWithStages);
-
-  const subStoryGroups = event.flatMap((e) => {
-    const subStoryGroup = tables.chapterSubStoryGroups
-      .filter((s) => s.ChapterIndex === e.Chapter_Key)
-      .map((sgroup) => {
-        const unitName = sgroup.Key.split("_").at(-1);
-        const eventIndex = e.Event_CategoryIndex;
-        const chapterIndex = extractChapterIndexFromChapterKey(e.Chapter_Key);
-
-        return {
-          ...sgroup,
-          SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
-            tables.chapterSubStories.find(
-              (subStory) => subStory.Key === subStoryIndex,
-            ),
-          ).map((subStory, index) => {
-            if (!subStory) {
-              return null;
-            }
             return {
-              StoryName: subStory.StoryName,
-              StoryPath:
-                `/scenes/ev${eventIndex}/sub/${chapterIndex}/${unitName}/${
-                  index + 1
-                }/`.toLowerCase(),
-              Characters: getSceneCharacters({
-                sceneCharacters,
-                cutsceneIndex: subStory.StoryDialog,
-              }),
-            } as const;
-          }),
-        };
-      });
+                ...e,
+                Chapter_Name: chapters.find((c) => c.Key === e.Chapter_Key)?.ChapterName,
+                ChapterStages: ChapterStages,
+            };
+        })
+        // not include no cutscene events;
+        .filter((e) => e.ChapterStages.length > 0);
 
-    return subStoryGroup;
-  });
+    const groupedEvents = groupEventStories(eventsWithStages);
 
-  return {
-    pageContext: {
-      pageProps: {
-        eventStories: groupedEvents,
-        subStoryGroups,
-      },
-    },
-  };
+    const subStoryGroups = event.flatMap((e) => {
+        const subStoryGroup = tables.chapterSubStoryGroups
+            .filter((s) => s.ChapterIndex === e.Chapter_Key)
+            .map((sgroup) => {
+                const unitName = sgroup.Key.split("_").at(-1);
+                if (unitName === undefined) throw new Error("Missing unit name");
+                const eventIndex = e.Event_CategoryIndex;
+                const chapterIndex = extractChapterIndexFromChapterKey(e.Chapter_Key);
+
+                return {
+                    ...sgroup,
+                    SubStory: sgroup.ChapterSubStoryIndex.map((subStoryIndex) =>
+                        tables.chapterSubStories.find((subStory) => subStory.Key === subStoryIndex),
+                    ).map((subStory, index) => {
+                        if (!subStory) {
+                            return null;
+                        }
+                        return {
+                            StoryName: subStory.StoryName,
+                            StoryPath:
+                                `/scenes/ev${eventIndex}/sub/${chapterIndex}/${unitName}/${index + 1}/`.toLowerCase(),
+                            Characters: getSceneCharacters({
+                                sceneCharacters,
+                                cutsceneIndex: subStory.StoryDialog,
+                            }),
+                        } as const;
+                    }),
+                };
+            });
+
+        return subStoryGroup;
+    });
+
+    return {
+        pageContext: {
+            pageProps: {
+                eventStories: groupedEvents,
+                subStoryGroups,
+            },
+        },
+    };
 }
-
-export const onBeforePrerenderStart = async () => {
-  const eventIndex = [
-    ...new Set(publicEvents.map((e) => e.Event_CategoryIndex)),
-  ];
-  return eventIndex.map((i) => `/events/${i}`);
-};

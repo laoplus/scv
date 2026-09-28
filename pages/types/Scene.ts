@@ -1,6 +1,6 @@
 export type Scene = Dialog[];
 
-export type Dialog = {
+export interface Dialog {
     Key: string;
     Dialog_Group: string;
     BG_Name: string;
@@ -31,7 +31,7 @@ export type Dialog = {
     Script: string;
     SelectionIndex: string[];
     SelectionIndex_Next: string[];
-    SelectionIndex_Cond: any[];
+    SelectionIndex_Cond: unknown[];
     SelectionIndex_CondValue1: number;
     SelectionIndex_CondValue2: number;
     Char_OffEffect_L: number;
@@ -44,4 +44,4 @@ export type Dialog = {
     Voice_CharName: string;
     Script_VoiceName: string;
     Bgm_Sound: string;
-};
+}

@@ -1,5 +1,5 @@
-export type SearchOption = {
-  value: string | null;
-  label: string;
-  count: number;
-};
+export interface SearchOption {
+    value: string | null;
+    label: string;
+    count: number;
+}

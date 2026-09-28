@@ -1,12 +1,12 @@
 import fs from "fs";
 
-import { Scene } from "./types/Scene";
-import { TableChapterSubStory } from "./types/Table_ChapterSubStory";
-import { TableChapterSubStoryGroup } from "./types/Table_ChapterSubStoryGroup";
-import type { TableCutscene } from "./types/Table_Cutscene";
-import type { TableEventChapter } from "./types/Table_EventChapter";
-import type { TableMapChapter } from "./types/Table_MapChapter";
-import type { TableMapStage } from "./types/Table_MapStage";
+import type { Scene } from "./types/Scene.ts";
+import type { TableChapterSubStory } from "./types/Table_ChapterSubStory.ts";
+import type { TableChapterSubStoryGroup } from "./types/Table_ChapterSubStoryGroup.ts";
+import type { TableCutscene } from "./types/Table_Cutscene.ts";
+import type { TableEventChapter } from "./types/Table_EventChapter.ts";
+import type { TableMapChapter } from "./types/Table_MapChapter.ts";
+import type { TableMapStage } from "./types/Table_MapStage.ts";
 
 export const getAllScenesFilenames = async () => {
     const files = await fs.promises.readdir("data/dialogs");
@@ -41,16 +41,12 @@ const stages = Object.entries(stagesObj).map(([, v]) => v);
 const chapterSubStoriesObj = JSON.parse(
     fs.readFileSync("data/tables/_Table_ChapterSubStory.json", "utf8"),
 ) as TableChapterSubStory;
-const chapterSubStories = Object.entries(chapterSubStoriesObj).map(
-    ([, v]) => v,
-);
+const chapterSubStories = Object.entries(chapterSubStoriesObj).map(([, v]) => v);
 
 const chapterSubStoryGroupsObj = JSON.parse(
     fs.readFileSync("data/tables/_Table_ChapterSubStoryGroup.json", "utf8"),
 ) as TableChapterSubStoryGroup;
-const chapterSubStoryGroups = Object.entries(chapterSubStoryGroupsObj).map(
-    ([, v]) => v,
-);
+const chapterSubStoryGroups = Object.entries(chapterSubStoryGroupsObj).map(([, v]) => v);
 
 export const tables = {
     chapters,
@@ -78,7 +74,8 @@ export const createSceneCharacters = async () => {
 
     for (const sceneFilename of sceneFiles) {
         const scene = await loadScene(sceneFilename);
-        if (!scene[0]) {
+        const firstDialog = scene[0];
+        if (!firstDialog) {
             continue;
         }
 
@@ -99,26 +96,21 @@ export const createSceneCharacters = async () => {
             // .filter((c) => !c.image.includes("_Commu"))
             .filter((c) => !ignoreImages.includes(c.image))
             .filter((c) => c.name !== "主人公")
-            .reduce(
-                (acc, cur) => {
-                    const found = acc.find((item) => item.image === cur.image);
-                    if (found) {
-                        found.counts++;
-                    } else {
-                        acc.push({ ...cur, counts: 1 });
-                    }
-                    return acc;
-                },
-                [] as { image: string; name: string; counts: number }[],
-            )
+            .reduce<{ image: string; name: string; counts: number }[]>((acc, cur) => {
+                const found = acc.find((item) => item.image === cur.image);
+                if (found) {
+                    found.counts++;
+                } else {
+                    acc.push({ ...cur, counts: 1 });
+                }
+                return acc;
+            }, [])
             .sort((a, b) => b.counts - a.counts);
 
         sceneCharcters.push({
             Cutscene_Key:
-                tables.cutScenes.find(
-                    (t) => t.FileName === scene[0].Dialog_Group,
-                )?.Key || "",
-            Dialog_Group: scene[0].Dialog_Group,
+                tables.cutScenes.find((t) => t.FileName === firstDialog.Dialog_Group)?.Key ?? "",
+            Dialog_Group: firstDialog.Dialog_Group,
             characters,
         });
     }
@@ -132,10 +124,7 @@ export const getSceneCharacters = ({
     sceneCharacters: SceneCharacters;
     cutsceneIndex: string;
 }) => {
-    if (
-        cutsceneIndex === "0" ||
-        (cutsceneIndex.length === 1 && cutsceneIndex[0] === "0")
-    ) {
+    if (cutsceneIndex === "0" || (cutsceneIndex.length === 1 && cutsceneIndex.startsWith("0"))) {
         return [];
     }
 
@@ -144,10 +133,8 @@ export const getSceneCharacters = ({
     }
 
     const dialog = getDialogFromCutName(cutsceneIndex);
-    const charcters = sceneCharacters.find(
-        (s) => s.Cutscene_Key === dialog.Key,
-    );
-    return charcters?.characters || [];
+    const charcters = sceneCharacters.find((s) => s.Cutscene_Key === dialog.Key);
+    return charcters?.characters ?? [];
 };
 
 export const getDialogFromCutName = (cutName: string) => {
@@ -159,7 +146,9 @@ export const getDialogFromCutName = (cutName: string) => {
 };
 
 export const extractChapterIndexFromChapterKey = (chapterKey: string) => {
-    const chapterIndex = Number(chapterKey.match(/Chapter_(\d+)/)![1]);
+    const match = /Chapter_(\d+)/.exec(chapterKey);
+    if (!match) throw new Error(`no chapter index found for ${chapterKey}`);
+    const chapterIndex = Number(match[1]);
 
     if (Number.isNaN(chapterIndex)) {
         throw new Error(`no chapter index found for ${chapterKey}`);

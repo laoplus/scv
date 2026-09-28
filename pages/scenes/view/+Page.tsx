@@ -1,22 +1,12 @@
-import React from "react";
-
 import { SceneViewer } from "../../../components/SceneViewer";
 import { onBeforeRender } from "./+onBeforeRender";
 
-export type PageContext = Awaited<
-  ReturnType<typeof onBeforeRender>
->["pageContext"];
-
-export function getDocumentProps({
-  documentProps: { title, description },
-}: PageContext) {
-  return { title, description };
-}
+export type PageContext = Awaited<ReturnType<typeof onBeforeRender>>["pageContext"];
 
 export function Page({ scene }: PageContext["pageProps"]) {
-  if (scene.length === 0) {
-    return <p>no dialogs...</p>;
-  }
+    if (scene.length === 0) {
+        return <p>no dialogs...</p>;
+    }
 
-  return <SceneViewer scene={scene} />;
+    return <SceneViewer scene={scene} />;
 }
