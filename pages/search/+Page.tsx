@@ -1,14 +1,14 @@
 import { countBy } from "lodash-es";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 
 import { Heading } from "../../components/Heading";
 import { UnitIcon } from "../../components/UnitIcon";
 import { cn, convertScriptTextToHtml } from "../../components/utils";
+import { filterSearchIndex } from "./filterSearchIndex";
 import { MemoSceneSelector } from "./SceneSelector";
 import { SearchOption } from "./SelectorUtil";
 import { MemoSpeakerSelector } from "./SpeakerSelector";
-import { toHiragana } from "./util";
 
 export type SearchIndex = {
   key: string;
@@ -167,35 +167,16 @@ export function Page() {
     })();
   }, []);
 
-  const searchResult = useCallback(() => {
-    console.time("searchResult");
-    let result = searchIndex.filter((d) => {
-      const haystack = toHiragana(d.script.toLowerCase().normalize("NFKC"));
-      const needle = toHiragana(
-        searchString
-          .toLowerCase()
-          // SKK対応（！？）
-          .replace(/▽|▼/gm, "")
-          .normalize("NFKC"),
-      );
-      return haystack.includes(needle);
-    });
-
-    // 話者での絞り込み
-    if (searchSpeakerNames.length !== 0) {
-      result = result.filter((d) =>
-        searchSpeakerNames.includes(d.speaker.name),
-      );
-    }
-
-    // シーンでの絞り込み
-    if (searchSceneNames.length !== 0) {
-      result = result.filter((d) => searchSceneNames.includes(d.sceneName));
-    }
-
-    console.timeEnd("searchResult");
-    return result;
-  }, [searchIndex, searchSpeakerNames, searchString, searchSceneNames])();
+  const searchResult = useMemo(
+    () =>
+      filterSearchIndex(
+        searchIndex,
+        searchString,
+        searchSpeakerNames,
+        searchSceneNames,
+      ),
+    [searchIndex, searchString, searchSpeakerNames, searchSceneNames],
+  );
 
   return (
     <div className="md:mx-4 lg:mx-8">
@@ -219,7 +200,9 @@ export function Page() {
               id="speakerSelector"
               checked={showSpeakerSelector}
               onChange={(e) => {
-                setSearchSpeakerNames([]);
+                setSearchSpeakerNames((names) =>
+                  names.length === 0 ? names : [],
+                );
                 setShowSpeakerSelector(e.target.checked);
               }}
             />
@@ -244,7 +227,9 @@ export function Page() {
               id="sceneSelector"
               checked={showSceneSelector}
               onChange={(e) => {
-                setSearchSceneNames([]);
+                setSearchSceneNames((names) =>
+                  names.length === 0 ? names : [],
+                );
                 setShowSceneSelector(e.target.checked);
               }}
             />
