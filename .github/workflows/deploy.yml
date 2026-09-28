@@ -21,9 +21,9 @@ jobs:
           token: ${{ secrets.GH_PAT_CLONE_DATA_REPO }}
           path: data
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: package.json
           cache: "yarn"
 
       - run: yarn install --frozen-lockfile
