@@ -60,12 +60,11 @@ function CurrentActions({
     if (dialog.SelectionIndex.length > 0) {
         return (
             <fieldset className="flex min-w-0 flex-col gap-1">
-                <legend ref={focusRef} tabIndex={-1} className="text-sm font-bold">
-                    選択肢を選んでください
-                </legend>
+                <legend className="text-sm font-bold">選択肢を選んでください</legend>
                 {dialog.SelectionIndex.map((text, index) => (
                     <button
                         key={index}
+                        ref={index === 0 ? focusRef : undefined}
                         type="button"
                         className="break-words rounded-md border p-2 text-left font-bold text-orange-400"
                         onClick={() => {
@@ -149,7 +148,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                     target.closest("button, a[href], summary, [role='button'], [role='link']")))
         )
             return;
-        if (event.key === "Enter" && current.SelectionIndex.length === 0 && current.hasNextDialog) {
+        if (event.key === "Enter" && (current.SelectionIndex.length > 0 || current.hasNextDialog)) {
             event.preventDefault();
             advance();
         } else if (event.key === "Backspace" && history.length > 1) {

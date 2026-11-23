@@ -44,7 +44,8 @@ function currentDialog(history: ExtendedDialog[]) {
 
 export function advanceHistory(scene: Dialog[], history: ExtendedDialog[]) {
     const current = currentDialog(history);
-    if (current.SelectionIndex.length > 0 || !current.hasNextDialog) return history;
+    if (current.SelectionIndex.length > 0) return selectHistory(scene, history, 0);
+    if (!current.hasNextDialog) return history;
     const nextDialog = scene.find((dialog) => dialog.Key === current.NextDialogScript);
     if (nextDialog) return [parseDialog(nextDialog), ...history];
 

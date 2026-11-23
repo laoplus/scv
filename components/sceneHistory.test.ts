@@ -60,11 +60,11 @@ function dialog(key: string, next = "", selections: string[] = []): Dialog {
     };
 }
 
-void test("NEXTは1件ずつ進み、選択肢とENDでは進まない", () => {
+void test("通常進行は1件ずつ進み、選択肢では先頭を選び、ENDでは止まる", () => {
     const first = dialog("first", "choice");
-    const choice = dialog("choice", "end", ["end"]);
+    const choice = dialog("choice", "other", ["end", "other"]);
     const end = dialog("end");
-    const scene = [first, choice, end];
+    const scene = [first, choice, end, dialog("other")];
     const initial = [parseDialog(first)];
     const advanced = advanceHistory(scene, initial);
     assert.deepEqual(
@@ -72,7 +72,13 @@ void test("NEXTは1件ずつ進み、選択肢とENDでは進まない", () => {
         ["choice", "first"],
     );
     assert.equal(initial.length, 1);
-    assert.equal(advanceHistory(scene, advanced), advanced);
+    const selected = advanceHistory(scene, advanced);
+    assert.deepEqual(
+        selected.map((item) => item.Key),
+        ["end", "choice", "first"],
+    );
+    assert.equal(selected[1]?.SelectionSelectedIndex, 0);
+    assert.equal(advanced[0]?.SelectionSelectedIndex, null);
     const finished = [parseDialog(end)];
     assert.equal(advanceHistory(scene, finished), finished);
 });
