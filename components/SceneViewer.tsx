@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { KeyboardEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { flushSync } from "react-dom";
 
 import type { PageContext } from "../pages/scenes/view/+Page";
@@ -101,7 +101,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         return [parseDialog(firstDialog)];
     });
     const focusTarget = useRef<HTMLElement | null>(null);
-    const previousAction = useRef<HTMLButtonElement | null>(null);
+    const viewer = useRef<HTMLDivElement | null>(null);
     const current = history[0];
     if (!current) throw new Error("no dialogs");
 
@@ -110,9 +110,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         flushSync(() => {
             setHistory(nextHistory);
         });
-        if (keyboard) {
-            (focusTarget.current ?? previousAction.current)?.focus({ preventScroll: true });
-        }
+        if (keyboard) focusTarget.current?.focus({ preventScroll: true });
     };
 
     const advance = (keyboard = false) => {
@@ -129,10 +127,10 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
         if (
             event.defaultPrevented ||
-            event.nativeEvent.isComposing ||
+            event.isComposing ||
             event.repeat ||
             event.altKey ||
             event.ctrlKey ||
@@ -141,6 +139,8 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         )
             return;
         const target = event.target;
+        if (!(target instanceof Node)) return;
+        if (target !== document.body && !viewer.current?.contains(target)) return;
         if (
             target instanceof Element &&
             (target.closest("input, textarea, select, [role='textbox'], [role='combobox']") ||
@@ -179,7 +179,11 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                 className="flex flex-col"
                 role="region"
                 aria-label="シーンビューア"
-                onKeyDown={handleKeyDown}
+                ref={(element) => {
+                    viewer.current = element;
+                    document.removeEventListener("keydown", handleKeyDown);
+                    if (element) document.addEventListener("keydown", handleKeyDown);
+                }}
             >
                 <div
                     className="relative z-10 aspect-video max-h-80 w-full select-none overflow-hidden rounded-b bg-slate-500"
@@ -257,12 +261,6 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                                 dialog.SelectionIndex.map((text, selectionIndex) => (
                                     <button
                                         key={selectionIndex}
-                                        ref={
-                                            index === 1 &&
-                                            selectionIndex === (dialog.SelectionSelectedIndex ?? 0)
-                                                ? previousAction
-                                                : undefined
-                                        }
                                         type="button"
                                         className={cn(
                                             "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
@@ -281,7 +279,6 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                                 ))
                             ) : (
                                 <button
-                                    ref={index === 1 ? previousAction : undefined}
                                     type="button"
                                     className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
                                     onClick={(event) => {
