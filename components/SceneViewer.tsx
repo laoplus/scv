@@ -132,7 +132,6 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         if (
             event.defaultPrevented ||
             event.isComposing ||
-            event.repeat ||
             event.altKey ||
             event.ctrlKey ||
             event.metaKey ||
