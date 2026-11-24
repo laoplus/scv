@@ -101,6 +101,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         return [parseDialog(firstDialog)];
     });
     const focusTarget = useRef<HTMLElement | null>(null);
+    const previousAction = useRef<HTMLButtonElement | null>(null);
     const current = history[0];
     if (!current) throw new Error("no dialogs");
 
@@ -109,7 +110,9 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
         flushSync(() => {
             setHistory(nextHistory);
         });
-        if (keyboard) focusTarget.current?.focus({ preventScroll: true });
+        if (keyboard) {
+            (focusTarget.current ?? previousAction.current)?.focus({ preventScroll: true });
+        }
     };
 
     const advance = (keyboard = false) => {
@@ -254,6 +257,12 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                                 dialog.SelectionIndex.map((text, selectionIndex) => (
                                     <button
                                         key={selectionIndex}
+                                        ref={
+                                            index === 1 &&
+                                            selectionIndex === (dialog.SelectionSelectedIndex ?? 0)
+                                                ? previousAction
+                                                : undefined
+                                        }
                                         type="button"
                                         className={cn(
                                             "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
@@ -272,6 +281,7 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                                 ))
                             ) : (
                                 <button
+                                    ref={index === 1 ? previousAction : undefined}
                                     type="button"
                                     className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
                                     onClick={(event) => {
