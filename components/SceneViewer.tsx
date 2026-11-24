@@ -106,11 +106,12 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
     if (!current) throw new Error("no dialogs");
 
     const updateHistory = (nextHistory: ExtendedDialog[], keyboard: boolean) => {
-        // 遷移先の操作要素を描画してから、同じイベント内でフォーカスを移す。
+        const preserveFocus = keyboard && viewer.current?.contains(document.activeElement);
+        // ボタンを操作中の場合だけ、描画後の操作要素へフォーカスを引き継ぐ。
         flushSync(() => {
             setHistory(nextHistory);
         });
-        if (keyboard) focusTarget.current?.focus({ preventScroll: true });
+        if (preserveFocus) focusTarget.current?.focus({ preventScroll: true });
     };
 
     const advance = (keyboard = false) => {
