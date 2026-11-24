@@ -31,10 +31,8 @@ function DialogCard({
                 { "js-current-dialog opacity-100": current },
             )}
         >
-            <div className="flex min-w-0 flex-col gap-1">
-                {dialog.speaker?.name && (
-                    <span className="break-words font-bold">{dialog.speaker.name}</span>
-                )}
+            <div className="flex flex-col gap-1">
+                {dialog.speaker?.name && <span className="font-bold">{dialog.speaker.name}</span>}
                 <div
                     className="break-all leading-normal"
                     style={{ minHeight: "calc(1em * 2 * 1.5)" }}
@@ -54,42 +52,42 @@ function CurrentActions({
 }: {
     dialog: ExtendedDialog;
     focusRef: (element: HTMLElement | null) => void;
-    onAdvance: () => void;
-    onSelect: (index: number) => void;
+    onAdvance: (keyboard: boolean) => void;
+    onSelect: (index: number, keyboard: boolean) => void;
 }) {
     if (dialog.SelectionIndex.length > 0) {
         return (
-            <fieldset className="flex min-w-0 flex-col gap-1">
-                <legend className="text-sm font-bold">選択肢を選んでください</legend>
+            <>
                 {dialog.SelectionIndex.map((text, index) => (
                     <button
                         key={index}
                         ref={index === 0 ? focusRef : undefined}
                         type="button"
-                        className="break-words rounded-md border p-2 text-left font-bold text-orange-400"
-                        onClick={() => {
-                            onSelect(index);
+                        className={cn(
+                            "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
+                            { "bg-orange-600 text-white": dialog.SelectionSelectedIndex === index },
+                        )}
+                        onClick={(event) => {
+                            onSelect(index, event.detail === 0);
                         }}
                     >
                         {text}
                     </button>
                 ))}
-            </fieldset>
+            </>
         );
     }
     if (!dialog.hasNextDialog) {
-        return (
-            <div ref={focusRef} tabIndex={-1} className="select-none text-right text-sm">
-                END
-            </div>
-        );
+        return <div className="select-none text-right text-sm">END</div>;
     }
     return (
         <button
             ref={focusRef}
             type="button"
             className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
-            onClick={onAdvance}
+            onClick={(event) => {
+                onAdvance(event.detail === 0);
+            }}
         >
             NEXT
         </button>
@@ -106,25 +104,25 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
     const current = history[0];
     if (!current) throw new Error("no dialogs");
 
-    const updateHistory = (nextHistory: ExtendedDialog[]) => {
+    const updateHistory = (nextHistory: ExtendedDialog[], keyboard: boolean) => {
         // 遷移先の操作要素を描画してから、同じイベント内でフォーカスを移す。
         flushSync(() => {
             setHistory(nextHistory);
         });
-        focusTarget.current?.focus({ preventScroll: true });
+        if (keyboard) focusTarget.current?.focus({ preventScroll: true });
     };
 
-    const advance = () => {
+    const advance = (keyboard = false) => {
         const nextHistory = advanceHistory(scene, history);
-        if (nextHistory !== history) updateHistory(nextHistory);
+        if (nextHistory !== history) updateHistory(nextHistory, keyboard);
     };
 
-    const select = (index: number) => {
-        updateHistory(selectHistory(scene, history, index));
+    const select = (index: number, keyboard: boolean) => {
+        updateHistory(selectHistory(scene, history, index), keyboard);
     };
 
-    const goBack = (index: number) => {
-        updateHistory(rewindHistory(history, index));
+    const goBack = (index: number, keyboard: boolean) => {
+        updateHistory(rewindHistory(history, index), keyboard);
         scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -150,10 +148,10 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
             return;
         if (event.key === "Enter" && (current.SelectionIndex.length > 0 || current.hasNextDialog)) {
             event.preventDefault();
-            advance();
+            advance(true);
         } else if (event.key === "Backspace" && history.length > 1) {
             event.preventDefault();
-            goBack(1);
+            goBack(1, true);
         }
     };
 
@@ -178,12 +176,13 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                 className="flex flex-col"
                 role="region"
                 aria-label="シーンビューア"
-                tabIndex={0}
                 onKeyDown={handleKeyDown}
             >
                 <div
                     className="relative z-10 aspect-video max-h-80 w-full select-none overflow-hidden rounded-b bg-slate-500"
-                    onClick={advance}
+                    onClick={() => {
+                        advance();
+                    }}
                 >
                     {[...bgImages].map((image, index) => (
                         <img
@@ -224,8 +223,8 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                         <h2 className="text-xl font-bold">シーンビューアの使い方</h2>
                         <ol className="flex flex-col gap-2">
                             <li>
-                                背景画像・NEXTで<strong>セリフ送り</strong>。
-                                選択肢が出たら、進む選択肢を選んでください。
+                                背景画像・セリフ下のNEXT・選択肢をクリックで
+                                <strong>セリフ送り</strong>
                             </li>
                             <li>
                                 過去のセリフの選択肢・BACKをクリックで
@@ -236,33 +235,36 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                 </div>
 
                 <div className="relative -top-2 z-10 flex flex-col gap-2 px-2">
-                    <DialogCard dialog={current} current>
-                        <CurrentActions
-                            dialog={current}
-                            focusRef={(element) => {
-                                focusTarget.current = element;
-                            }}
-                            onAdvance={advance}
-                            onSelect={select}
-                        />
-                    </DialogCard>
-                    {history.slice(1).map((dialog, index) => (
-                        <DialogCard key={history.length - index - 1} dialog={dialog}>
-                            {dialog.SelectionIndex.length > 0 ? (
+                    {history.map((dialog, index) => (
+                        <DialogCard
+                            key={history.length - index}
+                            dialog={dialog}
+                            current={index === 0}
+                        >
+                            {index === 0 ? (
+                                <CurrentActions
+                                    dialog={dialog}
+                                    focusRef={(element) => {
+                                        focusTarget.current = element;
+                                    }}
+                                    onAdvance={advance}
+                                    onSelect={select}
+                                />
+                            ) : dialog.SelectionIndex.length > 0 ? (
                                 dialog.SelectionIndex.map((text, selectionIndex) => (
                                     <button
                                         key={selectionIndex}
                                         type="button"
                                         className={cn(
-                                            "break-words rounded-md border p-2 text-left font-bold text-orange-400",
+                                            "cursor-pointer rounded-md border p-2 text-left font-bold text-orange-400",
                                             {
                                                 "bg-orange-600 text-white":
                                                     dialog.SelectionSelectedIndex ===
                                                     selectionIndex,
                                             },
                                         )}
-                                        onClick={() => {
-                                            goBack(index + 1);
+                                        onClick={(event) => {
+                                            goBack(index, event.detail === 0);
                                         }}
                                     >
                                         {text}
@@ -272,8 +274,8 @@ export function SceneViewer({ scene }: PageContext["pageProps"]) {
                                 <button
                                     type="button"
                                     className="select-none border-b border-orange-400 border-opacity-0 text-right text-sm hover:border-opacity-100"
-                                    onClick={() => {
-                                        goBack(index + 1);
+                                    onClick={(event) => {
+                                        goBack(index, event.detail === 0);
                                     }}
                                 >
                                     BACK
