@@ -58,7 +58,8 @@
         "oxlint": "1.85.0",
         "oxlint-config-presets": "0.1.20",
         "oxlint-tsgolint": "7.0.2003",
-        "typescript": "5.9.3"
+        "typescript": "5.9.3",
+        "wrangler": "4.166.0"
     },
     "devEngines": {
         "packageManager": {
